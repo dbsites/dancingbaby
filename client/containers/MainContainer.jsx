@@ -14,7 +14,6 @@ import {connect} from 'react-redux';
 import TotalsDisplay from '../components/TotalsDisplay.jsx';
 import MarketsContainer from './MarketsContainer.jsx';
 
-// import * as actions from './pathToActionsFile'
 
 const mapStateToProps = store => ({
   totalCards:   store.cards.totalCards,
@@ -26,9 +25,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class MainContainer extends Component {
-  // constructor(props) {
-  //   super(props);
-  // }
 
   render() {
     return(

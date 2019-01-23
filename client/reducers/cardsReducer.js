@@ -21,18 +21,51 @@ const initialState = {
 
 const cardsReducer = (state=initialState, action) => {
   let marketList;
-  console.log('crState', state);
-
+  let lastMarketId;
+  let totalMarkets;
+  let totalCards;
+  
   switch(action.type) {
+    case types.UPDATE_MARKETS:
+      const markets = action.payload;
+      lastMarketId = -Infinity;
+      totalCards = 0;
+      totalMarkets = markets.length;
+      marketList = state.marketList.slice();
+      
+      // push the markets on the market list
+      markets.forEach(market => {
+        const newMarket = {
+          location: market.location,
+          marketId: market.id,
+          cards: market.cardCount,
+        }
+
+        marketList.push(newMarket);
+
+        // update the last market id so we can have the right value if we create another
+        lastMarketId = market.id > lastMarketId ? market.id : lastMarketId;
+        totalCards += +market.cardCount;
+      })
+
+      return {
+        ...state,
+        marketList,
+        lastMarketId,
+        totalMarkets,
+        totalCards,
+        newLocation: '',
+      };
+      
     case types.ADD_MARKET:
       // increment counters
-      let lastMarketId = state.lastMarketId + 1;
-      let totalMarkets = state.totalMarkets + 1;
+      lastMarketId = action.marketId;
+      totalMarkets = state.totalMarkets + 1;
 
       // create the new market from provided data
       const newMarket = {
-        location: state.newLocation,
-        marketId: lastMarketId,
+        location: action.payload.location,
+        marketId: action.payload.marketId,
         cards: 0,
       };
 
@@ -74,7 +107,7 @@ const cardsReducer = (state=initialState, action) => {
 
     case types.DELETE_CARD:
       marketList = state.marketList.slice();
-      let totalCards = state.totalCards;
+      totalCards = state.totalCards;
       for(let i = 0; i < marketList.length; i++) {
         if(marketList[i].marketId == action.payload && marketList[i].cards > 0) {
           marketList[i].cards--;
