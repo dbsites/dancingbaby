@@ -18,7 +18,7 @@ if(process.env.NODE_ENV === 'development') {
   }
 } else if (process.env.NODE_ENV === 'production') { 
   config = {    
-    user: process.env.RDS_USER
+    user: process.env.RDS_USER,
     database: process.env.RDS_DATABASE,
     password: process.env.RDS_PASSWORD,
     host: process.env.RDS_HOST,
