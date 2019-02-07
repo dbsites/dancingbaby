@@ -35,21 +35,6 @@ Containers are created from images with the `docker run` command.
 - Docker provides a set of standard instructions to be used in the Dockerfile, like `FROM, COPY, RUN, ENV, EXPOSE, CMD`  
 - Docker will build a Docker image automatically by reading these instructions from the Dockerfile.
 
-### Getting Started
-
-First things first, let's just make sure that the application works with live updates/HMR without any kind of containerization.
-
-1. Run ```npm install```
-1. Run ```npm run dev:hot```
-
-That should open up a browser window with the MegaMarkets app all set for further development.  To verify that it's working, hop over to client/styles.css and change the color of the text to something exciting.  You should see your change immediately reflected in the browser.  Yes?  Good.  No?  Send a help desk :smiley:
-
-Now that we have our baseline application working, let's containerize it.  We'll begin by deleting the node_modules.
-
-```rm -rf node_modules/```
-
-**...and we'll never npm install in this directory again!** We'll be sourcing our node_modules from an image the whole team can share.
-
 #### Setup
 
 - Go to [docker.com](http://docker.com/), then download and install Docker for your OS. (You'll be required to create a docker account to do this.  Remember your dockerId, you'll use it in the next step)
