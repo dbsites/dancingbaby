@@ -4,7 +4,7 @@
 
 [Docker](http://docker.com/) is a tool designed to make it easier to create, deploy, and run applications by using containers.
 
-Containers provide an easy way for us to create lightweight isolated environments that are defined by a configuration file and may be used again and again across your team and infrastructure to ensure that everyone working on the codebase shares the same environment with each other and production.
+Containers provide an easy way for us to create lightweight isolated environments that are defined by a configuration file.  They may be used again and again across your team and infrastructure to ensure that everyone working on the codebase shares the same environment with each other and production.
 
 ## Docker Overview
 
