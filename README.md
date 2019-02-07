@@ -4,7 +4,9 @@ Setup for this unit will be a little different than what you're used to.  In ord
 
 So you'll only fork this repo to one partner's account.  After you've forked it, go to your forked version and find the 'Settings' tab at the top of the repo.  Select that and then select 'Collaborators and Teams'. Scroll down to the bottom and add the other partner as a Collaborator by entering their github name and setting their access to 'write'.  
 
-First things first, let's just make sure that the application works with live updates/HMR without any kind of containerization.
+### Verify Megamarkets App
+
+Before we get started, let's just make sure that the application works with live updates/HMR without any kind of containerization.
 
 1. Run ```npm install```
 1. Run ```npm run dev:hot```
@@ -17,4 +19,4 @@ Now that we have our baseline application working, let's containerize it.  We'll
 
 **...and we'll never npm install in this directory again!** We'll be sourcing our node_modules from an image the whole team can share.
 
-So let's get this app containerized!  Go ahead and check out the ```dockerize``` branch and open the README.md file.
+Now, let's get this app containerized.  Go ahead and check out the ```dockerize``` branch and open the README file.
