@@ -2,6 +2,10 @@ const mmdb = require('../models/mmModel');
 
 const marketController = {};
 
+/**
+ * @name getMarkets
+ * @description selects all markets and loads them into the res.locals.markets array
+ */
 marketController.getMarkets = (req, res, next) => {
     mmdb.query({
         text: 'select * from markets'
@@ -23,7 +27,10 @@ marketController.getMarkets = (req, res, next) => {
     });
 };
 
-
+/**
+ * @name addMarket
+ * @description adds a new market to the market table
+ */
 marketController.addMarket = (req, res, next) => {
     mmdb.query({
         text: 'insert into markets (market_id, location) values ($1, $2)',

@@ -1,18 +1,34 @@
 const pg = require('pg');
 
-// create a config to configure both pooling behavior
-// and client options
-// note: all config is optional and the environment variables
-// will be read if the config is not present
-const config = {
-  user: 'egovyvcx', //env var: PGUSER
-  database: 'egovyvcx', //env var: PGDATABASE
-  password: 'hDcaTP0pR6F3BNhETAn6hGlIOmEDWAlg', //env var: PGPASSWORD
-  host: 'tantor.db.elephantsql.com', // Server hosting the postgres database
-  port: 5432, //env var: PGPORT
-  max: 5, // max number of clients in the pool
-  idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
-};
+// create a config to configure both pooling behavior and client options
+// note: values here should be derived from environment variables 
+//       in a production environment
+
+let config;
+
+if(process.env.NODE_ENV === 'development') {
+  config = {
+    user: 'mmadmin', //env var: PGUSER
+    database: 'mmdb', //env var: PGDATABASE
+    password: 'admin', //env var: PGPASSWORD
+    host: 'postgres-db', // Server hosting the postgres database
+    port: 5432, //env var: PGPORT
+    max: 5, // max number of clients in the pool
+    idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
+  }
+} else {
+  config = {
+    user: 'egovyvcx', //env var: PGUSER
+    database: 'egovyvcx', //env var: PGDATABASE
+    password: 'hDcaTP0pR6F3BNhETAn6hGlIOmEDWAlg', //env var: PGPASSWORD
+    host: 'tantor.db.elephantsql.com', // Server hosting the postgres database
+    port: 5432, //env var: PGPORT
+    max: 5, // max number of clients in the pool
+    idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
+  }
+}
+
+console.log(`Connecting to database ${config.database} on host ${config.host}`);
 
 //this initializes a connection pool
 //it will keep idle connections open for 30 seconds

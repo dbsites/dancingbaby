@@ -9,7 +9,6 @@ const app = express();
 
 const PORT = process.env.PORT || '3000';
 
-
 app.use(logger(':date[clf] :method :url :status :response-time ms - :res[content-length]'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -21,7 +20,6 @@ app.get('/api/getMarkets',
     marketController.getMarkets,
     cardController.getAllCards,
     (req, res) => {
-        console.log(res.locals.markets);
       res.status(200).json(res.locals.markets);
     }
 );
@@ -61,10 +59,8 @@ app.use(function(req, res, next) {
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
   
-    // render the error page
-    res.status(err.status || 500);
-    // res.render('error');
     console.error(err);
+    res.status(err.status || 500).send(res.locals.message);
   });
 
 
