@@ -231,11 +231,12 @@ It's good to know the docker-compose command to start up your containers, but on
     - ```docker push [orgname]/mm-dependencies```
     - ```docker push [orgname]/mm-prod```
 
-2. Check your organization page in Docker Hub to verify that your images are there
+1. Check your organization page in Docker Hub to verify that your images are there
 
-3. And now for the final test!  Have your partner clone your forked repo to their local machine and run
+1. Push your feature branch up to your forked repo in github, create a Pull Request to your master branch, then merge that request.
+
+1. And now for the final test!  Have your partner clone your forked repo to their local machine and run
     - ```npm run docker-dev:hot```
-
 
 ## On to AWS
 

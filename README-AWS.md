@@ -70,4 +70,23 @@ Great, we have an AWS account!  Let's use it.  We'll start by creating a new app
 
 ### RDS
 
-Well that wasn't too bad at all.  We've still got some work to do though.
+Well that wasn't too bad at all.  Of course, we can't do anything with the application yet.  We'll need to hook up the database first, so we've still got some work to do.
+
+1. #### Create a new RDS instance
+    - In order to create a database that isn't tied directly to the lifecycle of our Elastic Beanstalk environment, we'll go back to the Services menu and select RDS.
+
+    - Create a PostgreSQL database.
+
+    - Make sure to select the option to `Only enable options eligible for RDS Free Usage Tier`
+
+    - Keep the defaults for database engine version, instance class (micro), and 20Gb of allocated storage to ensure that we stay in the free tier.  Note that you *could* set up a replica of your database in a separate Availability Zone here (but that could incur a charge).
+
+    - Give your dbinstance a meaningful name that indicates what database it will contain and which environment it's for. Set your Master username to `mmadmin`.
+
+    - In typical production environments, you do not make your database publicly accessible.  They should only be accessible from our EC2 server.  We'll follow that rule here.
+
+    - Name your database `mmdb` and leave all other settings at their defaults.
+
+    - Create Database and wait while AWS spins up your database instance. You can see the current state of the database instance if you select Databases from the side menu.
+
+
