@@ -16,11 +16,11 @@ if(process.env.NODE_ENV === 'development') {
   config.host = 'postgres-db';
   config.port = 5432;
 } else if (process.env.NODE_ENV === 'production') { 
-  config.user: process.env.RDS_USERNAME;
-  config.database: process.env.RDS_DB_NAME;
-  config.password: process.env.RDS_PASSWORD;
-  config.host: process.env.RDS_HOSTNAME;
-  config.port: process.env.RDS_PORT;
+  config.user = process.env.RDS_USERNAME;
+  config.database = process.env.RDS_DB_NAME;
+  config.password = process.env.RDS_PASSWORD;
+  config.host = process.env.RDS_HOSTNAME;
+  config.port = process.env.RDS_PORT;
 }
 
 console.log(`Connecting to database ${config.database} on host ${config.host}`);
