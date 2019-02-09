@@ -4,38 +4,23 @@ const pg = require('pg');
 // note: values here should be derived from environment variables 
 //       in a production environment
 
-let config;
+const config = { 
+  max: 5, // max number of clients in the pool
+  idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
+};
 
 if(process.env.NODE_ENV === 'development') {
-  config = {
-    user: 'mmadmin', //env var: PGUSER
-    database: 'mmdb', //env var: PGDATABASE
-    password: 'admin', //env var: PGPASSWORD
-    host: 'postgres-db', // Server hosting the postgres database
-    port: 5432, //env var: PGPORT
-    max: 5, // max number of clients in the pool
-    idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
-  }
+  config.user = 'mmadmin';
+  config.database = 'mmdb';
+  config.password = 'admin';
+  config.host = 'postgres-db';
+  config.port = 5432;
 } else if (process.env.NODE_ENV === 'production') { 
-  config = {    
-    user: process.env.RDS_USER,
-    database: process.env.RDS_DATABASE,
-    password: process.env.RDS_PASSWORD,
-    host: process.env.RDS_HOST,
-    port: process.env.RDS_PORT, 
-    max: 5, // max number of clients in the pool
-    idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
-  }
-} else {
-  config = {
-    user: 'egovyvcx', //env var: PGUSER
-    database: 'egovyvcx', //env var: PGDATABASE
-    password: 'hDcaTP0pR6F3BNhETAn6hGlIOmEDWAlg', //env var: PGPASSWORD
-    host: 'tantor.db.elephantsql.com', // Server hosting the postgres database
-    port: 5432, //env var: PGPORT
-    max: 5, // max number of clients in the pool
-    idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
-  }
+  config.user: process.env.RDS_USERNAME;
+  config.database: process.env.RDS_DB_NAME;
+  config.password: process.env.RDS_PASSWORD;
+  config.host: process.env.RDS_HOSTNAME;
+  config.port: process.env.RDS_PORT;
 }
 
 console.log(`Connecting to database ${config.database} on host ${config.host}`);
