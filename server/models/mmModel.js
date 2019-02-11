@@ -9,6 +9,9 @@ const config = {
   idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
 };
 
+console.log('process.env is:')
+console.log(process.env);
+
 if(process.env.NODE_ENV === 'development') {
   config.user = 'mmadmin';
   config.database = 'mmdb';
