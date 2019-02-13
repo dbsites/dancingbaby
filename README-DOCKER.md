@@ -47,15 +47,15 @@ We have a way to collaboratively share code with Github.  Docker Hub gives us a 
 
 Okay, setup complete! On to the...
 
-### Challenges
+## Challenges
 
 This repo contains a full stack version of the MegaMarkets application built in React/Redux/Node/Express fronting a postgres database.  The application is completely built out.  The goal of this two day unit is for you to deploy a **containerized** version of this full stack application to **AWS** using **Travis-CI**.
 
 We'll begin by containerizing this application.  For now, let's just get an image configured with a stable version of node and make sure that all of our node_modules are built within our container.  This will ensure that everyone who uses this image will be on the same page.
 
-#### Part 1 - Dockerfile
+### Part 1 - Dockerfile
 
-##### Create a file in the top level directory called `Dockerfile` that implements the following
+#### Create a file in the top level directory called `Dockerfile` that implements the following
 
 1. Start FROM a baseline image of node v10.1
 
@@ -71,7 +71,7 @@ We'll begin by containerizing this application.  For now, let's just get an imag
 
 1. run the server with CMD
 
-##### Build the docker image from the Dockerfile
+#### Build the docker image from the Dockerfile
 
 Tag the image as mm-prod so it will be easy to recognize and reference.  By default, Docker will look for the Dockerfile in the current directory.  That's also where we'll tell it to build the image.
 
@@ -81,7 +81,7 @@ We can verify that the image has been created by listing the docker images on yo
 
 ```docker images```  
 
-##### Create the container by running the image
+#### Create the container by running the image
 
 We'll open port 3001 on our localhost and point to port 3000 in the container.  (These could be the same value, we're just differentiating for clarity here)
 
@@ -99,7 +99,7 @@ We can stop our container by hitting cmd-C or by opening another terminal and is
 
 ```docker stop <container_name>```
 
-#### Part 2 - Docker Compose
+### Part 2 - Docker Compose
 
 So we can build an image that creates a container that runs our application.  Great.  However, you may have noticed that we aren't running webpack-dev-server, so we're not getting live reloading/HMR.  
 
@@ -111,7 +111,7 @@ All of this can be ours by building a couple of images and orchestrating them wi
 
 To begin, let's build an image that will create a container running webpack-dev-server.
 
-##### Create a file in the top level directory called `Dockerfile-dependencies` that implements the following
+#### Create a file in the top level directory called `Dockerfile-dependencies` that implements the following
 
 1. Start FROM a baseline image of node v10.1
 
@@ -127,7 +127,7 @@ To begin, let's build an image that will create a container running webpack-dev-
 
 1. EXPOSE your server port
 
-##### Build the docker image from Dockerfile-dependencies
+#### Build the docker image from Dockerfile-dependencies
 
 Tag the image as mm-dependencies so it will be easy to recognize and reference.  We'll tell it to look for the Dockerfile-dependencies using the -f parameter
 
@@ -137,13 +137,13 @@ Let's verify that the image has been created by listing the docker images on you
 
 ```docker images```  
 
-##### Create the container using docker-compose
+#### Create the container using docker-compose
 
 This time, instead of running the image to create the container using the command line, we're going to make use of the docker-compose utility.  First, we'll create a configuration file that docker-compose will use to orchestrate our containers.  You'll want to refer to the [docker docs](https://docs.docker.com/compose/overview/) to learn more about configuring docker-compose.
 
 The file format for this configuration file will be [yaml](https://rollout.io/blog/yaml-tutorial-everything-you-need-get-started/), which stands for 'YAML Ain't Markup Language'.  It's useful as a simple human-readable structured data format. Yaml format is used a lot in the industry for configuration files.
 
-##### Create a file in the top level directory called `docker-compose-dev-hot.yml` that implements the following
+#### Create a file in the top level directory called `docker-compose-dev-hot.yml` that implements the following
 
 1. Set the docker-compose **version** to 3
 
@@ -169,9 +169,9 @@ The file format for this configuration file will be [yaml](https://rollout.io/bl
 
     1. Create an empty **node_modules** element.  
 
-##### Run the container using docker-compose
+#### Run the container using docker-compose
 
-```docker-compose -f docker-compose-dev-hot.yml up```
+`docker-compose -f docker-compose-dev-hot.yml up`
 
 Let's verify that the live reloading is working by changing the text color in your styles.css file.  It should reload the page with the new color.  Voila!
 
@@ -183,7 +183,7 @@ Okay, we've got a containerized environment with live reloading/HMR working for 
 
 1. COPY the sql script in the ./scripts directory to /docker-entrypoint-initdb.d/ in the container.  Whenever the container spins up, scripts in that directory get executed automotically.  This will create and populate our database in the container.
 
-##### Build the docker image from Dockerfile-postgres
+#### Build the docker image from Dockerfile-postgres
 
 Tag the image as mm-dependencies so it will be easy to recognize and reference.  We'll tell it to look for the Dockerfile-dependencies using the -f parameter
 
@@ -193,7 +193,7 @@ Let's verify that the image has been created by listing the docker images on you
 
 ```docker images```
 
-##### Edit `docker-compose-dev-hot.yml` to add our postgres container configuration
+#### Edit `docker-compose-dev-hot.yml` to add our postgres container configuration
 
 1. Create a **postgres-db** dictionary as the second element in the **services** dictionary
 
@@ -218,12 +218,12 @@ Let's verify that the image has been created by listing the docker images on you
 
     1. In order to pass that environment variable to our server, we can update the 'dev:hot' script in package.json to pass that key with the value 'development'.  Now we'll point to the containerized database.
 
-##### Make your life even easier by using npm scripts
+#### Make your life even easier by using npm scripts
 
 It's good to know the docker-compose command to start up your containers, but once you know how to do it, it's nice to make it simple to kick off by adding it as a command in your script object in package.json.  You can see where this has already been added as 'docker-dev:hot'
 
 
-#### Part 3 - Docker Hub
+### Part 3 - Docker Hub
 
 1. Now we can push our images up to Docker Hub
 
@@ -240,4 +240,4 @@ It's good to know the docker-compose command to start up your containers, but on
 
 ## On to AWS
 
-Once you have successfully containerized your application and **both** partners are able to access it, open up the README-AWS file and start getting your application set up in the cloud!
+Once you have successfully containerized your application and **both** partners are able to access it, open up the README-AWS file and start getting your application set up in the cloud!ß
