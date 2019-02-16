@@ -29,7 +29,7 @@ Containers are created from images with the `docker run` command.
 - Docker provides a set of standard instructions to be used in the Dockerfile, like `FROM, COPY, RUN, ENV, EXPOSE, CMD`  
 - Docker will build a Docker image automatically by reading these instructions from the Dockerfile.
 
-### Setup
+## Setup
 
 1. Install Docker
 
@@ -133,7 +133,7 @@ To begin, let's build an image that will create a container running webpack-dev-
 
 1. Build the docker image from Dockerfile-dependencies
 
-    Tag the image as mm-dependencies so it will be easy to recognize and reference.  We'll tell it to look for the Dockerfile-dependencies using the -f parameter
+    Tag the image as mm-dependencies so it will be easy to recognize and reference.  This time, we'll tell docker to use our Dockerfile-dependencies file using the -f parameter
 
     ```docker build -t [orgname]/mm-dependencies -f Dockerfile-dependencies .```
 
@@ -143,7 +143,9 @@ To begin, let's build an image that will create a container running webpack-dev-
 
 1. Create the container using docker-compose
 
-    This time, instead of running the image to create the container using the command line, we're going to make use of the docker-compose utility.  First, we'll create a configuration file that docker-compose will use to orchestrate our containers.  You'll want to refer to the [docker docs](https://docs.docker.com/compose/overview/) to learn more about configuring docker-compose.
+    This time, instead of running the image to create the container using the command line, we're going to make use of the docker-compose utility to run multiple containers (one for node_modules and another for our dev database).  
+
+    First, we'll create a configuration file that docker-compose will use to orchestrate our containers.  You'll want to refer to the [docker docs](https://docs.docker.com/compose/overview/) to learn more about configuring docker-compose.
 
     The file format for this configuration file will be [yaml](https://rollout.io/blog/yaml-tutorial-everything-you-need-get-started/), which stands for 'YAML Ain't Markup Language'.  It's useful as a simple human-readable structured data format. Yaml format is used a lot in the industry for configuration files.
 
@@ -177,21 +179,21 @@ To begin, let's build an image that will create a container running webpack-dev-
 
     `docker-compose -f docker-compose-dev-hot.yml up`
 
-    Let's verify that the live reloading is working by changing the text color in your styles.css file.  It should reload the page with the new color.  Voila!
+- Check out your running application at localhost:8080.  Then let's verify that the live reloading is working by changing the text color in your styles.css file.  It should reload the page with the new color.  Voila!
 
-    Okay, we've got a containerized environment with live reloading/HMR working for our application.  There's just one last thing to add - a local development database.  This will enable us to work on new features without worrying about our test data affecting production.
+    Okay, we've got a containerized environment with live reloading/HMR working for our application.  But we still want to add a local development database.  This will enable us to work on new features without worrying about our test data affecting production.
 
 1. Create a file in the top level directory called `Dockerfile-postgres` that implements the following
 
     - Start FROM a baseline image of postgres v9.6.8
 
-    - COPY the sql script in the ./scripts directory to /docker-entrypoint-initdb.d/ in the container.  Whenever the container spins up, scripts in that directory get executed automotically.  This will create and populate our database in the container.
+    - COPY the sql script in the ./scripts directory to /docker-entrypoint-initdb.d/ in the container.  Whenever the container spins up, scripts in that directory get executed automatically.  This will create and populate our database in the container.
 
 1. Build the docker image from Dockerfile-postgres
 
-    Tag the image as mm-dependencies so it will be easy to recognize and reference.  We'll tell it to look for the Dockerfile-dependencies using the -f parameter
+    Tag the image as mm-postgres so it will be easy to recognize and reference.  We'll tell it to look for the Dockerfile-postgres using the -f parameter
 
-    ```docker build -t mm-dependencies -f Dockerfile-dependencies .```
+    ```docker build -t mm-postgres -f Dockerfile-postgres .```
 
     Let's verify that the image has been created by listing the docker images on your machine.
 
@@ -201,7 +203,7 @@ To begin, let's build an image that will create a container running webpack-dev-
 
     - Create a **postgres-db** dictionary as the second element in the **services** dictionary
 
-        - Create an **image** element pointing to your mm-postgres image
+        - Create an **image** element pointing to your [orgname]/mm-postgres image
 
         - Create a **container_name** element set to something meaningful like 'mm-database'
 
@@ -226,7 +228,58 @@ To begin, let's build an image that will create a container running webpack-dev-
 
     It's good to know the docker-compose command to start up your containers, but once you know how to do it, it's nice to make it simple to kick off by adding it as a command in your script object in package.json.  You can see where this has already been added as 'docker-dev:hot'
 
-### Part 3 - Docker Hub
+### Part 3 - Testing
+
+We know the value of testing.  Let's set up another docker-compose config that will spin up some test containers for us.  We'll also be able to use these when we incorporate automated Continuous Integration with Travis-CI later.  
+
+1. Create a file called `docker-compose-test.yml`.  This file will look a lot like the one we created to run webpack-dev-server, with some important differences.
+
+    - Set the docker-compose **version** to 3
+
+    - Create a **services** dictionary
+        - Create a **test** dictionary as the first element in the **services** dictionary
+
+            - Create an **image** element pointing to your [orgname]/mm-dependencies image
+
+            - Create a **container_name** element set to something meaningful like 'mm-test'
+
+            - Create a **ports** element that contains an array.  We'll just have one value that will route requests from port 3000 on the host to port 3000 in the container.
+
+            - Create a **volumes** element that contains an array.  
+
+                - In our first element, we'll want to mount our current directory to the `/usr/src/app` directory in the container.
+
+                - In our next element, we'll mount a volume we'll simply call 'node_modules' to `/usr/src/app/node_modules` in the container.
+
+            - Create a **command** element that executes `npm run test`
+
+        - Create a **postgres-db-test** dictionary as the second element in the **services** dictionary
+
+            - Create an **image** element pointing to your [orgname]/mm-postgres image
+
+            - Create a **container_name** element set to something meaningful like 'mm-test-database'
+
+        - Create an **environment** element that contains an array.  We'll add three elements to the array:
+            - POSTGRES_PASSWORD=admin
+            - POSTGRES_USER=mmadmin
+            - POSTGRES_DB=mmdb
+
+        - Create a **volumes** element that contains an array.  
+
+            - In our single element here, we'll want to mount a volume we'll call 'test-db-volume' to the `/var/lib/postgresql/data` directory in the container.  This is where postgres stores the actual data files that make up your database.  This volume will persist the data between container starts and stops.
+
+    - We only want our **test** service to start _after_ our **postgres-db-test** service has started.  We can do that by adding a **depends_on** array to our **test** dictionary and set the first element to **postgres-db-test**
+
+    - Create a **volumes** dictionary where we'll declare the named volume(s) we're mounting in our container(s)
+
+        - Create an empty **node_modules** element.
+        - Create an empty **test-db-volume** element.
+
+1. Let's run it and see if our tests pass!
+
+    `docker-compose -f docker-compose-test up`
+
+### Part 4 - Docker Hub
 
 1. Now we can push our images up to Docker Hub
 
