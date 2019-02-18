@@ -64,7 +64,7 @@ Great, we have an AWS account!  Let's use it.  We'll start by creating a new app
 
     - In order to deploy your initial code, you'll need to zip it up into an archive file.  We can use git to do this.
 
-         ```git archive -v -o myMM.zip --format=zip HEAD```
+         `git archive -v -o myMM.zip --format=zip HEAD`
 
     - Select `Create Environment` and wait for a few minutes while AWS creates an S3 bucket, sets up security groups and spins up your EC2 instance complete with our application running in a docker container.
 
