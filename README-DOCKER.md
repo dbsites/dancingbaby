@@ -277,34 +277,38 @@ We know the value of testing.  Let's set up another docker-compose config that w
     - Set the docker-compose **version** to 3
 
     - Create a **services** dictionary
-        - Create a **test** dictionary as the first element in the **services** dictionary
+        - Create a **test** dictionary as the first key in the **services** dictionary
 
-            - Create an **image** element pointing to your [orgname]/mm-dependencies image
+        - Under **test**, create the following:
 
-            - Create a **container_name** element set to something meaningful like 'mm-test'
+            - An **image** key pointing to your [orgname]/mm-dependencies image
 
-            - Create a **ports** element that contains an array.  We'll just have one value that will route requests from port 3000 on the host to port 3000 in the container.
+            - A **container_name** key set to something meaningful like 'mm-test'
 
-            - Create a **volumes** element that contains an array.  
+            - A **ports** key that contains an array.  We'll just have one value that will route requests from port 3000 on the host to port 3000 in the container.
+
+            - A **volumes** key that contains an array.  
 
                 - In our first element, we'll want to mount our current directory to the `/usr/src/app` directory in the container.
 
                 - In our next element, we'll mount a volume we'll simply call 'node_modules' to `/usr/src/app/node_modules` in the container.
 
-            - Create a **command** element that executes `npm run test`
+            - A **command** key that executes `npm run test`
 
-        - Create a **postgres-db-test** dictionary as the second element in the **services** dictionary
+        - Now create a **postgres-db-test** dictionary as the second key in the **services** dictionary
 
-            - Create an **image** element pointing to your [orgname]/mm-postgres image
+        - Under **postgres-eb-test**, create the following:
 
-            - Create a **container_name** element set to something meaningful like 'mm-test-database'
+            - An **image** key pointing to your [orgname]/mm-postgres image
 
-        - Create an **environment** element that contains an array.  We'll add three elements to the array:
+            - A **container_name** key set to something meaningful like 'mm-test-database'
+
+        - Create an **environment** key that contains an array.  We'll add three elements to the array:
             - POSTGRES_PASSWORD=admin
             - POSTGRES_USER=mmadmin
             - POSTGRES_DB=mmdb
 
-        - Create a **volumes** element that contains an array.  
+        - Create a **volumes** key that contains an array.  
 
             - In our single element here, we'll want to mount a volume we'll call 'test-db-volume' to the `/var/lib/postgresql/data` directory in the container.  This is where postgres stores the actual data files that make up your database.  This volume will persist the data between container starts and stops.
 
@@ -312,8 +316,8 @@ We know the value of testing.  Let's set up another docker-compose config that w
 
     - Create a **volumes** dictionary where we'll declare the named volume(s) we're mounting in our container(s)
 
-        - Create an empty **node_modules** element.
-        - Create an empty **test-db-volume** element.
+        - Create an empty **node_modules** key.
+        - Create an empty **test-db-volume** key.
 
 1. Let's run it and see if our tests pass!
 
