@@ -16,18 +16,28 @@ For example, you can start one container to be your node server and start anothe
 
 ### Docker Images
 
-In order to create a container, you will need to create a Docker image.  A Docker image can be thought of as a template derived from a recipe of technologies. A Docker image is _not a runtime_, it’s rather a collection of files, libraries and configuration files that build up an environment.
+In order to create a container, you will need to create a Docker image.  A Docker image can be thought of as a template derived from a recipe of technologies. A Docker image is _not a runtime_, it’s rather a collection of files, libraries and configuration files that build up an environment.  Docker images can be built on the command line, but are most commonly constructed using *Dockerfiles*
 
 Images can be layered on top of each other to add further utilities/libraries/etc to the environment.  There is a great resource of community and official images on [Docker Hub](https://hub.docker.com/search?q=&type=image).  These files can be accessed using the FROM keyword in your Dockerfile, (or you can pull the image manually with the `docker pull` command.)
 
 Containers are created from images with the `docker run` command.
 
-### Dockerfile
+#### Dockerfile
 
-- The Dockerfile is a text file that (mostly) contains the instructions that you would execute on the command line to create an image.
+- The Dockerfile is a text file that contains the instructions that you would execute on the command line to create an image.
 - A Dockerfile is a step by step set of instructions.
 - Docker provides a set of standard instructions to be used in the Dockerfile, like `FROM, COPY, RUN, ENV, EXPOSE, CMD`  
 - Docker will build a Docker image automatically by reading these instructions from the Dockerfile.
+- By default, the `docker run` command will look for a file named **Dockerfile** in the local directory.  You can specify a different Dockerfile name by passing the `-f` parameter
+
+### Docker Volumes
+Volumes are Docker’s mechanism for sharing and persisting data beyond the life of a container.  Volumes are created outside of Docker's Union File System and serve as mount points for your host file system.  Volumes can be created via the command line with the -v parameter or in docker-compose files:
+
+```yaml
+volumes:
+      - ./:/usr/src/app
+```
+This would mount the current directory: `./` to `/usr/src/app` in the container.
 
 ## Setup
 
@@ -54,6 +64,34 @@ Okay, setup complete! On to the...
 This repo contains a full stack version of the MegaMarkets application built in React/Redux/Node/Express fronting a postgres database.  The application is completely built out.  The goal of this two day unit is for you to deploy a **containerized** version of this full stack application to **AWS** using **Travis-CI**.
 
 We'll begin by containerizing this application.  For now, let's just get an image configured with a stable version of node and make sure that all of our node_modules are built within our container.  This will ensure that everyone who uses this image will be on the same page.
+
+### Preface - Pulling the Plug
+
+Configuring Docker *can* be a bit confusing at times.  You may find that your docker images, containers, or volumes aren't working as you hoped.  Don't worry!  These can all be recreated very easily.  All you need to do first is clear out the images, containers, and volumes that are aren't cooperating.  This is how:
+
+#### Remove all images
+
+```bash
+docker image rm $(docker images -q)
+```
+
+#### Remove containers
+
+```bash
+docker rm $(docker ps -q -a)
+```
+
+#### Remove volumes
+
+```bash
+docker volume rm $(docker volume ls -q)
+```
+
+One _could_ even consider putting these commands together in their package.json scripts using `&&` to ensure that each prior command was successful before executing the next in the chain...
+
+```bash
+docker-remove-all: docker image rm $(docker images -q) && docker rm $(docker ps -q -a) && docker volume rm $(docker volume ls -q)
+```
 
 ### Part 1 - Dockerfile
 
