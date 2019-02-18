@@ -31,13 +31,15 @@ Containers are created from images with the `docker run` command.
 - By default, the `docker run` command will look for a file named **Dockerfile** in the local directory.  You can specify a different Dockerfile name by passing the `-f` parameter
 
 ### Docker Volumes
+
 Volumes are Docker’s mechanism for sharing and persisting data beyond the life of a container.  Volumes are created outside of Docker's Union File System and serve as mount points for your host file system.  Volumes can be created via the command line with the -v parameter or in docker-compose files:
 
 ```yaml
 volumes:
       - ./:/usr/src/app
 ```
-This would mount the current directory: `./` to `/usr/src/app` in the container.
+
+This would mount the current directory: `./` to `/usr/src/app` in the container.  This means that files created/edited in the current directory are also created/edited in the container and vice versa.
 
 ## Setup
 
@@ -115,29 +117,29 @@ docker-remove-all: docker image rm $(docker images -q) && docker rm $(docker ps 
 
     Tag the image as mm-prod so it will be easy to recognize and reference.  By default, Docker will look for the Dockerfile in the current directory.  That's also where we'll tell it to build the image.
 
-    ```docker build -t [orgname]/mm-prod .```
+    `docker build -t [orgname]/mm-prod .`
 
     We can verify that the image has been created by listing the docker images on your machine.
 
-    ```docker images```  
+    `docker images`  
 
 1. Create the container by running the image
 
     We'll open port 3001 on our localhost and point to port 3000 in the container.  (These could be the same value, we're just differentiating for clarity here)
 
-    ```docker run -p 3001:3000 [orgname]/mm-prod```
+    `docker run -p 3001:3000 [orgname]/mm-prod`
 
     You should see the server start up.  Now just go to your browser and navigate to localhost:3001 to see the application running from within your container!
 
     You can also verify that the container has been created by listing the current running containers
 
-    ```docker ps```
+    `docker ps`
 
-    Note the NAME in the output.  Docker generates a random name for us that we can use to reference the container.  We can specify the name if we include a ```--name <name>``` parameter when we invoke ```docker run```.
+    Note the NAME in the output.  Docker generates a random name for us that we can use to reference the container.  We can specify the name if we include a `--name <name>` parameter when we invoke `docker run`.
 
     We can stop our container by hitting cmd-C or by opening another terminal and issuing the stop command.
 
-    ```docker stop <container_name>```
+    `docker stop <container_name>`
 
 ### Part 2 - Docker Compose
 
@@ -173,11 +175,11 @@ To begin, let's build an image that will create a container running webpack-dev-
 
     Tag the image as mm-dependencies so it will be easy to recognize and reference.  This time, we'll tell docker to use our Dockerfile-dependencies file using the -f parameter
 
-    ```docker build -t [orgname]/mm-dependencies -f Dockerfile-dependencies .```
+    `docker build -t [orgname]/mm-dependencies -f Dockerfile-dependencies .`
 
     Let's verify that the image has been created by listing the docker images on your machine.
 
-    ```docker images```  
+    `docker images`  
 
 1. Create the container using docker-compose
 
@@ -207,7 +209,7 @@ To begin, let's build an image that will create a container running webpack-dev-
 
                 - In our next element, we'll mount a volume we'll simply call 'node_modules' to `/usr/src/app/node_modules` in the container.
 
-            - Create a **command** element that executes ```npm run dev:hot```
+            - Create a **command** element that executes `npm run dev:hot`
 
     - Create a **volumes** dictionary where we'll declare the named volume(s) we're mounting in our container(s)
 
@@ -231,11 +233,11 @@ To begin, let's build an image that will create a container running webpack-dev-
 
     Tag the image as mm-postgres so it will be easy to recognize and reference.  We'll tell it to look for the Dockerfile-postgres using the -f parameter
 
-    ```docker build -t mm-postgres -f Dockerfile-postgres .```
+    `docker build -t mm-postgres -f Dockerfile-postgres .`
 
     Let's verify that the image has been created by listing the docker images on your machine.
 
-    ```docker images```
+    `docker images`
 
 1. Edit `docker-compose-dev-hot.yml` to add our postgres container configuration
 
@@ -321,16 +323,16 @@ We know the value of testing.  Let's set up another docker-compose config that w
 
 1. Now we can push our images up to Docker Hub
 
-    - ```docker push [orgname]/mm-postgres```
-    - ```docker push [orgname]/mm-dependencies```
-    - ```docker push [orgname]/mm-prod```
+    - `docker push [orgname]/mm-postgres`
+    - `docker push [orgname]/mm-dependencies`
+    - `docker push [orgname]/mm-prod`
 
 1. Check your organization page in Docker Hub to verify that your images are there
 
 1. Push your feature branch up to your forked repo in github, create a Pull Request to your master branch, then merge that request.
 
 1. And now for the final test!  Have your partner clone your forked repo to their local machine and run
-    - ```npm run docker-dev:hot```
+    - `npm run docker-dev:hot`
 
 ## On to AWS
 
@@ -338,7 +340,7 @@ Once you have successfully containerized your application and **both** partners 
 
 ## Extensions
 
-1. Install a new dependency
+1. ### Install a new dependency
 
     So if we shouldn't run `npm install` in this repo, how do we add new dependencies to our project?  
 
@@ -346,7 +348,11 @@ Once you have successfully containerized your application and **both** partners 
 
     1. Create a file in your top level repo directory called `docker-compose.yml`.  This is the docker-compose default configuration file.
 
-        - Let's create a **bash** dictionary, so when we run `docker-compose bash`, it will know to look here.
+    - Set the docker-compose **version** to 3
+
+    - Create a **services** dictionary
+
+        - Under **services**, create a **bash** dictionary, so when we run `docker-compose bash`, it will know to look here.  We'll add other services later when we incorporate CI/CD.  For now, the rest of this goes under the **bash** dictionary.
 
         - Create an **image** element pointing to your [orgname]/mm-dependencies image
 
