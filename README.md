@@ -8,14 +8,14 @@ So you'll only fork this repo to one partner's account.  After you've forked it,
 
 Before we get started, let's just make sure that the application works with live updates/HMR without any kind of containerization.
 
-1. Run ```npm install```
-1. Run ```npm run dev:hot```
+1. Run `npm install`
+1. Run `npm run dev:hot`
 
 That should open up a browser window with the MegaMarkets app all set for further development.  To verify that it's working, hop over to client/styles.css and change the color of the text to something exciting.  You should see your change immediately reflected in the browser.  Yes?  Good.  No?  Send a help desk :smiley:
 
 Now that we have our baseline application working, let's containerize it.  We'll begin by deleting the node_modules.
 
-```rm -rf node_modules/```
+`rm -rf node_modules/`
 
 **...and we'll never npm install in this directory again!** We'll be sourcing our node_modules from an image the whole team can share.
 
