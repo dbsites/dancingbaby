@@ -17,4 +17,4 @@ RUN npm run build
 EXPOSE 3000
 
 # run the server
-CMD ["node", "server/server.js"]
+ENTRYPOINT ["node", "server/server.js"]
