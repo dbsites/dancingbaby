@@ -32,7 +32,7 @@ Containers are created from images with the `docker run` command.
 
 ### Docker Volumes
 
-[Volumes](https://container-solutions.com/understanding-volumes-docker/) are Docker’s mechanism for sharing and persisting data beyond the life of a container.  Volumes are created outside of Docker's Union File System and serve as mount points for your host file system.  Volumes can be created via the command line with the -v parameter or in docker-compose files (which you'll be creating today):
+[Volumes](https://container-solutions.com/understanding-volumes-docker/) are Docker’s mechanism for sharing and persisting data beyond the life of a container.  Volumes are created outside of Docker's Union File System and serve as mount points for your host file system.  Volumes can be created via the command line with the -v parameter or in docker-compose files (which you'll be learning about today):
 
 ```yaml
 volumes:
@@ -57,7 +57,7 @@ This would mount the current directory: `./` to `/usr/src/app` in the container.
 
     - Add your partner to the **owners** team by entering their dockerID
 
-    - Make sure that each partner's docker daemon is pointing to your organization by right clicking it the icon and selecting your dockerID -> and then your organization
+    - Make sure that each partner's docker daemon is pointing to your organization by right clicking the 'Docker' icon on your machine and selecting your dockerID -> and then your organization
 
 Okay, setup complete! On to the...
 
@@ -67,32 +67,40 @@ This repo contains a full stack version of the MegaMarkets application built in 
 
 We'll begin by containerizing this application.  For now, let's just get an image configured with a stable version of node and make sure that all of our node_modules are built within our container.  This will ensure that everyone who uses this image will be on the same page.
 
-### Preface - Pulling the Plug
+### Troubleshooting - In case things get weird
 
-Configuring Docker *can* be a bit confusing at times.  You may find that your docker images, containers, or volumes aren't working as you hoped.  Don't worry!  These can all be recreated very easily.  All you need to do first is clear out the images, containers, and volumes that are aren't cooperating.  This is how:
+Configuring Docker *can* be a bit confusing at times.  You may find that your docker images, containers, or volumes aren't working as you hoped.  Don't worry!  Here are a couple of things you can do to set things right.
 
-#### Remove all images
+First, try stopping all of your running containers.  We can do this using the linux `$()` construct.  This will execute a command and return what would have been written to the screen (or STDOUT).  The -f parameter here is useful if you have more than one project using Docker.  This ensures that you're only affecting the containers for this project.  If you only have this project using Docker, you don't need to use that parameter.
 
 ```bash
-docker image rm $(docker images -q)
+docker stop $(docker ps -q -a -f 'name=mm-' --filter status=running)
 ```
+
+  Furthermore, these Docker assets can all be recreated very easily.  All you need to do first is clear out the images, containers, and volumes that are aren't cooperating.  This is how:
 
 #### Remove containers
 
 ```bash
-docker rm $(docker ps -q -a)
+docker rm $(docker ps -q -a -f 'name=mm-') --force
+```
+
+#### Remove all images
+
+```bash
+docker image rm $(docker images [orgname]/mm* -q) --force
 ```
 
 #### Remove volumes
 
 ```bash
-docker volume rm $(docker volume ls -q)
+docker volume rm $(docker volume ls -q -f 'name=unit-13*') --force
 ```
 
 One _could_ even consider putting these commands together in their package.json scripts using `&&` to ensure that each prior command was successful before executing the next in the chain...
 
 ```bash
-docker-remove-all: docker image rm $(docker images -q) && docker rm $(docker ps -q -a) && docker volume rm $(docker volume ls -q)
+docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker image rm $(docker images [orgname]/mm* -q) --force && docker volume rm $(docker volume ls -q -f 'name=unit-13*') --force
 ```
 
 ### Part 1 - Dockerfile
@@ -101,7 +109,7 @@ docker-remove-all: docker image rm $(docker images -q) && docker rm $(docker ps 
 
     - Start FROM a baseline image of node v10.1
 
-    - Set up a WORKDIR for application in the container
+    - Set up a WORKDIR for application in the container and set it to `/usr/src/app`.
 
     - COPY all of your application files to the WORKDIR in the container
 
