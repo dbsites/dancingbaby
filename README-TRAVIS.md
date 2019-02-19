@@ -75,8 +75,8 @@ As we create these files, we'll need two things from AWS:
             sh $TRAVIS_BUILD_DIR/scripts/deploy.sh
             ```
 
-1. #### Create [Dockerrun.aws.json](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/single-container-docker-configuration.html#single-container-docker-configuration.dockerrun) in your repo's top level directory
-    A Dockerrun.aws.json file describes how to deploy a remote Docker image as an Elastic Beanstalk application.  
+1. #### Create `Dockerrun.aws.json` in your repo's top level directory
+    A [Dockerrun.aws.json](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/single-container-docker-configuration.html#single-container-docker-configuration.dockerrun) file describes how to deploy a remote Docker image as an Elastic Beanstalk application.  
 
     This json does the following:
      - Sets the Dockerrun version to 1
@@ -109,8 +109,6 @@ As we create these files, we'll need two things from AWS:
     echo "Processing deploy.sh"
     # Set EB BUCKET as env variable
     EB_BUCKET=[S3 BUCKET NAME]
-    # Set ECR REPO as env variable
-    ECR_REPO=[ECR URI]
     # Set the default region for aws cli
     aws configure set default.region us-west-1
     # Log in to ECR
@@ -118,9 +116,9 @@ As we create these files, we'll need two things from AWS:
     # Build docker image based on our default Dockerfile
     docker build -t [orgname]/mm .
     # tag the image with the Travis-CI SHA
-    docker tag [orgname]/mm:latest $ECR_REPO/mm:$TRAVIS_COMMIT
+    docker tag [orgname]/mm:latest [ECR URI]:$TRAVIS_COMMIT
     # Push built image to ECS
-    docker push $ECR_REPO/mm:$TRAVIS_COMMIT
+    docker push [ECR URI]:$TRAVIS_COMMIT
     # Use the linux sed command to replace the text '<VERSION>' in our Dockerrun file with the Travis-CI SHA
     sed -i='' "s/<VERSION>/$TRAVIS_COMMIT/" Dockerrun.aws.json
     # Zip up our codebase, along with modified Dockerrun and our .ebextensions directory
@@ -132,3 +130,16 @@ As we create these files, we'll need two things from AWS:
     # Update environment to use new version number
     aws elasticbeanstalk update-environment --environment-name megamarkets-prod --version-label $TRAVIS_COMMIT
     ```
+
+### Part 3 - Deploy!
+
+It's all come down to this moment... we've containerized our application.  We've manually deployed it in the cloud.  We've set up CI/CD.  Now let's see it all work (fingers crossed!)
+
+1. Create a new feature branch in your source repo.
+1. Change some code -- update the color of your text in `styles.css`.
+1. Add, commit, and push your feature branch up to Github.
+1. In Github, create a Pull Request from your feature branch, to merge with `master`.
+1. Open the Pull Request.  Notice the `checks` tab.  From here we can hop over to Travis-CI and see how our `push` and `pull request` tests are doing.  Just follow the `build` link.  (Best to right click and open it in a new tab, otherwise it will load over your github page).  Once they complete successfully, you should be able to commit the merge.
+1. Once you `merge`, go back and watch that build on Travis. If that's successful, you should also open up your Elastic Beanstalk environment and watch it update.
+1. As soon as it is done, go check out your **live, full stack, containerized React/Redux application built with full continuous integration and deployment!!!**
+8. **CELEBRATE!!!  HIGH FIVE!! OMG!!**
