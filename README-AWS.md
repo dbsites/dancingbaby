@@ -48,6 +48,14 @@ You are currently signed in with your root account.  This account should only be
 
     - From the Dashboard, you can customize your sign-in link.  If you do, you'll use this new custom name as the Account Id when you log in (before you enter your username and password)
 
+1. #### update your `aws-elasticbeanstalk-ec2-role`
+
+    - While access control for users is managed as 'Users', access control for AWS services is managed via 'Roles'.  We're going to need to be able to access ECR from our EC2 instance, so while we're here, let's authorize!
+
+        - Select 'Roles' from the side menu
+        - Find and select `aws-elasticbeanstalk-ec2-role`
+        - Attach the `AmazonEC2ContainerRegistryReadOnly` policy to this role.  
+
 ### Part 3 - Elastic Beanstalk
 
 Great, we have an AWS account!  Let's use it.  We'll start by creating a new application with Elastic Beanstalk, which you'll find in the Services menu dropdown.
