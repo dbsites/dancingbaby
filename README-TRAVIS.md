@@ -18,7 +18,9 @@ If you don't have a Travis account already, head over to the [Travis-CI](https:/
 
 1. Back over in Travis-CI, open the `Settings` for unit-13-DevOps
     - Note that webhooks are set up for pushes and pull requests by default.  (It will always run on merges as well.)
-    - Also note that there is a place here to set up environment variables.  These will be useful later when we need to set up AWS access for deployment.
+    - Also note that there is a place here to set up environment variables.  In order for Travis-CI to have access to your AWS account, you'll need your IAM credentials.
+        - Create an environment variable named 'AWS_ACCESS_KEY_ID' and set it as per your IAM credentials
+        - Create an environment variable named 'AWS_SECRET_ACCESS_KEY' and set it as per your IAM credentials
 
 ### Part 2 - Configure the repo for Travis
 
@@ -29,10 +31,10 @@ Travis-CI relies on `.travis.yml` in your repo for instructions on what it shoul
 
 As we create these files, we'll need two things from AWS:
 
-- Your ECR repository endpoint.  You'll see it referenced here as [ecr repo endpoint].  Where you see it, replace it (including the brackets) with your ECR repository endpoint.  
-- The S3 bucket name that was created by Elastic Beanstalk.  You'll see it referenced here as [S3 bucket name].  Where you see it, replace it (including the brackets) with your S3 bucket name.
+- Your ECR repository URI.  You'll see it referenced here as [ECR URI].  Where you see it, replace it (including the brackets) with your ECR repository URI. You'll find that under Services -> ECR in AWS.
+- The S3 bucket name that was created by Elastic Beanstalk.  You'll see it referenced here as [S3 BUCKET NAME].  Where you see it, replace it (including the brackets) with your S3 bucket name.  You'll find that under Services -> S3 in AWS.
 
-1. #### Create `.travis.yml` in your repo's top level directory.
+1. #### Create `.travis.yml` in your repo's top level directory
 
     - Create a **services** key that contains an array.  The only element we'll add here is `docker`, so Travis will know that we'll need docker installed and running in the virtual machine that it spins up to test our code.
 
@@ -82,13 +84,15 @@ As we create these files, we'll need two things from AWS:
         - and overwrite any cached images
      - Route requests to the appropriate container port
 
-    Note the '<VERSION>' tag in the image name.  This text will be replaced by the Travis-CI SHA when we Travis-CI runs our bash script.
+    Note the `<VERSION>` tag in the image name.  This text will be replaced by the Travis-CI SHA when we Travis-CI runs our bash script.
+
+    Make sure to update the [ECR URI] with your Elastic Container Registry URI.
 
    ```json
     {
     "AWSEBDockerrunVersion": "1",
         "Image": {
-            "Name": "[ecr repo endpoint]/mm:<VERSION>",
+            "Name": "[ECR URI]:<VERSION>",
             "Update": "true"
         },
         "Ports": [{
@@ -104,9 +108,9 @@ As we create these files, we'll need two things from AWS:
     ```bash
     echo "Processing deploy.sh"
     # Set EB BUCKET as env variable
-    EB_BUCKET=[S3 bucket name]
+    EB_BUCKET=[S3 BUCKET NAME]
     # Set ECR REPO as env variable
-    ECR_REPO=[ecr repo endpoint]
+    ECR_REPO=[ECR URI]
     # Set the default region for aws cli
     aws configure set default.region us-west-1
     # Log in to ECR
