@@ -4,16 +4,17 @@
   aws configure set default.region us-west-1
   eval $(aws ecr get-login --no-include-email --region us-west-1)
   docker --version
-  # Build docker image based on dockerfile-prod
+  # Build docker image based on the default Dockerfile
   # NO SPACES between scopes e.g. scopes-1,scopes-2,scopes-3
-  docker build -t codesmithllc/csps -f Dockerfile-prod --build-arg DATABASE_MIGRATIONS=0 --build-arg DATABASE_SCOPES= .
+  docker build -t codesmithllc/csps .
   # Push built image to ECS
   #docker tag codesmithllc/csps:latest 809870753536.dkr.ecr.us-west-2.amazonaws.com/csps:$TRAVIS_COMMIT
   #docker push 809870753536.dkr.ecr.us-west-2.amazonaws.com/csps:$TRAVIS_COMMIT
   # Replace the <VERSION> in Dockerrun file with travis SHA
-   sed -i='' "s/<VERSION>/$TRAVIS_COMMIT/" Dockerrun.aws.json
+  # sed -i='' "s/<VERSION>/$TRAVIS_COMMIT/" Dockerrun.aws.json
   # Zip modified Dockerrun with any ebextensions
-  zip -r csps-prod-deploy.zip Dockerrun.aws.json .ebextensions
+  #zip -r csps-prod-deploy.zip Dockerrun.aws.json .ebextensions
+  zip -r csps-prod-deploy.zip .ebextensions
   # Upload zip file to s3 bucket
   aws s3 cp csps-prod-deploy.zip s3://$EB_BUCKET/csps-prod-deploy.zip
   # Create a new application version with new Dockerrun
