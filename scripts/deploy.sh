@@ -18,6 +18,7 @@ docker build -t [orgname]/mm .
 # Zip up our codebase, along with modified Dockerrun and our .ebextensions directory
 #zip -r mm-prod-deploy.zip Dockerrun.aws.json .ebextensions
 zip -r mm-prod-deploy.zip .ebextensions
+unzip -l mm-prod-deploy.zip
 # Upload zip file to s3 bucket
 aws s3 cp mm-prod-deploy.zip s3://$EB_BUCKET/mm-prod-deploy.zip
 # Create a new application version with new Dockerrun
