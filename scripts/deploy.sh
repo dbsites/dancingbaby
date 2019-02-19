@@ -5,8 +5,8 @@ EB_BUCKET=elasticbeanstalk-us-west-1-042047674537
 ECR_REPO=042047674537.dkr.ecr.us-west-1.amazonaws.com/mm
 # Set the default region for aws cli
 aws configure set default.region us-west-1
-# Log in to ECR
-#eval $(aws ecr get-login --no-include-email --region us-west-1)
+# securely log in to ECR
+eval $(aws ecr get-login --no-include-email --region us-west-1)
 # Build docker image based on our default Dockerfile
 docker build -t schnodevops2/mm .
 # tag the image with the Travis-CI SHA
