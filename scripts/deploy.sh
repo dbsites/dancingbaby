@@ -10,9 +10,9 @@ aws configure set default.region us-west-1
 # Build docker image based on our default Dockerfile
 docker build -t schnodevops2/mm .
 # tag the image with the Travis-CI SHA
-docker tag schnodevops2/mm:latest $ECR_REPO:$TRAVIS_COMMIT
+docker tag schnodevops2/mm:latest 042047674537.dkr.ecr.us-west-1.amazonaws.com/mm:$TRAVIS_COMMIT
 # Push built image to ECS
-docker push $ECR_REPO:$TRAVIS_COMMIT
+docker push 042047674537.dkr.ecr.us-west-1.amazonaws.com/mm:$TRAVIS_COMMIT
 # Use the linux sed command to replace the text '<VERSION>' in our Dockerrun file with the Travis-CI SHA
 sed -i='' "s/<VERSION>/$TRAVIS_COMMIT/" Dockerrun.aws.json
 # Zip up our modified Dockerrun with our .ebextensions directory
