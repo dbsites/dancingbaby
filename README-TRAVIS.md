@@ -2,7 +2,11 @@
 
 ## Summary
 
-Travis-CI is a hosted, distributed continuous integration and deployment service used to build, test, and deploy software projects hosted at GitHub.  
+Travis-CI is a hosted, distributed continuous integration and deployment service used to build, test, and deploy software projects hosted at GitHub.
+
+Once configured, Travis-CI will create web hooks to watch your Github repository for `pushes`,`pull requests` and `merges`.  When these web hooks are triggered, Travis-CI will spin up a virtual machine in which it will build your application and run `npm test`.  (Additionally, Travis-CI will follow any instructions you provide in a `.travis.yml` configuration file.)  The results of this test will be reported back to your Github repo.
+
+In the case of `pushes` and `pull requests`, this **integration testing (CI)** is as far is it will go.  In the case of `merges`, Travis-CI will then shift into **deployment (CD)** mode.  Again, following the instructions set up in `.travis.yml`, it will deploy your code to the destination of your choice.  We'll be deploying to AWS.
 
 ## Challenges
 
@@ -18,7 +22,109 @@ If you don't have a Travis account already, head over to the [Travis-CI](https:/
 
 ### Part 2 - Configure the repo for Travis
 
-Travis-CI relies on `.travis.yml` in your repo for instructions on what it should do to run tests and deploy your code.
+Travis-CI relies on `.travis.yml` in your repo for instructions on what it should do to run tests and deploy your code.  We'll also make use of two other files in this process:
 
-1. Create .travis.yml in your repo's top level directory.
-    - stuff
+- `Dockerrun.aws.json` - A configuration file for running docker on AWS
+- `./scripts/deploy.sh` - A bash script that will execute all of the commands we need to deploy to AWS from within the virtual machine on Travis-CI.
+
+As we create these files, we'll need two things from AWS:
+
+- Your ECR repository endpoint.  You'll see it referenced here as [ecr repo endpoint].  Where you see it, replace it (including the brackets) with your ECR repository endpoint.  
+- The S3 bucket name that was created by Elastic Beanstalk.  You'll see it referenced here as [S3 bucket name].  Where you see it, replace it (including the brackets) with your S3 bucket name.
+
+1. #### Create `.travis.yml` in your repo's top level directory.
+
+    - Create a **services** key that contains an array.  The only element we'll add here is `docker`, so Travis will know that we'll need docker installed and running in the virtual machine that it spins up to test our code.
+
+    - Create a **script** key that contains an array of one element.  Here we'll want to use `docker-compose` to build our testing container that we configured with our `docker-compose-test.yml` file.  We'll also add a flag to tell Travis-CI to abort if we exit from the container.
+
+        ```yaml
+        docker-compose -f docker-comp-test.yml up --abort-on-container-exit
+        ```
+
+    That's all we need for Continuous Integration.  Now let's set up Continuous Deployment.
+
+    - Create a **before_deploy** key that will use python's installer to install and configure the aws and eb command line interfaces inside of our virtual machine.  We'll also append the directory containing those executables to our PATH environment variable so the virtual machine will find them when we invoke the command.  This should contain an array of three elements:
+
+        ```yaml
+        # install the aws cli
+        - pip install --user awscli
+        # install the elastic beanstalk cli
+        - pip install --user awsebcli
+        # Append exe location to our PATH 
+        - export PATH=$PATH:$HOME/.local/bin
+        ```
+
+    - Create a **deploy** key that will contain an array.  Each element will instruct travis on where (and how) to deploy our code to AWS.
+
+        There are different ways to accomplish this using S3 or Elastic Beanstalk.  Since we are doing a slightly more sophisticated deployment that includes Docker containers, we'll be using a bash script to do the heavy lifting.  This section will simply invoke the bash script.
+
+    - Under **deploy**, create the following:
+
+        - A **provider** key with a value of `script`.
+
+        - A **skip_cleanup** key with a value of `true`.  This tells Travis-CI not to clear out of the files it built after it runs the test, as we may be using some of those assets.
+
+        - An **on** key with a value of `master`.  This tells Travis-CI that we only want to run this script on merges to the master branch.
+
+        - A **script** key that tells Travis-CI to run our bash script from Travis-CI's build directory ($TRAVIS_CI_BUILD, which is supplied by Travis-CI):
+
+            ```bash
+            sh $TRAVIS_BUILD_DIR/scripts/deploy.sh
+            ```
+
+1. #### Create [Dockerrun.aws.json](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/single-container-docker-configuration.html#single-container-docker-configuration.dockerrun) in your repo's top level directory
+    A Dockerrun.aws.json file describes how to deploy a remote Docker image as an Elastic Beanstalk application.  
+
+    This json does the following:
+     - Sets the Dockerrun version to 1
+     - Instructs AWS to `pull` the image from the ECR repo
+        - and overwrite any cached images
+     - Route requests to the appropriate container port
+
+    Note the '<VERSION>' tag in the image name.  This text will be replaced by the Travis-CI SHA when we Travis-CI runs our bash script.
+
+   ```json
+    {
+    "AWSEBDockerrunVersion": "1",
+        "Image": {
+            "Name": "[ecr repo endpoint]/mm:<VERSION>",
+            "Update": "true"
+        },
+        "Ports": [{
+            "ContainerPort": "3000"
+        }]
+    }
+    ```
+
+1. #### Create `deploy.sh` in the `./scripts` directory
+
+    This bash script moves all the files from our current build to the appropriate places in AWS to deploy our code.
+
+    ```bash
+    echo "Processing deploy.sh"
+    # Set EB BUCKET as env variable
+    EB_BUCKET=[S3 bucket name]
+    # Set ECR REPO as env variable
+    ECR_REPO=[ecr repo endpoint]
+    # Set the default region for aws cli
+    aws configure set default.region us-west-1
+    # Log in to ECR
+    eval $(aws ecr get-login --no-include-email --region us-west-1)
+    # Build docker image based on our default Dockerfile
+    docker build -t [orgname]/mm .
+    # tag the image with the Travis-CI SHA
+    docker tag [orgname]/mm:latest $ECR_REPO/mm:$TRAVIS_COMMIT
+    # Push built image to ECS
+    docker push $ECR_REPO/mm:$TRAVIS_COMMIT
+    # Use the linux sed command to replace the text '<VERSION>' in our Dockerrun file with the Travis-CI SHA
+    sed -i='' "s/<VERSION>/$TRAVIS_COMMIT/" Dockerrun.aws.json
+    # Zip up our codebase, along with modified Dockerrun and our .ebextensions directory
+    zip -r mm-prod-deploy.zip Dockerrun.aws.json .ebextensions
+    # Upload zip file to s3 bucket
+    aws s3 cp mm-prod-deploy.zip s3://$EB_BUCKET/mm-prod-deploy.zip
+    # Create a new application version with new Dockerrun
+    aws elasticbeanstalk create-application-version --application-name megamarkets --version-label $TRAVIS_COMMIT --source-bundle S3Bucket=$EB_BUCKET,S3Key=mm-prod-deploy.zip
+    # Update environment to use new version number
+    aws elasticbeanstalk update-environment --environment-name megamarkets-prod --version-label $TRAVIS_COMMIT
+    ```

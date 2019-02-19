@@ -32,7 +32,7 @@ Containers are created from images with the `docker run` command.
 
 ### Docker Volumes
 
-Volumes are Docker’s mechanism for sharing and persisting data beyond the life of a container.  Volumes are created outside of Docker's Union File System and serve as mount points for your host file system.  Volumes can be created via the command line with the -v parameter or in docker-compose files:
+[Volumes](https://container-solutions.com/understanding-volumes-docker/) are Docker’s mechanism for sharing and persisting data beyond the life of a container.  Volumes are created outside of Docker's Union File System and serve as mount points for your host file system.  Volumes can be created via the command line with the -v parameter or in docker-compose files (which you'll be creating today):
 
 ```yaml
 volumes:
@@ -195,25 +195,27 @@ To begin, let's build an image that will create a container running webpack-dev-
 
     - Create a **services** dictionary
 
-        - Create a **dev** dictionary as the first element in the **services** dictionary
+        - Create a **dev** dictionary as the first key in the **services** dictionary
+        
+        - Under **dev**, create the following:
 
-            - Create an **image** element pointing to your [orgname]/mm-dependencies image
+            - An **image** key pointing to your [orgname]/mm-dependencies image
 
-            - Create a **container_name** element set to something meaningful like 'mm-dev-hot'
+            - A **container_name** key set to something meaningful like 'mm-dev-hot'
 
-            - Create a **ports** element that contains an array.  We'll just have one value that will route requests from port 8080 on the host to port 8080 in the container.
+            - A **ports** key that contains an array.  We'll just have one value that will route requests from port 8080 on the host to port 8080 in the container.
 
-            - Create a **volumes** element that contains an array.  
+            - A **volumes** key that contains an array.  
 
                 - In our first element, we'll want to mount our current directory to the `/usr/src/app` directory in the container.  This will allow the webpack-dev-server running in the container to watch for code changes in our file system outside the container.
 
                 - In our next element, we'll mount a volume we'll simply call 'node_modules' to `/usr/src/app/node_modules` in the container.
 
-            - Create a **command** element that executes `npm run dev:hot`
+            - A **command** key that executes `npm run dev:hot` in the container.  You'll see in `package.json` that this starts your node server and webpack-dev-server.  The `proxy` settings in our `webpack.config.js` will route all traffic to the `api` route to the node server at port 3000.
 
     - Create a **volumes** dictionary where we'll declare the named volume(s) we're mounting in our container(s)
 
-        - Create an empty **node_modules** element.  
+        - Create an empty **node_modules** key.  
 
 1. Run the container using docker-compose
 
@@ -241,22 +243,24 @@ To begin, let's build an image that will create a container running webpack-dev-
 
 1. Edit `docker-compose-dev-hot.yml` to add our postgres container configuration
 
-    - Create a **postgres-db** dictionary as the second element in the **services** dictionary
+    - Create a **postgres-db** dictionary as the second key in the **services** dictionary
 
-        - Create an **image** element pointing to your [orgname]/mm-postgres image
+    - Under **postgres-db**, create the following:
 
-        - Create a **container_name** element set to something meaningful like 'mm-database'
+        - An **image** key pointing to your [orgname]/mm-postgres image
 
-        - Create an **environment** element that contains an array.  We'll add three elements to the array:
+        - A **container_name** key set to something meaningful like 'mm-database'
+
+        - An **environment** key that contains an array.  We'll add three elements to the array:
             - POSTGRES_PASSWORD=admin
             - POSTGRES_USER=mmadmin
             - POSTGRES_DB=mmdb
 
-        - Create a **volumes** element that contains an array.  
+        - A **volumes** key that contains an array.  
 
             - In our single element here, we'll want to mount a volume we'll call 'dev-db-volume' to the `/var/lib/postgresql/data` directory in the container.  This is where postgres stores the actual data files that make up your database.  This volume will persist the data between container starts and stops.
 
-    - Under the **volumes** dictionary, add an empty **dev-db-volume** element.
+    - Under the **volumes** dictionary, add an empty **dev-db-volume** key.
 
     - We only want our **dev** service to start _after_ our **postgres-db** service has started.  We can do that by adding a **depends_on** array to our **dev** dictionary and set the first element to **postgres-db**
 

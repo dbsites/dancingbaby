@@ -54,11 +54,11 @@ Great, we have an AWS account!  Let's use it.  We'll start by creating a new app
 
 1. #### Create a new application
 
-    - We're going to deploy the MegaMarkets app, so name your application appropriately
+    - We're going to deploy the megamarkets app, so name your application appropriately
 
 1. #### Create a production environment
 
-    - Note that you'll have to set an environment name.  The default value is something like `Megamarkets-env`.  You'll want to change that to something the easily identifies this as the production environment for the Megamarkets application.
+    - Note that you'll have to set an environment name.  The default value is something like `megamarkets-env`.  You'll want to change that to something the easily identifies this as the production environment for the megamarkets application.
 
     - We're going to deploy a containerized application, so select Docker as your preconfigured platform.
 
@@ -145,7 +145,7 @@ The RDS instance is running.  The EC2 instance can see it.  Now we just need to 
 We're nearly done!  Now all we have to do is give our application all of the information it needs to connect to our database.  Because this requires sensitive data (username and password), best practice is to supply these values through **environment variables**.  We can set these up with Elastic Beanstalk.
 
 1. #### Set up your environment variables
-    - Go to your Megamarkets production environment and select Configuration -> Software
+    - Go to your megamarkets production environment and select Configuration -> Software
     - Add the following environment variables
         - NODE_ENV : production
         - RDS_HOSTNAME : [RDS 'endpoint']
