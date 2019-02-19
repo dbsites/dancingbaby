@@ -8,7 +8,8 @@ aws configure set default.region us-west-1
 # Log in to ECR
 #eval $(aws ecr get-login --no-include-email --region us-west-1)
 # Build docker image based on our default Dockerfile
-docker build -t [orgname]/mm .
+docker build -t schnodevops2/mm .
+docker tag schnodevops2/mm:latest schnodevops2/mm:$TRAVIS_COMMIT
 # tag the image with the Travis-CI SHA
 #docker tag [orgname]/mm:latest $ECR_REPO/mm:$TRAVIS_COMMIT
 # Push built image to ECS
