@@ -140,7 +140,17 @@ The RDS instance is running.  The EC2 instance can see it.  Now we just need to 
     - With psql, you can run any SQL commands stored in a file by invoking psql, pointing at the database, providing credentials, and adding the `-f [sqlfilename]` parameter
         - `psql -h [endpoint] mmdb -U mmadmin -f /var/app/current/scripts/db_init_prod.sql`
 
-### Part 8 - Environment Variables
+### Part 8 - Set up ECR (Elastic Container Registry)
+
+We won't be using ECR immediately, but this will become useful when we incorporate Continuous Deployment from Travis-CI.  It's really easy to set up.
+
+1. #### Set up ECR
+    - Head over to ECR from the Services menu and `Create a repository`.  Let's name it `mm` for megamarkets.
+
+    - Note the URI.  You'll come back for this in your CI/CD setup later.
+
+
+### Part 9 - Environment Variables
 
 We're nearly done!  Now all we have to do is give our application all of the information it needs to connect to our database.  Because this requires sensitive data (username and password), best practice is to supply these values through **environment variables**.  We can set these up with Elastic Beanstalk.
 
@@ -154,7 +164,7 @@ We're nearly done!  Now all we have to do is give our application all of the inf
         - RDS_PASSWORD : [your password]
         - RDS_PORT : 5432
 
-### Part 9 - Verify that your application is working with the database
+### Part 10 - Verify that your application is working with the database
 
 1. Open the Dashboard for your environment and follow the URL at the top to see your application running in the cloud.
 
