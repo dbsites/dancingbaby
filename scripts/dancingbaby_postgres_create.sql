@@ -78,9 +78,11 @@ CREATE TABLE "assessments" (
 
 CREATE TABLE "questions" (
 	"_id" serial NOT NULL,
+	"question_number" integer NOT NULL,
 	"question_text" varchar NOT NULL,
 	"create_date" DATE NOT NULL,
 	"weight" integer NOT NULL,
+	"parent_question" integer,
 	CONSTRAINT questions_pk PRIMARY KEY ("_id")
 ) WITH (
   OIDS=FALSE
@@ -101,4 +103,5 @@ ALTER TABLE "content" ADD CONSTRAINT "content_fk0" FOREIGN KEY ("file_type_id") 
 
 ALTER TABLE "assessments" ADD CONSTRAINT "assessments_fk0" FOREIGN KEY ("question_id") REFERENCES "questions"("_id");
 
+ALTER TABLE "questions" ADD CONSTRAINT "questions_fk0" FOREIGN KEY ("parent_question") REFERENCES "questions"("question_number");
 
