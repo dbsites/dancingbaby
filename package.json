@@ -1,19 +1,22 @@
 {
-    "name": "unit-13-DevOps",
+    "name": "DancingBaby",
     "version": "1.0.0",
-    "description": "MegaMarket Loyalty Card Tracker ",
+    "description": "Fair Usage Assessment Tool",
     "main": "index.js",
     "scripts": {
         "build": "webpack --config ./webpack.config.js",
         "start": "node ./server/server.js",
         "dev:hot": "NODE_ENV=development nodemon ./server/server.js & webpack-dev-server --open --hot --inline --progress --colors --watch --content-base ./",
         "docker-dev:hot": "docker-compose -f docker-compose-dev-hot.yml up",
-        "test": "NODE_ENV=test jest --coverage"
+        "test": "NODE_ENV=test jest --coverage",
+        "add-dep": "bash ./scripts/npm-docker/add-dep.sh",
+        "update-dep": "bash ./scripts/npm-docker/update-dep.sh"
     },
-    "author": "Schno Mozingo",
+    "author": "Schno Mozingo and Neil Katz",
     "license": "MIT",
     "dependencies": {
         "buffer-shims": "^1.0.0",
+        "passport": "^0.4.0",
         "pg": "^7.7.1",
         "react": "^16.5.2",
         "react-dom": "^16.5.2",
