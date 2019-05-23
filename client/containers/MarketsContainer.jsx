@@ -54,15 +54,19 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-class MarketsContainer extends Component {
+class MarketsContainer extends Component
+{
 
-  componentDidMount() {
+  componentDidMount()
+  {
     // fetch initial data from the database
     this.props.fetchMarketData();
   }
 
-  render() {
-    return(
+  render()
+  {
+
+      return(
       <div className="innerbox">
         <MarketCreator updateLocation={this.props.updateLocation}
                        createMarket={this.props.createMarket}
