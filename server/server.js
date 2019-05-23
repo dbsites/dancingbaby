@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const logger = require('morgan');
 const marketController = require('./controllers/marketController');
 const cardController = require('./controllers/cardController');
+const accountController = require('./controllers/accountController');
 
 const app = express();
 
@@ -16,16 +17,16 @@ app.use(express.static(path.join(__dirname, '../dist/')));
 app.use((req, res, next) => { console.log(req.body); next(); });
 
 
-app.get('/api/getMarkets',
-    marketController.getMarkets,
-    cardController.getAllCards,
-    (req, res) => {
-      res.status(200).json(res.locals.markets);
-    }
-);
+// app.get('/api/getMarkets',
+//     marketController.getMarkets,
+//     cardController.getAllCards,
+//     (req, res) => {
+//       res.status(200).json(res.locals.markets);
+//     }
+// );
 
-app.post('/api/addMarket',
-   marketController.addMarket,
+app.post('/api/login',
+   accountController.login,
     (req, res) => {
         res.sendStatus(200);
     }
