@@ -15,7 +15,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: dbdb; Type: DATABASE; Schema: -; Owner: mmadmin
+-- Name: dbdb; Type: DATABASE; Schema: -; Owner: dbadmin
 --
 
 \connect dbdb
@@ -35,80 +35,112 @@ SET default_tablespace = '';
 
 SET default_with_oids = false;
 
---
--- Name: cards; Type: TABLE; Schema: public; Owner: mmadmin
---
-
-CREATE TABLE cards (
-    _id integer NOT NULL,
-    market_id integer NOT NULL
+CREATE TABLE "accounts" (
+	"_id" serial NOT NULL,
+	"username" varchar NOT NULL,
+	"password" varchar NOT NULL,
+	"create_timestamp" timestamp with time zone NOT NULL,
+	CONSTRAINT accounts_pk PRIMARY KEY ("_id")
+) WITH (
+  OIDS=FALSE
 );
 
 
-ALTER TABLE cards OWNER TO mmadmin;
 
---
--- Name: cards__id_seq; Type: SEQUENCE; Schema: public; Owner: mmadmin
---
-
-CREATE SEQUENCE cards__id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE cards__id_seq OWNER TO mmadmin;
-
---
--- Name: cards__id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mmadmin
---
-
-ALTER SEQUENCE cards__id_seq OWNED BY cards._id;
-
-
---
--- Name: markets; Type: TABLE; Schema: public; Owner: mmadmin
---
-
-CREATE TABLE markets (
-    market_id integer NOT NULL,
-    location character varying NOT NULL
+CREATE TABLE "analysis_session" (
+	"_id" serial NOT NULL,
+	"account_id" bigint NOT NULL,
+	"user_id" bigint NOT NULL,
+	"copyrighted_content_id" bigint NOT NULL,
+	"suspected_content_id" bigint NOT NULL,
+	"assessment_id" bigint NOT NULL,
+	"factors_against" integer NOT NULL,
+	"factors_toward" integer NOT NULL,
+	"start_timestamp" time with time zone NOT NULL,
+	"completed_timestamp" time with time zone NOT NULL,
+	CONSTRAINT analysis_session_pk PRIMARY KEY ("_id")
+) WITH (
+  OIDS=FALSE
 );
 
 
-ALTER TABLE markets OWNER TO mmadmin;
 
---
--- Name: cards _id; Type: DEFAULT; Schema: public; Owner: mmadmin
---
-
-ALTER TABLE ONLY cards ALTER COLUMN _id SET DEFAULT nextval('cards__id_seq'::regclass);
-
-
---
--- Name: cards cards_pk; Type: CONSTRAINT; Schema: public; Owner: mmadmin
---
-
-ALTER TABLE ONLY cards
-    ADD CONSTRAINT cards_pk PRIMARY KEY (_id);
+CREATE TABLE "file_types" (
+	"_id" serial NOT NULL,
+	"description" varchar NOT NULL,
+	CONSTRAINT file_types_pk PRIMARY KEY ("_id")
+) WITH (
+  OIDS=FALSE
+);
 
 
---
--- Name: markets markets_pk; Type: CONSTRAINT; Schema: public; Owner: mmadmin
---
 
-ALTER TABLE ONLY markets
-    ADD CONSTRAINT markets_pk PRIMARY KEY (market_id);
+CREATE TABLE "users" (
+	"_id" serial NOT NULL,
+	"first_name" varchar NOT NULL,
+	"last_name" varchar NOT NULL,
+	"organization" varchar NOT NULL,
+	CONSTRAINT users_pk PRIMARY KEY ("_id")
+) WITH (
+  OIDS=FALSE
+);
 
 
---
--- Name: cards cards_fk0; Type: FK CONSTRAINT; Schema: public; Owner: mmadmin
---
 
-ALTER TABLE ONLY cards
-    ADD CONSTRAINT cards_fk0 FOREIGN KEY (market_id) REFERENCES markets(market_id);
+CREATE TABLE "content" (
+	"_id" serial NOT NULL,
+	"copyrighted" BOOLEAN NOT NULL,
+	"file_type_id" bigint NOT NULL,
+	"url" varchar NOT NULL,
+	"published_date" DATE NOT NULL,
+	"author" varchar NOT NULL,
+	"view_count" bigint NOT NULL,
+	CONSTRAINT content_pk PRIMARY KEY ("_id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "assessments" (
+	"_id" serial NOT NULL,
+	"question_id" bigint NOT NULL,
+	"answer" TEXT NOT NULL,
+	CONSTRAINT assessments_pk PRIMARY KEY ("_id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "questions" (
+	"_id" serial NOT NULL,
+	"question_number" integer NOT NULL,
+	"question_text" varchar NOT NULL,
+	"create_date" DATE NOT NULL,
+	"weight" integer NOT NULL,
+	"parent_question" integer,
+	CONSTRAINT questions_pk PRIMARY KEY ("_id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+
+ALTER TABLE "analysis_session" ADD CONSTRAINT "analysis_session_fk0" FOREIGN KEY ("account_id") REFERENCES "accounts"("_id");
+ALTER TABLE "analysis_session" ADD CONSTRAINT "analysis_session_fk1" FOREIGN KEY ("user_id") REFERENCES "users"("_id");
+ALTER TABLE "analysis_session" ADD CONSTRAINT "analysis_session_fk2" FOREIGN KEY ("copyrighted_content_id") REFERENCES "content"("_id");
+ALTER TABLE "analysis_session" ADD CONSTRAINT "analysis_session_fk3" FOREIGN KEY ("suspected_content_id") REFERENCES "content"("_id");
+ALTER TABLE "analysis_session" ADD CONSTRAINT "analysis_session_fk4" FOREIGN KEY ("assessment_id") REFERENCES "assessments"("_id");
+
+
+
+ALTER TABLE "content" ADD CONSTRAINT "content_fk0" FOREIGN KEY ("file_type_id") REFERENCES "file_types"("_id");
+
+ALTER TABLE "assessments" ADD CONSTRAINT "assessments_fk0" FOREIGN KEY ("question_id") REFERENCES "questions"("_id");
+
+ALTER TABLE "questions" ADD CONSTRAINT "questions_fk0" FOREIGN KEY ("parent_question") REFERENCES "questions"("question_number");
 
 
 --
@@ -116,8 +148,8 @@ ALTER TABLE ONLY cards
 --
 
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
-REVOKE ALL ON SCHEMA public FROM mmadmin;
-GRANT ALL ON SCHEMA public TO mmadmin;
+REVOKE ALL ON SCHEMA public FROM dbadmin;
+GRANT ALL ON SCHEMA public TO dbadmin;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
