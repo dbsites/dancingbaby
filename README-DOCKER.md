@@ -272,7 +272,7 @@ To begin, let's build an image that will create a container running webpack-dev-
 
     - We only want our **dev** service to start _after_ our **postgres-db** service has started.  We can do that by adding a **depends_on** array to our **dev** dictionary and set the first element to **postgres-db**
 
-1. Finally, we just need to let our application know that we want to use our development database hosted in the container rather than the production database.  Look at the ./server/models/mmModel.js file to see how we're doing this by using an environment variable called NODE_ENV.
+1. Finally, we just need to let our application know that we want to use our development database hosted in the container rather than the production database.  Look at the ./server/models/dbModel.js file to see how we're doing this by using an environment variable called NODE_ENV.
 
     - In order to pass that environment variable to our server, we can update the 'dev:hot' script in package.json to pass that key with the value 'development'.  Now we'll point to the containerized database.
 
