@@ -15,7 +15,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: dbdb; Type: DATABASE; Schema: -; Owner: mmadmin
+-- Name: dbdb; Type: DATABASE; Schema: -; Owner: dbadmin
 --
 
 \connect dbdb
@@ -35,143 +35,121 @@ SET default_tablespace = '';
 
 SET default_with_oids = false;
 
---
--- Name: cards; Type: TABLE; Schema: public; Owner: mmadmin
---
-
-CREATE TABLE cards (
-    _id integer NOT NULL,
-    market_id integer NOT NULL
+CREATE TABLE "accounts" (
+	"_id" serial NOT NULL,
+	"username" varchar NOT NULL,
+	"password" varchar NOT NULL,
+	"create_timestamp" timestamp with time zone NOT NULL DEFAULT Now(),
+	CONSTRAINT accounts_pk PRIMARY KEY ("_id")
+) WITH (
+  OIDS=FALSE
 );
 
 
-ALTER TABLE cards OWNER TO mmadmin;
 
---
--- Name: cards__id_seq; Type: SEQUENCE; Schema: public; Owner: mmadmin
---
-
-CREATE SEQUENCE cards__id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE cards__id_seq OWNER TO mmadmin;
-
---
--- Name: cards__id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mmadmin
---
-
-ALTER SEQUENCE cards__id_seq OWNED BY cards._id;
-
-
---
--- Name: markets; Type: TABLE; Schema: public; Owner: mmadmin
---
-
-CREATE TABLE markets (
-    market_id integer NOT NULL,
-    location character varying NOT NULL
+CREATE TABLE "analysis_session" (
+	"_id" serial NOT NULL,
+	"account_id" bigint NOT NULL,
+	"user_id" bigint NOT NULL,
+	"copyrighted_content_id" bigint NOT NULL,
+	"suspected_content_id" bigint NOT NULL,
+	"assessment_id" bigint NOT NULL,
+	"factors_against" integer NOT NULL,
+	"factors_toward" integer NOT NULL,
+	"start_timestamp" time with time zone NOT NULL,
+	"completed_timestamp" time with time zone NOT NULL,
+	CONSTRAINT analysis_session_pk PRIMARY KEY ("_id")
+) WITH (
+  OIDS=FALSE
 );
 
 
-ALTER TABLE markets OWNER TO mmadmin;
 
---
--- Name: cards _id; Type: DEFAULT; Schema: public; Owner: mmadmin
---
+CREATE TABLE "file_types" (
+	"_id" serial NOT NULL,
+	"description" varchar NOT NULL,
+	CONSTRAINT file_types_pk PRIMARY KEY ("_id")
+) WITH (
+  OIDS=FALSE
+);
 
-ALTER TABLE ONLY cards ALTER COLUMN _id SET DEFAULT nextval('cards__id_seq'::regclass);
 
 
---
--- Data for Name: cards; Type: TABLE DATA; Schema: public; Owner: mmadmin
---
+CREATE TABLE "users" (
+	"_id" serial NOT NULL,
+	"first_name" varchar NOT NULL,
+	"last_name" varchar NOT NULL,
+	"organization" varchar NOT NULL,
+	CONSTRAINT users_pk PRIMARY KEY ("_id")
+) WITH (
+  OIDS=FALSE
+);
 
-COPY cards (_id, market_id) FROM stdin;
-1	100001
-2	100001
-3	100001
-4	100001
-5	100001
-6	100002
-7	100002
-17	100010
-19	100006
-20	100006
-21	100007
-22	100007
-23	100011
-24	100011
-25	100008
-26	100008
-27	100008
-28	100001
-29	100001
-30	100001
-31	100001
-32	100001
-33	100001
-34	100001
-35	100001
-36	100001
-37	100001
-38	100001
-39	100001
+
+
+CREATE TABLE "content" (
+	"_id" serial NOT NULL,
+	"copyrighted" BOOLEAN NOT NULL,
+	"file_type_id" bigint NOT NULL,
+	"url" varchar NOT NULL,
+	"published_date" DATE NOT NULL,
+	"author" varchar NOT NULL,
+	"view_count" bigint NOT NULL,
+	CONSTRAINT content_pk PRIMARY KEY ("_id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "assessments" (
+	"_id" serial NOT NULL,
+	"question_id" bigint NOT NULL,
+	"answer" TEXT NOT NULL,
+	CONSTRAINT assessments_pk PRIMARY KEY ("_id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "questions" (
+	"_id" serial NOT NULL,
+	"question_number" integer NOT NULL UNIQUE,
+	"question_text" varchar NOT NULL,
+	"create_date" DATE NOT NULL DEFAULT Now(),
+	"weight" integer NOT NULL,
+	"parent_question" integer,
+	CONSTRAINT questions_pk PRIMARY KEY ("_id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+COPY questions (question_number, question_text,  weight) FROM stdin;
+1	"Is this video dope?"	1
+2	"Is this video funky?"	1
+\.
+ 
+
+COPY questions (question_number, question_text,  parent_question, weight) FROM stdin;
+3	"Is this video too dope?"	1	1
+4	"Is this video the dopest?"	1	1
 \.
 
-
---
--- Data for Name: markets; Type: TABLE DATA; Schema: public; Owner: mmadmin
---
-
-COPY markets (market_id, location) FROM stdin;
-100001	Test1
-100002	Test2
-100003	Test3
-100004	Test4
-100005	Test5
-100006	Test6
-100007	Test7
-100008	Test8
-100009	Test9
-100010	Test10
-100011	Test11
-\.
+ALTER TABLE "analysis_session" ADD CONSTRAINT "analysis_session_fk0" FOREIGN KEY ("account_id") REFERENCES "accounts"("_id");
+ALTER TABLE "analysis_session" ADD CONSTRAINT "analysis_session_fk1" FOREIGN KEY ("user_id") REFERENCES "users"("_id");
+ALTER TABLE "analysis_session" ADD CONSTRAINT "analysis_session_fk2" FOREIGN KEY ("copyrighted_content_id") REFERENCES "content"("_id");
+ALTER TABLE "analysis_session" ADD CONSTRAINT "analysis_session_fk3" FOREIGN KEY ("suspected_content_id") REFERENCES "content"("_id");
+ALTER TABLE "analysis_session" ADD CONSTRAINT "analysis_session_fk4" FOREIGN KEY ("assessment_id") REFERENCES "assessments"("_id");
 
 
---
--- Name: cards__id_seq; Type: SEQUENCE SET; Schema: public; Owner: mmadmin
---
 
-SELECT pg_catalog.setval('cards__id_seq', 39, true);
+ALTER TABLE "content" ADD CONSTRAINT "content_fk0" FOREIGN KEY ("file_type_id") REFERENCES "file_types"("_id");
 
+ALTER TABLE "assessments" ADD CONSTRAINT "assessments_fk0" FOREIGN KEY ("question_id") REFERENCES "questions"("_id");
 
---
--- Name: cards cards_pk; Type: CONSTRAINT; Schema: public; Owner: mmadmin
---
-
-ALTER TABLE ONLY cards
-    ADD CONSTRAINT cards_pk PRIMARY KEY (_id);
-
-
---
--- Name: markets markets_pk; Type: CONSTRAINT; Schema: public; Owner: mmadmin
---
-
-ALTER TABLE ONLY markets
-    ADD CONSTRAINT markets_pk PRIMARY KEY (market_id);
-
-
---
--- Name: cards cards_fk0; Type: FK CONSTRAINT; Schema: public; Owner: mmadmin
---
-
-ALTER TABLE ONLY cards
-    ADD CONSTRAINT cards_fk0 FOREIGN KEY (market_id) REFERENCES markets(market_id);
+ALTER TABLE "questions" ADD CONSTRAINT "questions_fk0" FOREIGN KEY ("parent_question") REFERENCES "questions"("question_number");
 
 
 --
@@ -179,8 +157,8 @@ ALTER TABLE ONLY cards
 --
 
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
-REVOKE ALL ON SCHEMA public FROM mmadmin;
-GRANT ALL ON SCHEMA public TO mmadmin;
+REVOKE ALL ON SCHEMA public FROM dbadmin;
+GRANT ALL ON SCHEMA public TO dbadmin;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
