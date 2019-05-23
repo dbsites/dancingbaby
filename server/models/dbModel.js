@@ -9,21 +9,18 @@ const config = {
   idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
 };
 
-console.log('process.env is:')
-console.log(process.env);
-
-if(process.env.NODE_ENV === 'development') {
-  config.user = 'mmadmin';
-  config.database = 'mmdb';
-  config.password = 'admin';
-  config.host = 'postgres-db';
-  config.port = 5432;
-} else if (process.env.NODE_ENV === 'production') { 
+if (process.env.NODE_ENV === 'production') { 
   config.user = process.env.RDS_USERNAME;
   config.database = process.env.RDS_DB_NAME;
   config.password = process.env.RDS_PASSWORD;
   config.host = process.env.RDS_HOSTNAME;
   config.port = process.env.RDS_PORT;
+} else {
+  config.user = 'dbadmin';
+  config.database = 'dbdb';
+  config.password = 'admin';
+  config.host = 'postgres-db';
+  config.port = 5432;
 }
 
 console.log(`Connecting to database ${config.database} on host ${config.host}`);

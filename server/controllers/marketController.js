@@ -1,4 +1,4 @@
-const mmdb = require('../models/mmModel');
+const mmdb = require('../models/dbModel');
 
 const marketController = {};
 
