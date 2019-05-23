@@ -1,6 +1,8 @@
+@import "variables";
+
 * {
     box-sizing: border-box;
-    font-family: 'Ubuntu Light', 'Century Gothic', sans-serif;
+    font-family: $LatoMedium;
     margin: 0;
     padding: 0;
     color: #2116bd;
@@ -27,7 +29,7 @@ body {
 }
 
 .displayBox {
-    overflow: overlay;
+    overflow: hidden;
     padding-top: 10px;
 }
 
