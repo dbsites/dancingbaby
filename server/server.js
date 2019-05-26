@@ -1,10 +1,19 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const config = require('config');
 const logger = require('morgan');
+const session = require('express-session');
+const flash = require('req-flash');
+const moment = require('moment-timezone');
+const pgSession = require('connect-pg-simple')(session);
+const passport = require('./config/passport');
+const pgPool = require('./models/dbModel');
 const marketController = require('./controllers/marketController');
 const cardController = require('./controllers/cardController');
 const accountController = require('./controllers/accountController');
+
 
 const app = express();
 
@@ -17,33 +26,38 @@ app.use(express.static(path.join(__dirname, '../dist/')));
 app.use((req, res, next) => { console.log(req.body); next(); });
 
 
-// app.get('/api/getMarkets',
-//     marketController.getMarkets,
-//     cardController.getAllCards,
-//     (req, res) => {
-//       res.status(200).json(res.locals.markets);
-//     }
-// );
+// session logic
+const secret = process.env.SESSION_SECRET || config.get('session-secret');
+const sessionConfig = {
+  secret,
+  name: 'dancingbaby',
+  resave: false, // only resave session if changes are made to session
+  saveUninitialized: false, // only create sessions for users who log in
+  store: new pgSession({ pool: pgPool }), // store user session data in database
+  cookie: { secure: true, maxAge: 2 * 24 * 60 * 60 * 1000 } // 2 day session
+}
+if (process.env.NODE_ENV !== 'production') {
+  sessionConfig.cookie.secure = false; // set cookies on http for dev
+}
+
+app.use(session(sessionConfig));
+app.use(passport.initialize());
+app.use(passport.session());
+
+// parse request body and cookies
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser(secret));
+app.use(flash({ locals: 'flash' }));
+app.use(express.static('dist'));
+
+// begin routes
 
 app.post('/api/login',
-   accountController.login,
-    (req, res) => {
-        res.sendStatus(200);
-    }
-);
-
-app.post('/api/addCard',
-   cardController.addCard,
-    (req, res) => {
-        res.sendStatus(200);
-    }
-);
-
-app.post('/api/deleteCard',
-   cardController.deleteCard,
-    (req, res) => {
-        res.sendStatus(200);
-    }
+   passport.authenticate('local'), // will return 401 Unauthorized on failure
+   (req, res) => { // login was successful
+    res.status(200);
+   }
 );
 
 
@@ -54,20 +68,19 @@ app.use(function(req, res, next) {
     next(err);
   });
   
-  // error handler
-  app.use(function(err, req, res, next) {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
-  
-    console.error(err);
-    res.status(err.status || 500).send(res.locals.message);
-  });
 
-
+// error handler
+app.use(function(err, req, res, next) {
+    console.error(`${moment()}> ${err.status ? err.status : ''} ${err.message}`);
+    if (err.flash) {
+        res.status(err.status || 500).json(err.flash);
+    } else {
+        res.status(err.status || 500).send(err.message);
+    }
+});
 
 app.listen(PORT, (err) => {
-  console.log(new Date(), err || 'server listening on port '  + PORT);
+  console.log(`${moment().tz("America/Los_Angeles").format('YYYY-MM-DD HH:mm:ss')} >`, err || 'server listening on port '  + PORT);
 });
 
 module.exports = app;
