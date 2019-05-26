@@ -1,5 +1,5 @@
-# start FROM a base layer of postgres 9.6.8
-FROM postgres:9.6.8
+# start FROM a base layer of postgres 10.6
+FROM postgres:10.6
 
 # copy in ./scripts/db_init.sql to /docker-entrypoint-initdb.d/  
 # It will run automatically from within the container to 
