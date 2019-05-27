@@ -16,6 +16,9 @@ dist/
 # zip file for initial aws deployment
 *.zip
 
+# dev log files 
+logs/
+
 # jest coverage
 coverage/
 # Elastic Beanstalk Files
