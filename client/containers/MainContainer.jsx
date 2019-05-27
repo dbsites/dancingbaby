@@ -11,10 +11,8 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import TotalsDisplay from '../components/TotalsDisplay.jsx';
-import MarketsContainer from './MarketsContainer.jsx';
 
-import SVGLib from '../constants/svgLib';
+import LoginComponent from '../components/LoginComponent.jsx';
 
 
 const mapStateToProps = store =>
@@ -31,7 +29,20 @@ class MainContainer extends Component
 {
     componentDidMount()
     {
-        SVGLib.addSVGByID('header', SVGLib.GREEN_BABY_STATIC );
+        // SVGLib.addSVGByID('header', SVGLib.GREEN_BABY_STATIC );
+        console.log( "COMPONENT MOUNTED" );
+    };
+
+    openContact = ( e ) =>
+    {
+        if( e ) e.stopImmediatePropagation();
+        console.log( "OPEN CONTACT CLICKED" );
+    };
+
+    submit = ( e ) =>
+    {
+        if( e ) e.stopImmediatePropagation();
+        console.log( "SUBMIT CLICKED" );
     };
 
     render()
@@ -39,9 +50,7 @@ class MainContainer extends Component
         return(
           <div className="container">
             <div className="outerBox">
-              <h1 id="header">DANCING BABY!</h1>
-              <TotalsDisplay totalCards={this.props.totalCards} totalMarkets={this.props.totalMarkets}/>
-              <MarketsContainer/>
+                <LoginComponent submit={this.submit} openContact={this.openContact}/>
             </div>
           </div>
         )
