@@ -12,29 +12,56 @@
 
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import dbLogo from '../assets/svg/db_logo_greenyellow.svg';
 
 
-const LoginComponent = props =>
+let LoginComponent = ( props ) =>
 {
-    const { openContact, handleSubmit } = props;
+    const { openContact, submit } = props;
 
     return (
         <div>
-            <div onClick={openContact} id="contact">CONTACT</div>
 
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="userName">USERNAME</label>
-                    <Field name="userName" component="input" type="text" />
+            <div className='logoContainer'>
+                <img src={dbLogo} className='logo' alt='logo' />
+            </div>
+
+            <div className='contactLink' onClick={openContact} id='contact'>contact</div>
+
+            <form className='loginForm' onSubmit={submit}>
+
+                <div className='loginFieldLeft'>
+                    <label htmlFor='userName'>USERNAME</label>
+                    <Field
+                        className='inputField'
+                        name='userName'
+                        component='input'
+                        type='text'
+                        placeholder="USERNAME"
+                    />
                 </div>
-                <div>
-                    <label htmlFor="password">PASSWORD</label>
-                    <Field name="password" component="input" type="text" />
+
+                <div className='loginField'>
+                    <label htmlFor='password'>PASSWORD</label>
+                    <Field
+                        className='inputField'
+                        name='password'
+                        component='input'
+                        type='text'
+                        placeholder="PASSWORD"
+                    />
                 </div>
-                <button type="submit">ENTER</button>
+
+                {/*<button type='submit'>ENTER</button>*/}
+
             </form>
         </div>
     );
 };
 
-export default MarketCreator;
+LoginComponent = reduxForm({
+    // a unique name for the form
+    form: 'login'
+})(LoginComponent);
+
+export default LoginComponent;
