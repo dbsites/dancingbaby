@@ -42,15 +42,20 @@ const mapDispatchToProps = dispatch => ({
       dispatch(actions.deleteCardThunk(e.target.name));
   },
 
-  fetchMarketData: () => {    
-    fetch('/api/getMarkets', {
-      method: 'GET',
+  fetchMarketData: () => {   
+    fetch('/api/login', {
+      method: 'POST',
+      body: JSON.stringify({ username: 'smozingo', password: 'password' }),
+      headers: {'Content-Type': 'application/json'},
     })
-    .then(res => res.json())
-    .then(markets => {
-      dispatch(actions.updateMarkets(markets));
-    })
-    .catch(err => console.log('Error in fetchMarketData:', err))
+    .then(res => {
+      if(res.status === 200) {
+        console.log('YO!');
+      } else {
+        console.log('in login - Server returned status', res.status)
+      }
+    })  
+    .catch(err => console.log('Error in createMarketThunk fetch:', err));
   }
 });
 

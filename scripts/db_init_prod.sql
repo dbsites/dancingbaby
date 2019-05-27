@@ -56,8 +56,8 @@ CREATE TABLE "analysis_session" (
 	"assessment_id" bigint NOT NULL,
 	"factors_against" integer NOT NULL,
 	"factors_toward" integer NOT NULL,
-	"start_timestamp" time with time zone NOT NULL,
-	"completed_timestamp" time with time zone NOT NULL,
+	"start_timestamp" timestamp with time zone NOT NULL,
+	"completed_timestamp" timestamp with time zone NOT NULL,
 	CONSTRAINT analysis_session_pk PRIMARY KEY ("_id")
 ) WITH (
   OIDS=FALSE
@@ -125,7 +125,14 @@ CREATE TABLE "questions" (
   OIDS=FALSE
 );
 
-
+CREATE TABLE "session" (
+	"sid" varchar NOT NULL,
+	"sess" JSON NOT NULL,
+	"expire" timestamp with time zone NOT NULL,
+	CONSTRAINT session_pk PRIMARY KEY ("sid")
+) WITH (
+  OIDS=FALSE
+);
 
 
 ALTER TABLE "analysis_session" ADD CONSTRAINT "analysis_session_fk0" FOREIGN KEY ("account_id") REFERENCES "accounts"("_id");
