@@ -72,6 +72,10 @@ module.exports = {
       },
     ],
   },
+  resolve: {
+    // Enable importing JS / JSX files without specifying their extension
+    extensions: ['.js', '.jsx'],
+  },
   plugins: [
     new HtmlWebpackPlugin({
       favicon: path.resolve(__dirname, './client/assets/images/mm.ico'),
