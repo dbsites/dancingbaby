@@ -34,7 +34,8 @@
         "redux": "^3.7.2",
         "redux-form": "^7.2.0",
         "redux-thunk": "^2.3.0",
-        "req-flash": "0.0.3"
+        "req-flash": "0.0.3",
+        "winston": "^3.2.1"
     },
     "devDependencies": {
         "@babel/core": "^7.1.2",
