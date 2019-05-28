@@ -44,9 +44,9 @@ app.post('/api/login',
    }
 );
 
-app.get('/admin/*', 
+app.get('/db42/*', 
     (req, res) => {
-        res.sendFile(path.resolve(__dirname, '../db42.html')); 
+        res.sendFile(path.resolve(__dirname, '../admin.html')); 
     });
 
 app.get('/api/questions', 

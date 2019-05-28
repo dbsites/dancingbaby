@@ -3,10 +3,10 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: [
+  entry: {
         // entry point of our app
-        './client/index.js'
-      ],
+        index: './client/index.js'
+      },
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
@@ -35,6 +35,10 @@ module.exports = {
     // routes api fetch requests from localhost:8080/api/* (webpack dev server) to localhost:3000/api/* (where our Express server is running)
     proxy: {
       '/api/**': {
+        target: 'http://localhost:3000/',
+        secure: false,
+      },
+      '/db42/**': {
         target: 'http://localhost:3000/',
         secure: false,
       },
@@ -70,6 +74,14 @@ module.exports = {
             },
         ],
       },
+      {
+        test: /\.(html)$/,
+        use: {
+          loader: 'html-loader',
+          options: {
+          }
+        }
+      }
     ],
   },
   resolve: {
@@ -79,6 +91,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       favicon: path.resolve(__dirname, './client/assets/images/mm.ico'),
+      chunks: ['index'],
       template: './index.html'
     })
   ]
