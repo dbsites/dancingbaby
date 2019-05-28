@@ -11,7 +11,6 @@ accountsController.getAllAccounts = (req, res, next) => {
     FROM accounts`;
 
     let accounts = await dbdb.query({ text: accountsQuery });
-    console.log('accounts: ', accounts);
   
     if(accounts && accounts.rows) {    
       accounts.rows.forEach((row) => {
@@ -36,7 +35,6 @@ accountsController.getAllAccounts = (req, res, next) => {
   getAccounts()
   .then( accounts => { 
     res.locals.accounts = accounts; 
-    console.log('res.locals.accounts: ', res.locals.accounts);
 
     return next();
   })
@@ -60,7 +58,6 @@ accountsController.uploadAccounts = (req, res, next) => {
     }
 
     accounts.forEach( rec  => {
-      console.log('rec: ', rec);
       
       const fields = rec.split(',');
       if(fields.length !== 2) {
@@ -70,7 +67,7 @@ accountsController.uploadAccounts = (req, res, next) => {
       }
     });
 
-    console.log('accounts:', accounts);
+
     // keep it simple -- drop the accounts table and reload from the file
     dbdb.query({ text: `truncate table accounts` })
     .then(result => {
@@ -84,7 +81,6 @@ accountsController.uploadAccounts = (req, res, next) => {
         dbdb.query({ text: insert, values: [fields[0].trim(), fields[1].trim()] });
       });
   
-      console.log('accounts: ', accounts);
       return next();
     })
     .catch(err => {
