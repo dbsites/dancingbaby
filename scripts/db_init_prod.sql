@@ -115,11 +115,11 @@ CREATE TABLE "assessments" (
 
 CREATE TABLE "questions" (
 	"_id" serial NOT NULL,
-	"question_number" integer NOT NULL,
+	"question_id" varchar NOT NULL,
 	"question_text" varchar NOT NULL,
 	"create_date" DATE NOT NULL,
 	"weight" integer NOT NULL,
-	"parent_question" integer,
+	"parent_question_id" varchar,
 	CONSTRAINT questions_pk PRIMARY KEY ("_id")
 ) WITH (
   OIDS=FALSE
@@ -135,7 +135,6 @@ CREATE TABLE "session" (
 );
 
 
-ALTER TABLE "analysis_session" ADD CONSTRAINT "analysis_session_fk0" FOREIGN KEY ("account_id") REFERENCES "accounts"("_id");
 ALTER TABLE "analysis_session" ADD CONSTRAINT "analysis_session_fk1" FOREIGN KEY ("user_id") REFERENCES "users"("_id");
 ALTER TABLE "analysis_session" ADD CONSTRAINT "analysis_session_fk2" FOREIGN KEY ("copyrighted_content_id") REFERENCES "content"("_id");
 ALTER TABLE "analysis_session" ADD CONSTRAINT "analysis_session_fk3" FOREIGN KEY ("suspected_content_id") REFERENCES "content"("_id");
@@ -145,10 +144,9 @@ ALTER TABLE "analysis_session" ADD CONSTRAINT "analysis_session_fk4" FOREIGN KEY
 
 ALTER TABLE "content" ADD CONSTRAINT "content_fk0" FOREIGN KEY ("file_type_id") REFERENCES "file_types"("_id");
 
-ALTER TABLE "assessments" ADD CONSTRAINT "assessments_fk0" FOREIGN KEY ("question_id") REFERENCES "questions"("_id");
+ALTER TABLE "questions" ADD CONSTRAINT "questions_fk0" FOREIGN KEY ("parent_question_id") REFERENCES "questions"("question_id");
 
-ALTER TABLE "questions" ADD CONSTRAINT "questions_fk0" FOREIGN KEY ("parent_question") REFERENCES "questions"("question_number");
-
+ALTER TABLE "questions" ADD CONSTRAINT "question_id_text_uq" UNIQUE ("question_id", "question_text");
 
 --
 -- Name: public; Type: ACL; Schema: -; Owner: mmadmin
