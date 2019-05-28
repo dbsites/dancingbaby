@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dancing Baby Admin</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+    </script>
+</head>
+
+<body>
+
+    <main id="contents">
+        <h2>Accounts</h2>
+        <form action="/api/uploadAccounts" enctype="multipart/form-data" method="POST">
+            <input type="file" name="accounts" />
+            <input type="submit" value="Upload Accounts" />
+        </form>
+        <pre id="users" style="border: 1px solid; padding: 3px; overflow: scroll"></pre>
+        <hr />
+        <h2>Questions</h2>
+        <form action="/api/uploadQuestions" enctype="multipart/form-data" method="POST">
+            <input type="file" name="questions" />
+            <input type="submit" value="Upload Questions" />
+        </form>
+        <pre id="questions" style="border: 1px solid; padding: 3px; overflow: scroll"></pre>
+
+    </main>
+
+</body>
+<script>
+    $(document).ready(function() {
+        fetch('/api/questions')
+            .then((resp) => {
+                return resp.json();
+            })
+            .then((data) => {
+                console.log(`fetch returned`);
+
+                console.dir(data);
+                document.getElementById("questions").innerHTML = JSON.stringify(data, undefined, 2);
+            })
+            .catch((err) => {
+                console.log(`Error on fetch /api/questions: ${err}`)
+            })
+        fetch('/api/accounts')
+            .then((resp) => {
+                return resp.json();
+            })
+            .then((data) => {
+                console.log(`fetch returned`);
+
+                console.dir(data);
+                document.getElementById("users").innerHTML = JSON.stringify(data, undefined, 2);
+            })
+            .catch((err) => {
+                console.log(`Error on fetch /api/questions: ${err}`)
+            })
+
+    });
+</script>
+
+</html>

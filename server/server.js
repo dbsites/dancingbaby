@@ -5,11 +5,12 @@ const cookieParser = require('cookie-parser');
 const config = require('config');
 const session = require('express-session');
 const flash = require('req-flash');
+const upload = require('./util/multer');
 const passport = require('./controllers/passport');
+const questionsController = require('./controllers/questionsController');
+const usersController = require('./controllers/usersController');
+const accountsController = require('./controllers/accountsController');
 const { pool, connect } = require('./models/dbModel');
-const marketController = require('./controllers/marketController');
-const cardController = require('./controllers/cardController');
-const accountController = require('./controllers/accountController');
 const { logger, morgan } = require('./util/loggingUtil');
 const { sessionConfig, secret } = require('./util/sessionConfig');
 
@@ -42,6 +43,39 @@ app.post('/api/login',
     res.status(200);
    }
 );
+
+app.get('/db42/*', 
+    (req, res) => {
+        res.sendFile(path.resolve(__dirname, '../admin.html')); 
+    });
+
+app.get('/api/questions', 
+    questionsController.getAllQuestions,
+    (req, res) => {
+        res.status(200).send(res.locals.questions);
+    });
+
+app.post('/api/uploadQuestions',
+    upload.single('questions'),
+    questionsController.uploadQuestions,
+    (req, res, next) => {
+        res.status(200).send('success');
+    }
+);   
+
+app.get('/api/accounts', 
+    accountsController.getAllAccounts,
+    (req, res) => {
+        res.status(200).send(res.locals.accounts);
+    });
+
+app.post('/api/uploadAccounts',
+    upload.single('accounts'),
+    accountsController.uploadAccounts,
+    (req, res, next) => {
+        res.status(200).redirect('/admin/');
+    }
+); 
 
 
 // catch 404 and forward to error handler
