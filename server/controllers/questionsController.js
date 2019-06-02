@@ -1,4 +1,6 @@
 const dbdb = require('../models/dbModel');
+const cfg = require('config');
+const CSVtoArray = require('../util/csvToArray');
 
 const questionsController = {};
 
@@ -8,16 +10,20 @@ questionsController.getAllQuestions = (req, res, next) => {
 
   async function getQuestions() {
     const parentQuery = `
-    SELECT question_id, question_text, weight
-    FROM questions
-    WHERE parent_question_id is null
-    ORDER BY question_id`;
+    SELECT q.question_number, question_text, no_fair_use, no_infringement, yes_fair_use, yes_infringement, branch_on, very, strong, moderate, weak, no
+    FROM questions q
+    INNER JOIN answer_matrix a
+    ON q._id = a._id
+    WHERE parent_question is null
+    ORDER BY q._id`;
 
 const childQuery = `
-    SELECT question_id, question_text, weight, parent_question_id
-    FROM questions
-    WHERE parent_question_id is not null
-    ORDER BY question_id`;
+    SELECT q.question_number, question_text, no_fair_use, no_infringement, yes_fair_use, yes_infringement, parent_question, very, strong, moderate, weak, no
+    FROM questions q
+    INNER JOIN answer_matrix a
+    ON q._id = a._id
+    WHERE parent_question is not null
+    ORDER BY q._id`;
 
     let questions = [];
     let parentQuestions = await dbdb.query({ text: parentQuery });
@@ -28,18 +34,37 @@ const childQuery = `
       // loop through parent questions
       parentQuestions.rows.forEach((parent) => {
         const question = {
-          questionId: parent.question_id,
+          questionNumber: parent.question_number,
           questionText: parent.question_text,
+          noFairUse: parent.no_fair_use,
+          noInfringement: parent.no_infringement,
+          yesFairUse: parent.yes_fair_use,
+          yesInfringement: parent.yes_infringement,
+          branchOn: parent.branch_on === 'null' ? "" : parent.branch_on, 
+          veryStrongIndication: parent.very  === 'null' ? "" : parent.very,
+          strongIndication: parent.strong  === 'null' ? "" : parent.strong,
+          moderateIndication: parent.moderate  === 'null' ? "" : parent.moderate,
+          weakIndication: parent.weak  === 'null' ? "" : parent.weak,
+          noIndication: parent.no  === 'null' ? "" : parent.no,
           subQuestions: []
         }
 
         // find children for this parent...
         childQuestions.rows.forEach((child) => {  
-          if(child.parent_question_id.trim() === parent.question_id.trim()) {
+          if(child.parent_question.trim() === parent.question_number.trim()) {
             
             const subQuestion = {
-              questionId: child.question_id,
-              questionText: child.question_text
+              questionNumber: child.question_number,
+              questionText: child.question_text,
+              noFairUse: child.no_fair_use,
+              noInfringement: child.no_infringement,
+              yesFairUse: child.yes_fair_use,
+              yesInfringement: child.yes_infringement,
+              veryStrongIndication: child.very  === 'null' ? "" : child.very,
+              strongIndication: child.strong  === 'null' ? "" : child.strong,
+              moderateIndication: child.moderate  === 'null' ? "" : child.moderate,
+              weakIndication: child.weak  === 'null' ? "" : child.weak,
+              noIndication: child.no  === 'null' ? "" : child.no,
             }
             // ... and push them into subQuestions
             question.subQuestions.push(subQuestion);
@@ -77,42 +102,38 @@ const childQuery = `
 };
 
 questionsController.uploadQuestions = (req, res, next) => {
-  if (req.file) {
-    const questions = req.file.buffer.toString().split('\n');
-    
-    // validate all questions in the file before saving to the db
-    if (!questions.length) {
-      const error = new Error('No questions found in uploaded file')
-      error.status = 400;
-      return next(error)
-    }
+  const config = cfg.get('fileValidation.questions');
 
-    questions.forEach( rec  => {
-      const fields = rec.split(',');
-      if(fields.length < 3 || fields.length > 4) {
-        const error = new Error(`Invalid number of fields. Question ID:${fields[0]} `);
-        error.status = 400;
-        return next(error)
-      }
-    });
+  if (res.locals.validated[config.filename].length) {
+    const questions = res.locals.validated[config.filename];    
 
     // keep it simple -- drop the questions table and reload from the file
     dbdb.query({ text: `truncate table questions` })
+    .then(result => dbdb.query({ text: `truncate table answer_matrix`}))
     .then(result => {
-      questions.forEach( question => {
-        const fields = question.split(',');
+      questions.forEach( (question, order) => {
+        const fields = CSVtoArray(question);
+
+        const hasParent = fields[0].match(/^(\d+)[a-z]$/);
+        const parent = hasParent ? hasParent[1] : null;
+
+        // we aren't using auto increment for questions._id so we can use it to be specific about the order of the questions
+        const questionsInsert = `
+          INSERT INTO questions (_id, question_number, question_text, no_fair_use, no_infringement, yes_infringement, yes_fair_use, branch_on, parent_question)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`;
   
-        // tack a null for parent_question_id on parent questions
-        if(fields.length < 4) fields.push(null);
-  
-        const insert = `
-          INSERT INTO questions (question_id, question_text, weight, parent_question_id)
-          VALUES ($1, $2, $3, $4)`;
-  
-        dbdb.query({ text: insert, values: [...fields] });
+        dbdb.query({ text: questionsInsert, values: [order + 1, fields[0], fields[1], fields[2], fields[3], fields[4], fields[5], fields[11], parent] });
+
+        // we aren't using auto increment for answer_matrix._id so we can use it to be specific about the order of the matrix
+        const answerMatrixInsert = `
+        INSERT INTO answer_matrix (_id, question_number, very, strong, moderate, weak, no)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)`;
+
+        dbdb.query({ text: answerMatrixInsert, values: [ order + 1, fields[0], fields[6], fields[7], fields[8], fields[9], fields[10] ]});
+
       });
   
-      console.log('questions: ', questions);
+      return next();
     })
     .catch(err => {
       const error = new Error(err);
