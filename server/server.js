@@ -8,6 +8,7 @@ const flash = require('req-flash');
 const upload = require('./util/multer');
 const passport = require('./controllers/passport');
 const questionsController = require('./controllers/questionsController');
+const validationController = require('./controllers/fileValidation');
 const usersController = require('./controllers/usersController');
 const accountsController = require('./controllers/accountsController');
 const { pool, connect } = require('./models/dbModel');
@@ -22,7 +23,6 @@ app.use(morgan('localtz'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '../dist/')));
-app.use((req, res, next) => { logger.info(req.body); next(); });
 
 app.use(session(sessionConfig));
 app.use(passport.initialize());
@@ -39,12 +39,14 @@ app.use(express.static('dist'));
 
 app.post('/api/login',
    passport.authenticate('local'), // will return 401 Unauthorized on failure
+   questionsController.getAllQuestions,
    (req, res) => { // login was successful
-    res.status(200);
+    res.status(200).send(res.locals.questions);
    }
 );
 
 app.get('/db42/*', 
+   // accountsController.checkAuthentication,
     (req, res) => {
         res.sendFile(path.resolve(__dirname, '../admin.html')); 
     });
@@ -57,9 +59,10 @@ app.get('/api/questions',
 
 app.post('/api/uploadQuestions',
     upload.single('questions'),
+    validationController.validateFile('questions'),
     questionsController.uploadQuestions,
     (req, res, next) => {
-        res.status(200).send('success');
+        res.status(200).redirect('/db42/');
     }
 );   
 
@@ -71,9 +74,10 @@ app.get('/api/accounts',
 
 app.post('/api/uploadAccounts',
     upload.single('accounts'),
+    validationController.validateFile('accounts'),
     accountsController.uploadAccounts,
     (req, res, next) => {
-        res.status(200).redirect('/admin/');
+        res.status(200).redirect('/db42/');
     }
 ); 
 

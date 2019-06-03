@@ -112,15 +112,32 @@ CREATE TABLE "assessments" (
 );
 
 
-
 CREATE TABLE "questions" (
-	"_id" serial NOT NULL,
-	"question_id" varchar NOT NULL UNIQUE,
+	"_id" integer NOT NULL,
+	"question_number" varchar NOT NULL,
 	"question_text" varchar NOT NULL,
-	"create_date" DATE NOT NULL DEFAULT Now(),
-	"weight" integer NOT NULL,
-	"parent_question_id" varchar,
-	CONSTRAINT questions_pk PRIMARY KEY ("_id")
+	"create_date" DATE NOT NULL DEFAULT NOW(),
+	"no_fair_use" numeric(2,1) NOT NULL,
+	"no_infringement" numeric(2,1) NOT NULL,
+	"yes_fair_use" numeric(2,1) NOT NULL,
+	"yes_infringement" numeric(2,1) NOT NULL,
+	"branch_on" varchar,
+	"parent_question" varchar,
+	CONSTRAINT "questions_pk" PRIMARY KEY ("_id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+CREATE TABLE "answer_matrix" (
+	"_id" integer NOT NULL,
+	"question_number" varchar NOT NULL,
+	"very" varchar,
+	"strong" varchar,
+	"moderate" varchar,
+	"weak" varchar,
+	"no" varchar,
+	CONSTRAINT "answer_matrix_pk" PRIMARY KEY ("_id")
 ) WITH (
   OIDS=FALSE
 );
@@ -135,20 +152,20 @@ CREATE TABLE "session" (
 );
 
 COPY accounts (username, password) FROM stdin;
-'smozingo'	'password'
-'nkatz'	'password'
+smozingo	password
+nkatz	password
 \.
 
-COPY questions (question_id, question_text,  weight) FROM stdin;
-1	Is this video dope?	1
-2	Is this video funky?	1
-\.
+-- COPY questions (question_number, question_text,  weight) FROM stdin;
+-- 21	Is this video dope?	1
+-- 22	Is this video funky?	1
+-- \.
  
 
-COPY questions (question_id, question_text,  parent_question_id, weight) FROM stdin;
-1a	Is this video too dope?	1	1
-1b	Is this video the dopest?	1	1
-\.
+-- COPY questions (question_number, question_text,  parent_question_number, weight) FROM stdin;
+-- 21a	Is this video too dope?	1	21
+-- 21b	Is this video the dopest?	1	21
+-- \.
 
 ALTER TABLE "analysis_session" ADD CONSTRAINT "analysis_session_fk1" FOREIGN KEY ("user_id") REFERENCES "users"("_id");
 ALTER TABLE "analysis_session" ADD CONSTRAINT "analysis_session_fk2" FOREIGN KEY ("copyrighted_content_id") REFERENCES "content"("_id");
@@ -159,9 +176,7 @@ ALTER TABLE "analysis_session" ADD CONSTRAINT "analysis_session_fk4" FOREIGN KEY
 
 ALTER TABLE "content" ADD CONSTRAINT "content_fk0" FOREIGN KEY ("file_type_id") REFERENCES "file_types"("_id");
 
-ALTER TABLE "questions" ADD CONSTRAINT "questions_fk0" FOREIGN KEY ("parent_question_id") REFERENCES "questions"("question_id");
-
-ALTER TABLE "questions" ADD CONSTRAINT "question_id_text_uq" UNIQUE ("question_id", "question_text");
+ALTER TABLE "questions" ADD CONSTRAINT "question_number_text_uq" UNIQUE ("question_number", "question_text");
 
 --
 -- Name: public; Type: ACL; Schema: -; Owner: mmadmin

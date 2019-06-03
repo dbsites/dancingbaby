@@ -1,4 +1,6 @@
 const dbdb = require('../models/dbModel');
+const cfg = require('config');
+const bcrypt = require('bcrypt');
 
 const accountsController = {};
 
@@ -47,8 +49,13 @@ accountsController.getAllAccounts = (req, res, next) => {
 };
 
 accountsController.uploadAccounts = (req, res, next) => {
-  if (req.file) {
-    const accounts = req.file.buffer.toString().split('\n');
+
+  const config = cfg.get('fileValidation.accounts');
+  const saltRounds = 10;
+
+  if (res.locals.validated[config.filename].length) {
+    const accounts = res.locals.validated[config.filename];    
+
     
     // validate all accounts in the file before saving to the db
     if (!accounts.length) {
@@ -74,11 +81,15 @@ accountsController.uploadAccounts = (req, res, next) => {
       accounts.forEach( account => {
         const fields = account.split(',');
 
-        const insert = `
+        bcrypt.hash(fields[1].trim(), saltRounds, function(err, hashedPassword) {
+          const insert = `
           INSERT INTO accounts (username, password)
           VALUES ($1, $2)`;
   
-        dbdb.query({ text: insert, values: [fields[0].trim(), fields[1].trim()] });
+          dbdb.query({ text: insert, values: [ fields[0].trim(), hashedPassword ] });
+        });
+
+        
       });
   
       return next();
@@ -97,6 +108,14 @@ accountsController.uploadAccounts = (req, res, next) => {
   }   
 };
 
+accountsController.checkAuthentication = (req, res, next) => {
+  if(req.isAuthenticated()) {
+    // thanks to passport, req.isAuthenticated() will return true if user is logged in
+    next();
+  } else {
+    res.redirect("/");
+  }
+}
 
 module.exports = accountsController;
 
