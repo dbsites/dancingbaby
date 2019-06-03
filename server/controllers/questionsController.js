@@ -10,20 +10,16 @@ questionsController.getAllQuestions = (req, res, next) => {
 
   async function getQuestions() {
     const parentQuery = `
-    SELECT q.question_number, question_text, no_fair_use, no_infringement, yes_fair_use, yes_infringement, branch_on, very, strong, moderate, weak, no
-    FROM questions q
-    INNER JOIN answer_matrix a
-    ON q._id = a._id
+    SELECT question_number, question_text, no_fair_use, no_infringement, yes_fair_use, yes_infringement, branch_on
+    FROM questions 
     WHERE parent_question is null
-    ORDER BY q._id`;
+    ORDER BY _id`;
 
 const childQuery = `
-    SELECT q.question_number, question_text, no_fair_use, no_infringement, yes_fair_use, yes_infringement, parent_question, very, strong, moderate, weak, no
-    FROM questions q
-    INNER JOIN answer_matrix a
-    ON q._id = a._id
+    SELECT question_number, question_text, no_fair_use, no_infringement, yes_fair_use, yes_infringement, parent_question
+    FROM questions 
     WHERE parent_question is not null
-    ORDER BY q._id`;
+    ORDER BY _id`;
 
     let questions = [];
     let parentQuestions = await dbdb.query({ text: parentQuery });
@@ -41,11 +37,6 @@ const childQuery = `
           yesFairUse: parent.yes_fair_use,
           yesInfringement: parent.yes_infringement,
           branchOn: parent.branch_on === 'null' ? "" : parent.branch_on, 
-          veryStrongIndication: parent.very  === 'null' ? "" : parent.very,
-          strongIndication: parent.strong  === 'null' ? "" : parent.strong,
-          moderateIndication: parent.moderate  === 'null' ? "" : parent.moderate,
-          weakIndication: parent.weak  === 'null' ? "" : parent.weak,
-          noIndication: parent.no  === 'null' ? "" : parent.no,
           subQuestions: []
         }
 
@@ -60,11 +51,6 @@ const childQuery = `
               noInfringement: child.no_infringement,
               yesFairUse: child.yes_fair_use,
               yesInfringement: child.yes_infringement,
-              veryStrongIndication: child.very  === 'null' ? "" : child.very,
-              strongIndication: child.strong  === 'null' ? "" : child.strong,
-              moderateIndication: child.moderate  === 'null' ? "" : child.moderate,
-              weakIndication: child.weak  === 'null' ? "" : child.weak,
-              noIndication: child.no  === 'null' ? "" : child.no,
             }
             // ... and push them into subQuestions
             question.subQuestions.push(subQuestion);

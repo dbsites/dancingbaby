@@ -1,6 +1,8 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const db = require('../models/dbModel');
+const bcrypt = require('bcrypt');
+const { logger } = require('../util/loggingUtil');
 
 passport.use(new LocalStrategy((username, password, cb) => {
   db.query('SELECT _id, username, password FROM accounts WHERE username=$1', [username], (err, result) => {
@@ -14,19 +16,21 @@ passport.use(new LocalStrategy((username, password, cb) => {
     if(result.rows.length > 0) {
       const account = result.rows[0];
 
-      if(password === account.password) {
-        cb(null, { id: account._id, username: account.username })
-      } else {
-        cb(null, false)
-      }
-      // Add bcrypt in when we have a way to encrypt passwords in account
-      // bcrypt.compare(password, account.password, function(err, res) {
-      //   if(res) {
-      //     cb(null, { id: account._id, username: account.username })
-      //    } else {
-      //     cb(null, false)
-      //    }
-      //  })
+      bcrypt.compare(password, account.password, function(err, res) {
+        if (err) {
+          console.error('Error when checking hashed password', err)
+          return cb(err);
+        }
+
+        if(res) {
+          console.log(`Found username:[${account.username}] pw:[${password}]`);
+          cb(null, { id: account._id, username: account.username })
+         } else {
+          console.log(`Did not find username:[${account.username}] pw:[${password}]`);
+          cb(null, false)
+         }
+         
+       })
 
      } else {
        // username wasn't found
@@ -36,13 +40,14 @@ passport.use(new LocalStrategy((username, password, cb) => {
 }))
 
 passport.serializeUser((user, done) => {
-  done(null, user._id)
+  console.log(user);
+  done(null, user.id)
 })
 
 passport.deserializeUser((id, cb) => {
-  db.query('SELECT _id, username FROM users WHERE id = $1', [parseInt(id, 10)], (err, results) => {
+  db.query('SELECT _id, username FROM accounts WHERE _id = $1', [parseInt(id, 10)], (err, results) => {
     if(err) {
-      winston.error('Error when selecting user on session deserialize', err)
+      logger.error('Error when selecting accounts on session deserialize', err)
       return cb(err)
     }
 

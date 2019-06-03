@@ -1,0 +1,30 @@
+{
+    "file": "default",
+    "session-secret": "448e9Bec1035C2959Aa45521effa32d48a3deaa80956740276dEa06e781432D5",
+    "fileValidation": {
+        "questions": {
+            "filename": "questions",
+            "delimiter": ",",
+            "trimFields": "true",
+            "minFields": 12,
+            "maxFields": 12,
+            "hasHeader": "true",
+            "minRecords": 1,
+            "maxRecords": 0,
+            "fieldNames": ["number", "text", "noFairUse", "noInfringement", "yesInfringement", "yesFairUse", "very", "strong", "moderate", "weak", "no", "branchOn"],
+            "regex": ["^\\d+[a-z]*$", ".+", "^\\.*\\d$", "^\\.*\\d$", "^\\.*\\d$", "^\\.*\\d$", "^No|Yes|null$", "^No|Yes|null$", "^No|Yes|null$", "^No|Yes|null$", "^No|Yes|null$", "^No|Yes|null$"]
+        },
+        "accounts": {
+            "filename": "accounts",
+            "delimiter": ",",
+            "trimFields": "true",
+            "minFields": 2,
+            "maxFields": 2,
+            "hasHeader": "true",
+            "minRecords": 1,
+            "maxRecords": 0,
+            "fieldNames": ["username", "password"],
+            "regex": ["^[a-zA-Z][a-zA-Z0-9\\-\\_]*$", "^[a-zA-Z0-9]*$"]
+        }
+    }
+}
