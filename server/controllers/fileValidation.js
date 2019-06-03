@@ -18,6 +18,8 @@ inputValidationController.validateFile = filename => (req, res, next) => {
       return next(error)
     }
 
+
+    // set up our results object in the response
     if ( !res.locals.validated ) {
       res.locals.validated = {};
     }
@@ -30,6 +32,7 @@ inputValidationController.validateFile = filename => (req, res, next) => {
     const delimiter = config.delimiter || ',';
 
     if ( config.hasHeader === 'true' ) {
+
       const headerLine = lines.shift();
 
       // verify header
@@ -57,7 +60,7 @@ inputValidationController.validateFile = filename => (req, res, next) => {
       let fields = [];
       if ( delimiter === ',') {
         fields = CSVtoArray(lines[i]);
-
+      
         if ( !fields ) {
           const error = new Error(`Record ${i} is not well formed CSV string.`)
           error.status = 400;
