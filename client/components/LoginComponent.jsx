@@ -17,7 +17,7 @@ import dbLogo from '../assets/svg/db_logo_greenyellow.svg';
 
 let LoginComponent = ( props ) =>
 {
-    const { openContact, submit } = props;
+    const { openContact, handleSubmit, onSubmit } = props;
 
     return (
         <div>
@@ -28,13 +28,13 @@ let LoginComponent = ( props ) =>
 
             <div className='contactLink' onClick={openContact} id='contact'>contact</div>
 
-            <form className='loginForm' onSubmit={submit}>
+            <form className='loginForm' onSubmit={handleSubmit( onSubmit )}>
 
                 <div className='loginFieldLeft'>
-                    <label htmlFor='userName'>USERNAME</label>
+                    <label htmlFor='username'>USERNAME</label>
                     <Field
                         className='inputField'
-                        name='userName'
+                        name='username'
                         component='input'
                         type='text'
                         placeholder="USERNAME"
@@ -47,21 +47,20 @@ let LoginComponent = ( props ) =>
                         className='inputField'
                         name='password'
                         component='input'
-                        type='text'
+                        type='password'
                         placeholder="PASSWORD"
                     />
                 </div>
 
-                {/*<button type='submit'>ENTER</button>*/}
+                <div>
+                    <button type='submit'>ENTER</button>
+                </div>
 
             </form>
         </div>
     );
 };
 
-LoginComponent = reduxForm({
-    // a unique name for the form
-    form: 'login'
-})(LoginComponent);
+LoginComponent = reduxForm({ form: 'login' })( LoginComponent );
 
 export default LoginComponent;
