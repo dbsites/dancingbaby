@@ -13,44 +13,41 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import LoginComponent from '../components/LoginComponent.jsx';
+import actions from '../actions/actions';
+import userActions from '../actions/userActions';
 
 
 const mapStateToProps = store =>
 ({
-    totalCards:   store.cards.totalCards,
-    totalMarkets: store.cards.totalMarkets
+    // totalCards:   store.cards.totalCards,
+    // totalMarkets: store.cards.totalMarkets
 });
 
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch =>
+({
+    submitLogin: ( loginData ) =>
+    {
+        dispatch(userActions.userLoginRoute( loginData ));
+    }
+});
 
 
 class MainContainer extends Component
 {
-    componentDidMount()
-    {
-        // SVGLib.addSVGByID('header', SVGLib.GREEN_BABY_STATIC );
-        console.log( "COMPONENT MOUNTED" );
-    };
 
     openContact = ( e ) =>
     {
-        if( e ) e.stopImmediatePropagation();
         console.log( "OPEN CONTACT CLICKED" );
     };
 
-    submit = ( e ) =>
-    {
-        if( e ) e.stopImmediatePropagation();
-        console.log( "SUBMIT CLICKED" );
-    };
 
     render()
     {
         return(
           <div className="container">
             <div className="outerBox">
-                <LoginComponent submit={this.submit} openContact={this.openContact}/>
+                <LoginComponent onSubmit={this.props.submitLogin} openContact={this.openContact}/>
             </div>
           </div>
         )
