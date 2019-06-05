@@ -20,16 +20,18 @@ let DisclaimerComponent = ( props ) =>
     const { openContact, handleSubmit, onSubmit } = props;
 
     return (
-        <div>
-
-            <div className='title'>DISCLAIMER</div>
+        <div className="disclaimerComponent">
 
             <div className='logoUpperRighContainer'>
                 <img src={dbLogo} className='logoSmallUpperRight' alt='logo' />
             </div>
 
+            <div className='titleContainer'>
+                <div className='title'>DISCLAIMER</div>
+            </div>
+
             <div className='disclaimerBox'>
-                <div>
+                <div className='checkBoxContainer'>
                     <div className='checkbox'>
                         <div className='checkMark'>
                             <img src={checkmark} className='checkmark' alt='checkmark' />
@@ -37,7 +39,7 @@ let DisclaimerComponent = ( props ) =>
                     </div>
                     <div>I understand that this assessment tool is for demonstration purposes only and does not constitute legal advice.</div>
                 </div>
-                <div>
+                <div className='checkBoxContainer'>
                     <div className='checkbox'>
                         <div className='checkMark'>
                             <img src={checkmark} className='checkmark' alt='checkmark' />
@@ -45,7 +47,7 @@ let DisclaimerComponent = ( props ) =>
                     </div>
                     <div>I understand that the information contained in this demonstration is confidential, copyrighted, may constitute trade secrets, and may not be shared with others without permission</div>
                 </div>
-                <div>
+                <div className='checkBoxContainer'>
                     <div className='checkbox'>
                         <div className='checkMark'>
                             <img src={checkmark} className='checkmark' alt='checkmark' />
