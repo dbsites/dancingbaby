@@ -15,6 +15,11 @@ const initialState = {
     questions: [],
     currentQuestion: '',
     totalQuestions: 0,
+    firstName:'',
+    lastName:'',
+    orgName:'',
+    copyrightContent:{ url:'', title:'', type:'' },
+    suspectedContent:{ url:'', title:'', type:'' },
 };
 
 
@@ -34,6 +39,7 @@ const assessmentReducer = ( state=initialState, action ) =>
                 questions
             };
 
+        // going to update question count, current fairuse value, update progress bar.
         case types.QUESTION_ANSWERED:
             return {
                 ...state
