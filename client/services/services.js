@@ -30,20 +30,24 @@ Services.userLoginRoute = ( loginData, onSuccess, onError ) =>
         headers: {'Content-Type': 'application/json'},
     })
     .then( res =>
+    {
+        if( res.ok )
         {
-            if(res.status === 200)
-            {
-               if( onSuccess ) onSuccess( res );
-            }
-            else
-            {
-               if( onError ) onError( res );
-            }
+            return res.json();
+        }
+
+        if( onError ) onError( res );
+    })
+    .then( res =>
+        {
+            console.log( "RES: ", res );
+
+            if( onSuccess ) onSuccess( res );
         }
     )
     .catch( err =>
         {
-            if( onError ) onError( res )
+            if( onError ) onError( err )
         }
     );
 };
