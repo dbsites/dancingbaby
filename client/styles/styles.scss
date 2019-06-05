@@ -34,6 +34,8 @@ body
 
 .logoUpperRighContainer
 {
-    display: flex;
-    align-items: inherit;
+    display: block;
+    position: absolute;
+    right: 20px;
+    top: 20px;
 }

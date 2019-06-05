@@ -1,32 +1,25 @@
 @import "variables";
 
 
-.checkmark
+.disclaimerComponent
 {
-  width:60px;
+
 }
 
-.contactLink
+.disclaimerBox
 {
-  padding-top: 10px;
-  text-align: center;
-  color: #b3b3b3;
-  //font-family: $ComfortRegular;
-  font-size: 20px;
-  text-decoration: underline;
-  cursor: pointer;
-}
+  font-size: 32px;
+  font-family: $LatoMedium;
 
-.loginContainer
-{
-  width: 1142px;
-  background-color: blueviolet;
-}
-
-.loginForm
-{
   display: flex;
   margin-top: 60px;
+
+  border-radius: 12px;
+  border: none;
+
+  padding: 60px;
+
+  background-color: #CCCCCC;
 
   button
   {
@@ -38,37 +31,23 @@
   }
 }
 
-.loginField
+.checkBoxContainer
 {
-  font-size: 36px;
-
-  width: 420px;
-  float: left;
-
-  label
-  {
-    display: block;
-  }
-
-  .inputField
-  {
-    display: block;
-
-    width: 420px;
-    height: 80px;
-
-    padding: 10px;
-    font-size: 30px;
-
-    border-radius: 12px;
-    border: none;
-
-    background-color: #e6e6e6;
-  }
+  display: flex;
+  width: 100%;
 }
 
-.loginFieldLeft
+.checkbox
 {
-  @extend .loginField;
-  margin-right: 340px;
+  background-color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+}
+
+.checkmark
+{
+  width: 80px;
+  top: -26px;
+  position: relative;
 }
