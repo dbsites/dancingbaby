@@ -12,15 +12,17 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import LoginComponent from '../components/LoginComponent.jsx';
+import LoginComponent from '../components/LoginComponent';
+import DisclaimerComponent from '../components/DisclaimerComponent';
+
 import actions from '../actions/actions';
 import userActions from '../actions/userActions';
+import * as strings from '../constants/strings';
 
 
 const mapStateToProps = store =>
 ({
-    // totalCards:   store.cards.totalCards,
-    // totalMarkets: store.cards.totalMarkets
+    currentScreen:store.screens.currentScreen
 });
 
 
@@ -41,13 +43,35 @@ class MainContainer extends Component
         console.log( "OPEN CONTACT CLICKED" );
     };
 
+    getCurrentScreen = () =>
+    {
+        switch( this.props.currentScreen )
+        {
+            case strings.SCREEN_LOGIN:
+                return <LoginComponent onSubmit={this.props.submitLogin} openContact={this.openContact}/>;
+
+            case strings.SCREEN_DISCLAIMER:
+                return <DisclaimerComponent/>;
+
+            case strings.SCREEN_ASSESSMENT_GETINFO:
+                return <DisclaimerComponent/>;
+
+            case strings.SCREEN_ASSESSMENT_QUESTIONS:
+                return <DisclaimerComponent/>;
+
+            case strings.SCREEN_ASSESSMENT_RESULTS:
+                return <DisclaimerComponent/>;
+
+        }
+    };
+
 
     render()
     {
         return(
           <div className="container">
             <div className="outerBox">
-                <LoginComponent onSubmit={this.props.submitLogin} openContact={this.openContact}/>
+                { this.getCurrentScreen() }
             </div>
           </div>
         )
