@@ -20,7 +20,7 @@ const initialState = {
 const userReducer = ( state=initialState, action ) =>
 {
 
-    // console.log( "USER REDUCER: ", action );
+    console.log( "USER REDUCER: ", action );
 
     switch( action.type )
     {
