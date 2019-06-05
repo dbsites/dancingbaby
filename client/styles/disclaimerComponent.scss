@@ -6,12 +6,22 @@
 
 }
 
+.wrapper {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: 80%;
+  background-color: #fff;
+  color: #444;
+}
+
 .disclaimerBox
 {
-  font-size: 32px;
+  font-size: 20px;
   font-family: $LatoMedium;
 
-  display: flex;
+  display: grid;
+  grid-gap: 40px;
+
   margin-top: 60px;
 
   border-radius: 12px;
@@ -31,10 +41,29 @@
   }
 }
 
+.top
+{
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.middle
+{
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.bottom
+{
+  grid-column: 1;
+  grid-row: 3;
+}
+
 .checkBoxContainer
 {
   display: flex;
   width: 100%;
+  padding-right: 20px;
 }
 
 .checkbox
@@ -43,6 +72,7 @@
   width: 60px;
   height: 60px;
   border-radius: 12px;
+  margin-right: 40px;
 }
 
 .checkmark
