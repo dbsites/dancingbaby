@@ -1,16 +1,9 @@
 @import "variables";
 
 
-.logo
+.checkmark
 {
-  width: 448px;
-}
-
-.logoContainer
-{
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width:60px;
 }
 
 .contactLink
@@ -35,18 +28,13 @@
   display: flex;
   margin-top: 60px;
 
-  //align-items: center;
-  //justify-content: center;
-
   button
   {
-    //float: left;
     display: block;
     font-size: 60px;
     background-color: transparent;
     color: #999999;
     border: none;
-    //text-align: center;
   }
 }
 
@@ -84,5 +72,3 @@
   @extend .loginField;
   margin-right: 340px;
 }
-
-//.label
