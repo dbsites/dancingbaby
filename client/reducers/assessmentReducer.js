@@ -13,7 +13,8 @@ import * as types from '../constants/actionTypes';
 
 const initialState = {
     questions: [],
-    currentQuestion: '',
+    currentQuestion:{},
+    currentQuestionIndex: 0,
     totalQuestions: 0,
     firstName:'',
     lastName:'',
@@ -32,11 +33,31 @@ const assessmentReducer = ( state=initialState, action ) =>
         // going to grab questions from successful login here and add them to state
         case types.USER_LOGIN_SUCCESS:
             const questions = getQuestions( action.payload );
-
-            console.log( "ASSESSMENT REDUCER QUESTIONS: ", questions );
             return {
                 ...state,
                 questions
+            };
+
+        case types.ASSESSMENT_INFO_SUBMIT:
+            const info = action.payload;
+            return {
+                ...state,
+                ...info
+            };
+
+        case types.ASSESSMENT_START:
+            return {
+                ...state
+            };
+
+        case types.ASSESSMENT_RESULTS:
+            return {
+                ...state
+            };
+
+        case types.ASSESSMENT_SUBMIT:
+            return {
+                ...state
             };
 
         // going to update question count, current fairuse value, update progress bar.
