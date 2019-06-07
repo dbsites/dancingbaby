@@ -9,6 +9,7 @@
  * ************************************
  */
 
+
 const routes = {
     userLoginRoute: '/api/login',
     assessmentRoute: '/api/assessment',
@@ -50,6 +51,42 @@ Services.userLoginRoute = ( loginData, onSuccess, onError ) =>
             if( onError ) onError( err )
         }
     );
+};
+
+
+Services.assessmentSubmitRoute = ( assessmentData, onSuccess, onError ) =>
+{
+    const data = JSON.stringify( assessmentData );
+
+    console.log( "ASSESSMENT COMPLETE CALLED: ", data );
+
+    fetch(routes.assessmentRoute,
+        {
+            method: 'POST',
+            body: data,
+            headers: {'Content-Type': 'application/json'},
+        })
+        .then( res =>
+        {
+            if( res.ok )
+            {
+                return res.json();
+            }
+
+            if( onError ) onError( res );
+        })
+        .then( res =>
+            {
+                console.log( "RES: ", res );
+
+                if( onSuccess ) onSuccess( res );
+            }
+        )
+        .catch( err =>
+            {
+                if( onError ) onError( err )
+            }
+        );
 };
 
 export default Services
