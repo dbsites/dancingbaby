@@ -45,3 +45,15 @@ body
     opacity: 0;
     visibility: hidden;
 }
+
+.divTransition
+{
+    transition:         0.5s;
+    -webkit-transition: 0.5s;
+}
+
+.disabled
+{
+    pointer-events: none;
+    opacity: .5;
+}
