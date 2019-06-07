@@ -14,7 +14,8 @@ import * as strings from '../constants/strings';
 
 
 const initialState = {
-    currentScreen: strings.SCREEN_LOGIN
+    currentScreen: strings.SCREEN_LOGIN,
+    currentScreenIndex: 0
 };
 
 
@@ -25,10 +26,15 @@ const screenReducer = ( state=initialState, action ) =>
 
     switch( action.type )
     {
-        case types.USER_LOGIN_SUCCESS:
+
+        case types.NEXT_SCREEN:
+
+            const newIndex = state.currentScreenIndex < strings.SCREEN_LIST.length -1 ? state.currentScreenIndex + 1 : strings.SCREEN_LIST.length -1;
+
             return {
                 ...state,
-                currentScreen:strings.SCREEN_DISCLAIMER
+                currentScreenIndex:newIndex,
+                currentScreen: strings.SCREEN_LIST[newIndex]
             };
 
         default:
