@@ -13,47 +13,40 @@ import * as types from '../constants/actionTypes';
 import * as screenActions from './screenActions';
 import Services from '../services/services';
 
-const actions = {};
 
-
-
-const userLoginSuccess = ( result ) =>
+const submitAssessmentSuccess = ( result ) =>
 ({
-    type: types.USER_LOGIN_SUCCESS,
+    type: types.ASSESSMENT_UPDATE_SUCCESS,
     payload: result
 });
 
 
-const userLoginError = ( result ) =>
+const submitAssessmentError = ( result ) =>
 ({
-    type: types.USER_LOGIN_ERROR,
+    type: types.ASSESSMENT_UPDATE_ERROR,
     payload: result
 });
 
-
-const userLoginUnauthorized = ( result ) =>
+export const submitAssessmentInfo = ( info ) =>
 ({
-    type: types.USER_LOGIN_UNAUTHORIZED,
-    payload: result
+    type: types.ASSESSMENT_INFO_SUBMIT,
+    payload: info
 });
 
 
-actions.userLoginRoute = ( loginData ) => dispatch =>
+export const submitCompletedAssessment = ( data ) => dispatch =>
 {
-    Services.userLoginRoute( loginData,
+    Services.assessmentSubmitRoute( data,
         ( res ) => // on success
         {
             console.log( "ON SUCCESS IN ACTION: ", res );
-            dispatch( userLoginSuccess( res ) );
+            dispatch( submitAssessmentSuccess( res ) );
             dispatch( screenActions.nextScreen() );
         },
         ( res ) => // on error or unauthorized
         {
             console.log( "ON ERROR IN ACTION: ", res );
-            dispatch(userLoginError( res ))
+            dispatch(submitAssessmentError( res ))
         }
     );
 };
-
-
-export default actions;
