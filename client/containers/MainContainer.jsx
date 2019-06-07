@@ -14,9 +14,11 @@ import {connect} from 'react-redux';
 
 import LoginComponent from '../components/LoginComponent';
 import DisclaimerComponent from '../components/DisclaimerComponent';
+import AssessmentInfoComponent from '../components/AssessmentInfoComponent';
 
-import actions from '../actions/actions';
 import userActions from '../actions/userActions';
+import * as assessmentActions from '../actions/assessmentActions';
+import * as screenActions from '../actions/screenActions';
 import * as strings from '../constants/strings';
 
 
@@ -31,6 +33,16 @@ const mapDispatchToProps = dispatch =>
     submitLogin: ( loginData ) =>
     {
         dispatch(userActions.userLoginRoute( loginData ));
+    },
+
+    submitAssessmentInfo: ( data ) =>
+    {
+        dispatch(assessmentActions.submitAssessmentInfo( data ));
+    },
+
+    nextScreen: () =>
+    {
+        dispatch(screenActions.nextScreen());
     }
 });
 
@@ -48,13 +60,13 @@ class MainContainer extends Component
         switch( this.props.currentScreen )
         {
             case strings.SCREEN_LOGIN:
-                return <LoginComponent onSubmit={this.props.submitLogin} openContact={this.openContact}/>;
+                return <LoginComponent onSubmit={this.props.submitLogin} openContact={this.openContact} />;
 
             case strings.SCREEN_DISCLAIMER:
-                return <DisclaimerComponent/>;
+                return <DisclaimerComponent nextScreen={this.props.nextScreen} />;
 
             case strings.SCREEN_ASSESSMENT_GETINFO:
-                return <DisclaimerComponent/>;
+                return <AssessmentInfoComponent onSubmit={this.props.submitAssessmentInfo} />;
 
             case strings.SCREEN_ASSESSMENT_QUESTIONS:
                 return <DisclaimerComponent/>;
@@ -64,7 +76,6 @@ class MainContainer extends Component
 
         }
     };
-
 
     render()
     {
