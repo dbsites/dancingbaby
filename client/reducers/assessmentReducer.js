@@ -10,17 +10,32 @@
  */
 
 import * as types from '../constants/actionTypes';
+import * as strings from '../constants/strings';
+
 
 const initialState = {
+
+    // questions
     questions: [],
     currentQuestion:{},
     currentQuestionIndex: 0,
     totalQuestions: 0,
-    firstName:'',
-    lastName:'',
-    orgName:'',
-    copyrightContent:{ url:'', title:'', type:'' },
-    suspectedContent:{ url:'', title:'', type:'' },
+
+    // assessment info
+    [strings.ASSESSMENT_INFO_IDS.FIRST_NAME]:'',
+    [strings.ASSESSMENT_INFO_IDS.LAST_NAME]:'',
+    [strings.ASSESSMENT_INFO_IDS.ORG_NAME]:'',
+
+    // copyrighted content
+    [strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHTED]:'',
+    [strings.ASSESSMENT_INFO_IDS.TITLE_COPYRIGHTED]:'',
+    [strings.ASSESSMENT_INFO_IDS.FILETYPE_COPYRIGHTED]:'',
+
+    // suspected content
+    [strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED]:'',
+    [strings.ASSESSMENT_INFO_IDS.TITLE_SUSPECTED]:'',
+    [strings.ASSESSMENT_INFO_IDS.FILETYPE_SUSPECTED]:'',
+
 };
 
 
@@ -102,4 +117,23 @@ const getQuestions = ( list ) =>
     }
 
     return questions;
+};
+
+/*
+firstName(pin): '' => 'xcvbg'
+lastName(pin): '' => 'sdfg'
+orgName(pin): '' => 'asdf'
+url_copyrighted(pin): 'sdf'
+contentTitle_copyrighted(pin): 'sdf'
+fileType_copyrighted(pin): '0000ff'
+url_suspected(pin): 'sdfsdf'
+contentTitle_suspected(pin): 'sdfsdfsdf'
+fileType_suspected(pin): '00ff00'
+ */
+
+const getAssessmentInfo = ( info ) =>
+{
+    const infoObj = {
+
+    };
 };
