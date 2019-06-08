@@ -27,11 +27,19 @@ const submitAssessmentError = ( result ) =>
     payload: result
 });
 
-export const submitAssessmentInfo = ( info ) =>
+
+const submitAssessmentInfo = ( info ) =>
 ({
     type: types.ASSESSMENT_INFO_SUBMIT,
     payload: info
 });
+
+export const setAssessmentInfo = ( info ) => ( dispatch ) =>
+{
+    console.log( "SET ASSESSMENT INFO" );
+    dispatch( submitAssessmentInfo( info ));
+    dispatch( screenActions.nextScreen() );
+};
 
 
 export const submitCompletedAssessment = ( data ) => dispatch =>
