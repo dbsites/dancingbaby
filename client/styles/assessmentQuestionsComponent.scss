@@ -1,0 +1,189 @@
+@import "variables";
+@import "styles";
+
+
+.assessmentQuestionsComponent
+{
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: 5% 95%;
+}
+
+
+.titleContainer
+{
+  grid-column: 2;
+  grid-row: 1;
+
+  .titleContainer
+  {
+    text-align: center;
+    font-size: 4vw;
+  }
+}
+
+
+
+
+.progressContainer
+{
+  grid-column: 2;
+  grid-row: 2;
+
+  width:60%;
+  padding: 10px;
+  margin: auto;
+
+  background-color: #CCCCCC;
+
+  border-radius: 10px;
+  border: none;
+
+  color:white;
+
+  .progressBar
+  {
+
+  }
+
+  .progressTxt
+  {
+    color:white;
+  }
+}
+
+
+.questionsBox
+{
+  grid-column: 2;
+  grid-row: 3;
+
+  display: grid;
+  overflow: auto;
+  grid-template-columns: 100%;
+
+  height: 80vh;
+}
+
+.questionBox:nth-child(even) {
+  background-color: white;
+}
+
+.questionBox
+{
+  display: grid;
+  //grid-column: 1;
+
+  grid-gap: 10px;
+  grid-template-columns: 10% 90%;
+
+  font-size: 43px;
+  font-family: $LatoLight;
+
+  align-items: center;
+  justify-items: center;
+
+  border-radius: 12px;
+  border: none;
+
+  padding: 60px;
+
+  background-color: #E6E6E6;
+
+  .questionNum
+  {
+    font-family: $ComfortRegular;
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .questionTxt
+  {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .questionBtns
+  {
+    grid-column: 1 / 3;
+    grid-row: 2;
+
+    display: grid;
+    grid-gap: 60px;
+    margin-top: 20px;
+
+    .questionBtn
+    {
+      grid-row: 1;
+
+      @extend .divTransition;
+
+      font-size: 29px;
+      font-family: $ComfortRegular;
+      color:white;
+
+      width:200px;
+      height:32px;
+
+      border-radius: 10px;
+      border: none;
+
+      background-color: #B3B3B3;
+
+      text-align: center;
+
+      cursor: pointer;
+    }
+
+    .questionBtn:hover
+    {
+      background-color: #666666;
+    }
+
+    .questionBtn .selected
+    {
+      background-color: #666666;
+    }
+  }
+}
+
+.top
+{
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.middle
+{
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.bottom
+{
+  grid-column: 1;
+  grid-row: 3;
+}
+
+.checkBoxContainer
+{
+  display: flex;
+  width: 100%;
+  padding-right: 20px;
+}
+
+.checkbox
+{
+  background-color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  margin-right: 40px;
+}
+
+.checkmark
+{
+  width: 80px;
+  top: -26px;
+  position: relative;
+}
