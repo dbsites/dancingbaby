@@ -25,3 +25,32 @@ export const SCREEN_LIST = [
     SCREEN_ASSESSMENT_CALCULATING,
     SCREEN_ASSESSMENT_RESULTS
 ];
+
+/*
+firstName(pin): '' => 'xcvbg'
+lastName(pin): '' => 'sdfg'
+orgName(pin): '' => 'asdf'
+
+url_copyrighted(pin): 'sdf'
+contentTitle_copyrighted(pin): 'sdf'
+fileType_copyrighted(pin): '0000ff'
+
+url_suspected(pin): 'sdfsdf'
+contentTitle_suspected(pin): 'sdfsdfsdf'
+fileType_suspected(pin): '00ff00'
+ */
+
+export const ASSESSMENT_INFO_IDS = {
+
+    FIRST_NAME:'FIRST_NAME',
+    LAST_NAME:'LAST_NAME',
+    ORG_NAME:'ORG_NAME',
+
+    URL_COPYRIGHTED:'URL_COPYRIGHTED',
+    TITLE_COPYRIGHTED:'TITLE_COPYRIGHTED',
+    FILETYPE_COPYRIGHTED:'FILETYPE_COPYRIGHTED',
+
+    URL_SUSPECTED:'URL_SUSPECTED',
+    TITLE_SUSPECTED:'TITLE_SUSPECTED',
+    FILETYPE_SUSPECTED:'FILETYPE_SUSPECTED',
+};
