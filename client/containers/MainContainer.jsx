@@ -15,6 +15,7 @@ import {connect} from 'react-redux';
 import LoginComponent from '../components/LoginComponent';
 import DisclaimerComponent from '../components/DisclaimerComponent';
 import AssessmentInfoComponent from '../components/AssessmentInfoComponent';
+import AssessmentQuestionsComponent from '../components/AssessmentQuestionsComponent';
 
 import userActions from '../actions/userActions';
 import * as assessmentActions from '../actions/assessmentActions';
@@ -24,7 +25,8 @@ import * as strings from '../constants/strings';
 
 const mapStateToProps = store =>
 ({
-    currentScreen:store.screens.currentScreen
+    currentScreen:store.screens.currentScreen,
+    questions: store.assessment.questions
 });
 
 
@@ -37,7 +39,12 @@ const mapDispatchToProps = dispatch =>
 
     submitAssessmentInfo: ( data ) =>
     {
-        dispatch(assessmentActions.submitAssessmentInfo( data ));
+        dispatch(assessmentActions.setAssessmentInfo( data ));
+    },
+
+    submitAssessmentQuestions: ( data ) =>
+    {
+        dispatch(assessmentActions.setAssessmentInfo( data ));
     },
 
     nextScreen: () =>
@@ -69,7 +76,7 @@ class MainContainer extends Component
                 return <AssessmentInfoComponent onSubmit={this.props.submitAssessmentInfo} />;
 
             case strings.SCREEN_ASSESSMENT_QUESTIONS:
-                return <DisclaimerComponent/>;
+                return <AssessmentQuestionsComponent submitAssessmentQuestions={ this.props.submitAssessmentQuestions } questions={this.props.questions} />;
 
             case strings.SCREEN_ASSESSMENT_RESULTS:
                 return <DisclaimerComponent/>;
