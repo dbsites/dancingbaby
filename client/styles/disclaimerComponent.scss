@@ -25,8 +25,6 @@
   {
     @extend .divTransition;
 
-    //display: grid;
-
     font-size: 60px;
     background-color: #666666;
     color: white;
@@ -48,75 +46,76 @@
   {
     color: #666666;
     background-color: white;
-    border-color: #666666;
+    border: 1px solid #666666;
+  }
+
+  .wrapper {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 80%;
+    background-color: #fff;
+    color: #444;
+  }
+
+  .disclaimerBox
+  {
+    font-size: 20px;
+    font-family: $LatoMedium;
+
+    display: grid;
+    grid-gap: 40px;
+    align-items: center;
+    justify-items: center;
+
+    margin-top: 60px;
+
+    border-radius: 12px;
+    border: none;
+
+    padding: 60px;
+
+    background-color: #CCCCCC;
+  }
+
+  .top
+  {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .middle
+  {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .bottom
+  {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .checkBoxContainer
+  {
+    display: flex;
+    width: 100%;
+    padding-right: 20px;
+  }
+
+  .checkbox
+  {
+    background-color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    margin-right: 40px;
+  }
+
+  .checkmark
+  {
+    width: 80px;
+    top: -26px;
+    position: relative;
   }
 }
 
-.wrapper {
-  display: grid;
-  grid-gap: 10px;
-  grid-template-columns: 80%;
-  background-color: #fff;
-  color: #444;
-}
-
-.disclaimerBox
-{
-  font-size: 20px;
-  font-family: $LatoMedium;
-
-  display: grid;
-  grid-gap: 40px;
-  align-items: center;
-  justify-items: center;
-
-  margin-top: 60px;
-
-  border-radius: 12px;
-  border: none;
-
-  padding: 60px;
-
-  background-color: #CCCCCC;
-}
-
-.top
-{
-  grid-column: 1;
-  grid-row: 1;
-}
-
-.middle
-{
-  grid-column: 1;
-  grid-row: 2;
-}
-
-.bottom
-{
-  grid-column: 1;
-  grid-row: 3;
-}
-
-.checkBoxContainer
-{
-  display: flex;
-  width: 100%;
-  padding-right: 20px;
-}
-
-.checkbox
-{
-  background-color: white;
-  width: 60px;
-  height: 60px;
-  border-radius: 12px;
-  margin-right: 40px;
-}
-
-.checkmark
-{
-  width: 80px;
-  top: -26px;
-  position: relative;
-}
