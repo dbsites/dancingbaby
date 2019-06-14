@@ -21,9 +21,9 @@ const AssessmentQuestionsComponent = ( props ) =>
 
     const buttonCls = true ? '' : 'disabled';
 
-    const answerSelected = ( item, e ) =>
+    const answerSelected = ( value, index ) =>
     {
-        console.log( "ANSWER SELECTED: ", item, e );
+        console.log( "ANSWER SELECTED: ", value, index );
     };
 
     const questionsList = [];
@@ -42,9 +42,7 @@ const AssessmentQuestionsComponent = ( props ) =>
                 <img src={dbLogo} className='logoSmallUpperRight' alt='logo' />
             </div>
 
-            <div className='titleContainer'>
-                <div className='title'>ASSESSMENT</div>
-            </div>
+            <div className='titleContainer'>ASSESSMENT</div>
 
             <ProgressBar currentProgress={.5}/>
 
@@ -62,12 +60,12 @@ const Question = ( props ) =>
 
     return (
         <div className='questionBox'>
-            <div className='questionNum'>{index}</div>
+            <div className='questionNum'>{`${index}.`}</div>
             <div className='questionTxt'>{questionTxt}</div>
             <div className='questionBtns'>
-                <div onClick={answerSelected.bind( this, 'no', props )} className='questionBtn'>no</div>
-                <div onClick={answerSelected.bind( this, 'unsure', props )} className='questionBtn'>unsure</div>
-                <div onClick={answerSelected.bind( this, 'yes', props )} className='questionBtn'>yes</div>
+                <div onClick={ () => answerSelected( 'no', index )} className='questionBtn'>no</div>
+                <div onClick={ () => answerSelected( 'unsure', index )} className='questionBtn'>unsure</div>
+                <div onClick={ () => answerSelected( 'yes', index )} className='questionBtn'>yes</div>
             </div>
         </div>
     )
