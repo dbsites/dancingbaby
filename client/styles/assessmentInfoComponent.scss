@@ -170,6 +170,8 @@
 
   button
   {
+    @extend .divTransition;
+
     position: absolute;
     bottom: 40px;
     right: -10px;
@@ -188,7 +190,31 @@
     padding-left: 20px;
     letter-spacing: 10px;
     background-color: #666666;
-    color: white;
+
+    span
+    {
+      color:white;
+    }
+
+    .arrow
+    {
+      position: absolute;
+      width: 30px;
+      margin-top: 27px;
+      margin-left: 20px;
+    }
+  }
+
+  button:hover
+  {
+    span
+    {
+      color: #666666;
+    }
+
+    background-color: white;
+
+    border: 1px solid #666666;
   }
 }
 
