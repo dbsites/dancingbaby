@@ -14,6 +14,7 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import * as strings from '../constants/strings';
 import dbLogo from '../assets/svg/db_logo_text.svg';
+import arrow from '../assets/svg/arrow.svg';
 
 
 class ContentBox extends React.Component
@@ -135,7 +136,10 @@ let AssessmentInfoComponent = ( props ) =>
                         title='SUSPECTED CONTENT' />
                 </div>
 
-                <button type='submit'>START ANALYSIS</button>
+                <button type='submit'>
+                    <span>START ANALYSIS</span>
+                    <img src={arrow} className='arrow' alt='arrow' />
+                </button>
 
             </form>
         </div>
