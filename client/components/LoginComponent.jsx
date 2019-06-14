@@ -20,7 +20,7 @@ let LoginComponent = ( props ) =>
     const { openContact, handleSubmit, onSubmit } = props;
 
     return (
-        <div>
+        <div className='loginComponent'>
 
             <div className='logoContainer'>
                 <img src={dbLogo} className='logo' alt='logo' />
@@ -52,9 +52,7 @@ let LoginComponent = ( props ) =>
                     />
                 </div>
 
-                <div>
-                    <button type='submit'>ENTER</button>
-                </div>
+                <button type='submit'>ENTER</button>
 
             </form>
         </div>
