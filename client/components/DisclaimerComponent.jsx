@@ -44,7 +44,7 @@ class DisclaimerComponent extends Component
 
     render()
     {
-        const buttonCls = this.state.enableEnterBtn ? '' : 'disabled';
+        const buttonCls = this.state.enableEnterBtn ? 'enterBtn' : 'disabled enterBtn';
 
         return (
             <div className="disclaimerComponent">
@@ -53,9 +53,7 @@ class DisclaimerComponent extends Component
                     <img src={dbLogo} className='logoSmallUpperRight' alt='logo' />
                 </div>
 
-                <div className='titleContainer'>
-                    <div className='title'>DISCLAIMER</div>
-                </div>
+                <div className='titleContainer'>DISCLAIMER</div>
 
                 <div className='disclaimerBox'>
 
@@ -76,7 +74,9 @@ class DisclaimerComponent extends Component
 
                 </div>
 
-                <div className={buttonCls} onClick={this.props.nextScreen}>ENTER</div>
+                <div className='enterBtnContainer'>
+                    <button className={buttonCls} onClick={this.props.nextScreen}>ENTER</button>
+                </div>
 
             </div>
         );
