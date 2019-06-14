@@ -52,7 +52,9 @@ let LoginComponent = ( props ) =>
                     />
                 </div>
 
-                <button type='submit'>ENTER</button>
+                <div className='submitBtnContainer'>
+                    <button type='submit'>ENTER</button>
+                </div>
 
             </form>
         </div>
