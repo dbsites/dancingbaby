@@ -36,17 +36,45 @@
 
     margin-top: 60px;
 
-    button
+    .submitBtnContainer
     {
-      display: grid;
 
       grid-column: 1 / 3;
       grid-row: 2;
 
-      font-size: 60px;
-      background-color: transparent;
-      color: #999999;
-      border: none;
+      display: grid;
+
+      margin-top: 60px;
+      justify-content: center;
+
+      button
+      {
+        @extend .divTransition;
+
+        display: grid;
+
+        font-size: 60px;
+
+        padding-bottom: 0;
+        padding-top: 15px;
+        padding-left: 15px;
+        padding-right: 15px;
+
+        background-color: white;
+        color: #999999;
+
+        border: none;
+
+        align-content: center;
+        justify-content: center;
+      }
+
+      button:hover
+      {
+        border-radius: 12px;
+        background-color: #666666;
+        color:white;
+      }
     }
   }
 
