@@ -4,6 +4,52 @@
 .disclaimerComponent
 {
 
+  .titleContainer
+  {
+    grid-column: 2;
+    grid-row: 1;
+
+    font-size: 56px;
+    text-align: center;
+  }
+
+  .enterBtnContainer
+  {
+    display: grid;
+
+    margin-top: 60px;
+    justify-content: center;
+  }
+
+  .enterBtn
+  {
+    @extend .divTransition;
+
+    //display: grid;
+
+    font-size: 60px;
+    background-color: #666666;
+    color: white;
+
+    padding-bottom: 0;
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    border-radius: 12px;
+
+    align-content: center;
+    justify-content: center;
+
+    border: none;
+  }
+
+  .enterBtn:hover
+  {
+    color: #666666;
+    background-color: white;
+    border-color: #666666;
+  }
 }
 
 .wrapper {
@@ -32,15 +78,6 @@
   padding: 60px;
 
   background-color: #CCCCCC;
-
-  button
-  {
-    display: block;
-    font-size: 60px;
-    background-color: transparent;
-    color: #999999;
-    border: none;
-  }
 }
 
 .top
