@@ -5,8 +5,7 @@
 .loginComponent
 {
   display: grid;
-  grid-gap: 10px;
-  //grid-template-columns: 1fr 1fr;
+  grid-row-gap: 10px;
 
   align-content: center;
   justify-content: center;
@@ -31,7 +30,7 @@
   {
     display: grid;
 
-    grid-gap: 180px;
+    grid-column-gap: 180px;
     grid-template-columns: 1fr 1fr;
 
     margin-top: 60px;
@@ -44,7 +43,7 @@
 
       display: grid;
 
-      margin-top: 60px;
+      margin-top: 40px;
       justify-content: center;
 
       button

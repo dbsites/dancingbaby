@@ -5,21 +5,14 @@
 .assessmentInfoComponent
 {
   display: grid;
-  grid-gap: 10px;
-  grid-template-columns: 1fr 1fr 1fr;
+  //grid-gap: 10px;
+  grid-template-columns: 100%;
 
-  .subHead
-  {
-    grid-column: 1 / 4;
-    grid-row: 2;
-
-    text-align: center;
-    font-size: 36px;
-  }
+  font-family: $LatoLight;
 
   .logoContainer
   {
-    grid-column: 1 / 4;
+    grid-column: 1;
     grid-row: 1;
 
     display: grid;
@@ -32,13 +25,23 @@
     }
   }
 
+  .subHead
+  {
+    grid-column: 1;
+    grid-row: 2;
+
+    text-align: center;
+    font-size: 36px;
+  }
+
   .assessmentForm
   {
     grid-column: 1 / 4;
     grid-row: 3;
 
     display: grid;
-    grid-gap: 20px;
+    grid-column-gap: 20px;
+    grid-row-gap: 40px;
     grid-template-columns: 1fr 1fr 1fr;
   }
 
@@ -47,24 +50,25 @@
     .inputField
     {
       display: block;
-
+      width: 100%;
       padding: 10px;
-      font-size: 32px;
+      font-size: 24px;
 
       border-radius: 12px;
       border: none;
 
       background-color: #CCCCCC;
+
+      font-family: $LatoLight;
     }
 
     label
     {
       font-size: 32px;
       display: block;
+
+      font-family: $LatoLight;
     }
-
-    margin-top: 40px;
-
   }
 
   .firstName
@@ -97,74 +101,168 @@
     grid-row: 4;
 
     display: grid;
-    grid-gap: 10px;
+    margin-top: 16px;
+    grid-gap: 30px;
     grid-template-columns: 1fr 1fr;
   }
 
   .contentBox
   {
     display: grid;
-
     font-size: 32px;
 
     .inputFields
     {
-      display: grid;
-      grid-gap: 10px;
-      //grid-template-columns: 20% 20% 20% 20% 20%;
 
+      display: grid;
+      grid-row-gap: 10px;
+      grid-template-columns: 100%;
+
+      padding: 10px;
       border-radius: 12px;
       border: none;
+      width: 100%;
 
       background-color: #CCCCCC;
 
       .urlField
       {
-        //grid-column: 1 / 6;
+        display: grid;
+        grid-column: 1;
         grid-row: 1;
+        grid-column-gap: 27px;
+        grid-template-columns: 20% 75%;
+        justify-content: center;
+
+        .urlInputField
+        {
+          display: grid;
+          grid-column: 2;
+          grid-row: 1;
+
+          height: 60px;
+          width: 100%;
+
+          padding-left: 10px;
+          padding-right: 10px;
+          font-size: 36px;
+          line-height: 60px;
+
+          border-radius: 12px;
+          border: none;
+
+          background-color: white;
+          font-family: $LatoLight;
+        }
+
+        label
+        {
+          display: grid;
+          grid-column: 1;
+          grid-row: 1;
+
+          margin-top: 4px;
+
+          font-size: 36px;
+          font-family: $LatoLight;
+
+          text-align: right;
+          padding-right: 20px;
+        }
       }
 
       .or
       {
-        //grid-column: 3;
+        display: grid;
+
+        grid-column: 1 / 6;
         grid-row: 2;
 
         text-align: center;
+        font-family: $LatoLight;
       }
 
       .contentTitleField
       {
-        //grid-column: 1 / 6;
+        display: grid;
+        grid-column: 1;
         grid-row: 3;
+
+        grid-template-columns: 45% 55%;
+        justify-content: center;
+
+        .titleInputField
+        {
+          display: grid;
+          grid-column: 2;
+          grid-row: 1;
+
+          padding-top: 8px;
+          padding-left: 6px;
+          padding-right: 6px;
+
+          font-size: 30px;
+          line-height: 50px;
+
+          border-radius: 12px;
+          border: none;
+
+          background-color: white;
+          font-family: $LatoLight;
+        }
+
+        label
+        {
+          font-size: 30px;
+          margin-top: 16px;
+          font-family: $LatoLight;
+
+          text-align: right;
+          padding-right: 20px;
+        }
       }
 
       .fileTypeField
       {
-        //grid-column: 1 / 6;
+        display: grid;
+        grid-column: 1;
         grid-row: 4;
+        /* grid-column-gap: 10px; */
+        grid-template-columns: 45% 55%;
+        justify-content: center;
+
+        .fileTypeSelectField
+        {
+          display: grid;
+          grid-column: 2;
+          grid-row: 1;
+
+          padding: 6px;
+          font-size: 30px;
+
+          border-radius: 12px;
+          border: none;
+
+          background-color: white;
+          font-family: $LatoLight;
+        }
+
+        label
+        {
+          font-size: 30px;
+          margin-top: 16px;
+          font-family: $LatoLight;
+
+          text-align: right;
+          padding-right: 20px;
+        }
       }
 
-      .inputField
-      {
-        //display: block;
-
-        //width: 420px;
-        //height: 80px;
-
-        padding: 10px;
-        font-size: 36px;
-
-        border-radius: 12px;
-        border: none;
-
-        background-color: #e6e6e6;
-      }
-
-      label
-      {
-        font-size: 40px;
-        font-family: $LatoLight;
-      }
+      //label
+      //{
+      //  font-size: 40px;
+      //  font-family: $LatoLight;
+      //}
     }
   }
 
