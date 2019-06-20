@@ -27,7 +27,9 @@ import * as strings from '../constants/strings';
 const mapStateToProps = store =>
 ({
     currentScreen:store.screens.currentScreen,
-    questions: store.assessment.questions
+    questions: store.assessment.questions,
+    currentQuestionIndex: store.assessment.currentQuestionIndex,
+    progress: store.assessment.progress
 });
 
 
@@ -41,6 +43,11 @@ const mapDispatchToProps = dispatch =>
     submitAssessmentInfo: ( data ) =>
     {
         dispatch(assessmentActions.setAssessmentInfo( data ));
+    },
+
+    updateAssessment: ( question ) =>
+    {
+        dispatch( assessmentActions.updateAssessment( question ))
     },
 
     submitAssessmentQuestions: ( data ) =>
@@ -78,23 +85,42 @@ class MainContainer extends Component
         switch( this.props.currentScreen )
         {
             case strings.SCREEN_LOGIN:
-                return <LoginComponent onSubmit={this.props.submitLogin} openContact={this.openContact} />;
+                return <LoginComponent
+                    onSubmit={this.props.submitLogin}
+                    openContact={this.openContact}
+                />;
 
             case strings.SCREEN_DISCLAIMER:
-                return <DisclaimerComponent nextScreen={this.props.nextScreen} />;
+                return <DisclaimerComponent
+                    nextScreen={this.props.nextScreen}
+                />;
 
             case strings.SCREEN_ASSESSMENT_GETINFO:
-                return <AssessmentInfoComponent onSubmit={this.props.submitAssessmentInfo} />;
+                return <AssessmentInfoComponent
+                    onSubmit={this.props.submitAssessmentInfo}
+                />;
 
             case strings.SCREEN_ASSESSMENT_QUESTIONS:
-                return <AssessmentQuestionsComponent submitAssessmentQuestions={ this.props.submitAssessmentQuestions } questions={this.props.questions} />;
+                return <AssessmentQuestionsComponent
+                    questions={this.props.questions}
+                    progress={this.props.progress}
+                    currentQuestionIndex={this.props.currentQuestionIndex}
+                    submitAssessmentQuestions={ this.props.submitAssessmentQuestions }
+                    updateAssessment={this.props.updateAssessment}
+                />;
 
 
             case strings.SCREEN_ASSESSMENT_CALCULATING:
-                return <ResultsComponent downloadReport={ this.props.downloadReport } startOver={this.props.startOver} />;
+                return <ResultsComponent
+                    downloadReport={ this.props.downloadReport }
+                    startOver={this.props.startOver}
+                />;
 
             case strings.SCREEN_ASSESSMENT_RESULTS:
-                return <ResultsComponent downloadReport={ this.props.downloadReport } startOver={this.props.startOver} />;
+                return <ResultsComponent
+                    downloadReport={ this.props.downloadReport }
+                    startOver={this.props.startOver}
+                />;
 
         }
     };
