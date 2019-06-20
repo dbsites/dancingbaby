@@ -55,168 +55,146 @@
     background-color: white;
     border: 1px solid #666666;
   }
-}
 
-
-.progressContainer
-{
-  grid-column: 2;
-  grid-row: 2;
-
-  width:60%;
-  padding: 10px;
-  margin: auto;
-
-  background-color: #CCCCCC;
-
-  border-radius: 10px;
-  border: none;
-
-  color:white;
-
-  .progressBar
-  {
-
-  }
-
-  .progressTxt
-  {
-    color:white;
-  }
-}
-
-
-.questionsBox
-{
-  grid-column: 2;
-  grid-row: 3;
-
-  display: grid;
-  overflow: auto;
-  grid-template-columns: 100%;
-
-  height: 80vh;
-}
-
-.questionBox:nth-child(even) {
-  background-color: white;
-}
-
-.questionBox
-{
-  display: grid;
-  //grid-column: 1;
-
-  grid-gap: 10px;
-  grid-template-columns: 10% 90%;
-
-  font-size: 43px;
-  font-family: $LatoLight;
-
-  //align-items: center;
-  justify-items: center;
-
-  border-radius: 12px;
-  border: none;
-
-  padding: 60px;
-
-  background-color: #E6E6E6;
-
-  .questionNum
-  {
-    font-family: $ComfortRegular;
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .questionTxt
+  .progressContainer
   {
     grid-column: 2;
-    grid-row: 1;
-  }
-
-  .questionBtns
-  {
-    grid-column: 1 / 3;
     grid-row: 2;
 
-    display: grid;
-    grid-gap: 60px;
-    margin-top: 20px;
+    width:60%;
+    padding: 10px;
+    margin: auto;
 
-    .questionBtn
+    background-color: #CCCCCC;
+
+    border-radius: 10px;
+    border: none;
+
+    color:white;
+
+    .progressBar
     {
-      grid-row: 1;
 
-      @extend .divTransition;
+    }
 
-      font-size: 29px;
-      font-family: $ComfortRegular;
+    .progressTxt
+    {
       color:white;
-
-      width:200px;
-      height:32px;
-
-      border-radius: 10px;
-      border: none;
-
-      background-color: #B3B3B3;
-
-      text-align: center;
-
-      cursor: pointer;
-    }
-
-    .questionBtn:hover
-    {
-      background-color: #666666;
-    }
-
-    .questionBtn .selected
-    {
-      background-color: #666666;
     }
   }
-}
 
-.top
-{
-  grid-column: 1;
-  grid-row: 1;
-}
+  .questionDisabled
+  {
+    pointer-events: none;
+    opacity: .5;
+  }
 
-.middle
-{
-  grid-column: 1;
-  grid-row: 2;
-}
+  .questionDone
+  {
+    pointer-events: none;
+  }
 
-.bottom
-{
-  grid-column: 1;
-  grid-row: 3;
-}
+  .questionBox:nth-child(even)
+  {
+    background-color: white;
+  }
 
-.checkBoxContainer
-{
-  display: flex;
-  width: 100%;
-  padding-right: 20px;
-}
+  .subQuestionGrid
+  {
+    grid-template-columns: 10% 10% 80%;
+  }
 
-.checkbox
-{
-  background-color: white;
-  width: 60px;
-  height: 60px;
-  border-radius: 12px;
-  margin-right: 40px;
-}
+  .questionGrid
+  {
+    grid-template-columns: 0 10% 90%;
+  }
 
-.checkmark
-{
-  width: 80px;
-  top: -26px;
-  position: relative;
+  .questionsBox
+  {
+    grid-column: 2;
+    grid-row: 3;
+
+    display: grid;
+    overflow: auto;
+    grid-template-columns: 100%;
+
+    height: 80vh;
+  }
+
+  .questionBox
+  {
+    @extend .divTransition;
+
+    display: grid;
+
+    grid-gap: 10px;
+
+    font-size: 43px;
+    font-family: $LatoLight;
+
+    justify-items: center;
+
+    border-radius: 12px;
+    border: none;
+
+    padding: 60px;
+
+    background-color: #E6E6E6;
+
+    .questionNum
+    {
+      font-family: $ComfortRegular;
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .questionTxt
+    {
+      grid-column: 3;
+      grid-row: 1;
+    }
+
+    .questionBtns
+    {
+      grid-column: 2 / 4;
+      grid-row: 2;
+
+      display: grid;
+      grid-gap: 60px;
+      margin-top: 20px;
+
+      .questionBtn
+      {
+        grid-row: 1;
+
+        @extend .divTransition;
+
+        font-size: 29px;
+        font-family: $ComfortRegular;
+        color:white;
+
+        width:200px;
+        height:32px;
+
+        border-radius: 10px;
+        border: none;
+
+        background-color: #B3B3B3;
+
+        text-align: center;
+
+        cursor: pointer;
+      }
+
+      .questionBtn:hover
+      {
+        background-color: #666666;
+      }
+
+      .selected
+      {
+        background-color: #666666;
+      }
+    }
+  }
 }
