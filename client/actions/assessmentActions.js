@@ -34,6 +34,26 @@ const submitAssessmentInfo = ( info ) =>
     payload: info
 });
 
+
+export const downloadReport = () =>
+({
+    type: types.ASSESSMENT_DOWNLOAD_REPORT,
+    payload: null
+});
+
+
+export const startOver = () =>
+({
+    type: types.ASSESSMENT_START_OVER,
+    payload: null
+});
+
+export const updateAssessment = ( question ) =>
+({
+    type: types.ASSESSMENT_UPDATE,
+    payload: question
+});
+
 export const setAssessmentInfo = ( info ) => ( dispatch ) =>
 {
     console.log( "SET ASSESSMENT INFO" );
