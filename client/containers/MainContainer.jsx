@@ -16,6 +16,7 @@ import LoginComponent from '../components/LoginComponent';
 import DisclaimerComponent from '../components/DisclaimerComponent';
 import AssessmentInfoComponent from '../components/AssessmentInfoComponent';
 import AssessmentQuestionsComponent from '../components/AssessmentQuestionsComponent';
+import ResultsComponent from '../components/ResultsComponent';
 
 import userActions from '../actions/userActions';
 import * as assessmentActions from '../actions/assessmentActions';
@@ -45,6 +46,16 @@ const mapDispatchToProps = dispatch =>
     submitAssessmentQuestions: ( data ) =>
     {
         dispatch(assessmentActions.setAssessmentInfo( data ));
+    },
+
+    downloadReport: () =>
+    {
+        dispatch(assessmentActions.downloadReport());
+    },
+
+    startOver: () =>
+    {
+        dispatch(assessmentActions.startOver());
     },
 
     nextScreen: () =>
@@ -78,8 +89,12 @@ class MainContainer extends Component
             case strings.SCREEN_ASSESSMENT_QUESTIONS:
                 return <AssessmentQuestionsComponent submitAssessmentQuestions={ this.props.submitAssessmentQuestions } questions={this.props.questions} />;
 
+
+            case strings.SCREEN_ASSESSMENT_CALCULATING:
+                return <ResultsComponent downloadReport={ this.props.downloadReport } startOver={this.props.startOver} />;
+
             case strings.SCREEN_ASSESSMENT_RESULTS:
-                return <DisclaimerComponent/>;
+                return <ResultsComponent downloadReport={ this.props.downloadReport } startOver={this.props.startOver} />;
 
         }
     };
