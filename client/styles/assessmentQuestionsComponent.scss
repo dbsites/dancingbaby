@@ -16,6 +16,45 @@
     font-size: 56px;
     text-align: center;
   }
+
+  .enterBtnContainer
+  {
+    display: grid;
+
+    //margin-top: 60px;
+    justify-content: center;
+  }
+
+  .enterBtn
+  {
+    @extend .divTransition;
+
+    font-size: 48px;
+    font-family: $ComfortBold;
+    letter-spacing: 10px;
+
+    background-color: #666666;
+    color: white;
+
+    padding-bottom: 0;
+    //padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 5px;
+
+    border-radius: 12px;
+
+    align-content: center;
+    justify-content: center;
+
+    border: 1px solid #666666;
+  }
+
+  .enterBtn:hover
+  {
+    color: #666666;
+    background-color: white;
+    border: 1px solid #666666;
+  }
 }
 
 
