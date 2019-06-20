@@ -19,7 +19,7 @@ const AssessmentQuestionsComponent = ( props ) =>
 
     const { questions, submitAssessmentQuestions } = props;
 
-    const buttonCls = true ? '' : 'disabled';
+    const buttonCls = true ? 'enterBtn' : 'enterBtn disabled';
 
     const answerSelected = ( value, index ) =>
     {
@@ -32,8 +32,7 @@ const AssessmentQuestionsComponent = ( props ) =>
        questionsList.push( <Question key={index} index={index+1} questionTxt={item.questionText} answerSelected={answerSelected} />);
     });
 
-
-    questions.push( <div className={buttonCls} onClick={submitAssessmentQuestions}>SUBMIT</div> );
+    questionsList.push( <div className='enterBtnContainer'><button className={buttonCls} onClick={submitAssessmentQuestions}>SUBMIT</button></div> );
 
     return (
         <div className="assessmentQuestionsComponent">
