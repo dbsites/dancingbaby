@@ -10,7 +10,7 @@
  */
 
 
-import React, {Component} from 'react';
+import React from 'react';
 import dbLogo from '../assets/svg/db_logo_greenyellow.svg';
 
 
@@ -46,7 +46,7 @@ const AssessmentQuestionsComponent = ( props ) =>
 
             <div className='titleContainer'>ASSESSMENT</div>
 
-            <ProgressBar currentProgress={.5}/>
+            <ProgressBar currentProgress={props.progress}/>
 
             <div className='questionsBox'>
                 { questionsList }
@@ -78,13 +78,14 @@ const Question = ( props ) =>
 const ProgressBar = ( props ) =>
 {
     const { currentProgress } = props;
-
-    const progressTxt = `PROGRESS ${100*currentProgress}%`;
+    const progressValue = Math.round(100*currentProgress);
+    const progressTxt = `PROGRESS ${progressValue}%`;
+    const progressWidth = { width:`${progressValue}%`};
 
     return (
         <div className='progressContainer'>
-            <div className='progressBar'/>
-            <div className='progressTxt'>{progressTxt}</div>
+            <div style={progressWidth} className='progressBar'/>
+            <div className='progressTxt' >{progressTxt}</div>
         </div>
     )
 };
