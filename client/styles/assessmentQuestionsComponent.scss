@@ -8,6 +8,8 @@
   grid-gap: 10px;
   grid-template-columns: 5% 95%;
 
+  justify-items: center;
+
   .titleContainer
   {
     grid-column: 2;
@@ -37,7 +39,6 @@
     color: white;
 
     padding-bottom: 0;
-    //padding-top: 15px;
     padding-left: 15px;
     padding-right: 5px;
 
@@ -61,25 +62,50 @@
     grid-column: 2;
     grid-row: 2;
 
-    width:60%;
-    padding: 10px;
-    margin: auto;
+    display: grid;
+
+    width:700px;
+    height: 26px;
+
+    //padding: 5px;
+    //margin: auto;
 
     background-color: #CCCCCC;
 
-    border-radius: 10px;
-    border: none;
+    border-radius: 12px;
+    box-sizing: initial;
+    padding: 2px;
 
     color:white;
 
     .progressBar
     {
+      @extend .divTransition;
 
+      grid-column: 1;
+      grid-row: 1;
+
+      display: grid;
+      width: 0;
+      height: inherit;
+
+      background-image: linear-gradient( to right, #2E8B57, #FFFF00 );
+      border-radius: inherit;
     }
 
     .progressTxt
     {
+      grid-column: 1;
+      grid-row: 1;
+
       color:white;
+
+      font-size: 24px;
+      line-height: 31px;
+      text-indent: 20px;
+      letter-spacing: 3px;
+
+      z-index: 20;
     }
   }
 
