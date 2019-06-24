@@ -35,7 +35,7 @@ const AssessmentQuestionsComponent = ( props ) =>
        />);
     });
 
-    questionsList.push( <div className='enterBtnContainer'><button className={buttonCls} onClick={submitAssessmentQuestions}>SUBMIT</button></div> );
+    questionsList.push( <div key={questionsList.length} className='enterBtnContainer'><button className={buttonCls} onClick={submitAssessmentQuestions}>SUBMIT</button></div> );
 
     return (
         <div className="assessmentQuestionsComponent">
