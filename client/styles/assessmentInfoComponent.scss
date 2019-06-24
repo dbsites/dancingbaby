@@ -1,0 +1,318 @@
+@import "variables";
+@import "styles";
+
+
+.assessmentInfoComponent
+{
+  display: grid;
+  //grid-gap: 10px;
+  grid-template-columns: 100%;
+
+  font-family: $LatoLight;
+
+  .logoContainer
+  {
+    grid-column: 1;
+    grid-row: 1;
+
+    display: grid;
+    align-items: center;
+    justify-items: center;
+
+    .logo
+    {
+      width:800px;
+    }
+  }
+
+  .subHead
+  {
+    grid-column: 1;
+    grid-row: 2;
+
+    text-align: center;
+    font-size: 36px;
+  }
+
+  .assessmentForm
+  {
+    grid-column: 1 / 4;
+    grid-row: 3;
+
+    display: grid;
+    grid-column-gap: 20px;
+    grid-row-gap: 40px;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .topInputs
+  {
+    .inputField
+    {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      font-size: 24px;
+
+      border-radius: 12px;
+      border: none;
+
+      background-color: #CCCCCC;
+
+      font-family: $LatoLight;
+    }
+
+    label
+    {
+      font-size: 32px;
+      display: block;
+
+      font-family: $LatoLight;
+    }
+  }
+
+  .firstName
+  {
+    @extend .topInputs;
+
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .lastName
+  {
+    @extend .topInputs;
+
+    grid-column: 2;
+    grid-row: 3;
+  }
+
+  .orgName
+  {
+    @extend .topInputs;
+
+    grid-column: 3;
+    grid-row: 3;
+  }
+
+  .contentBoxes
+  {
+    grid-column: 1 / 4;
+    grid-row: 4;
+
+    display: grid;
+    margin-top: 16px;
+    grid-gap: 30px;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .contentBox
+  {
+    display: grid;
+    font-size: 32px;
+
+    .inputFields
+    {
+
+      display: grid;
+      grid-row-gap: 10px;
+      grid-template-columns: 100%;
+
+      padding: 10px;
+      border-radius: 12px;
+      border: none;
+      width: 100%;
+
+      background-color: #CCCCCC;
+
+      .urlField
+      {
+        display: grid;
+        grid-column: 1;
+        grid-row: 1;
+        grid-column-gap: 27px;
+        grid-template-columns: 20% 75%;
+        justify-content: center;
+
+        .urlInputField
+        {
+          display: grid;
+          grid-column: 2;
+          grid-row: 1;
+
+          height: 60px;
+          width: 100%;
+
+          padding-left: 10px;
+          padding-right: 10px;
+          font-size: 36px;
+          line-height: 60px;
+
+          border-radius: 12px;
+          border: none;
+
+          background-color: white;
+          font-family: $LatoLight;
+        }
+
+        label
+        {
+          display: grid;
+          grid-column: 1;
+          grid-row: 1;
+
+          margin-top: 4px;
+
+          font-size: 36px;
+          font-family: $LatoLight;
+
+          text-align: right;
+          padding-right: 20px;
+        }
+      }
+
+      .or
+      {
+        display: grid;
+
+        grid-column: 1 / 6;
+        grid-row: 2;
+
+        text-align: center;
+        font-family: $LatoLight;
+      }
+
+      .contentTitleField
+      {
+        display: grid;
+        grid-column: 1;
+        grid-row: 3;
+
+        grid-template-columns: 45% 55%;
+        justify-content: center;
+
+        .titleInputField
+        {
+          display: grid;
+          grid-column: 2;
+          grid-row: 1;
+
+          padding-top: 8px;
+          padding-left: 6px;
+          padding-right: 6px;
+
+          font-size: 30px;
+          line-height: 50px;
+
+          border-radius: 12px;
+          border: none;
+
+          background-color: white;
+          font-family: $LatoLight;
+        }
+
+        label
+        {
+          font-size: 30px;
+          margin-top: 16px;
+          font-family: $LatoLight;
+
+          text-align: right;
+          padding-right: 20px;
+        }
+      }
+
+      .fileTypeField
+      {
+        display: grid;
+        grid-column: 1;
+        grid-row: 4;
+        /* grid-column-gap: 10px; */
+        grid-template-columns: 45% 55%;
+        justify-content: center;
+
+        .fileTypeSelectField
+        {
+          display: grid;
+          grid-column: 2;
+          grid-row: 1;
+
+          padding: 6px;
+          font-size: 30px;
+
+          border-radius: 12px;
+          border: none;
+
+          background-color: white;
+          font-family: $LatoLight;
+        }
+
+        label
+        {
+          font-size: 30px;
+          margin-top: 16px;
+          font-family: $LatoLight;
+
+          text-align: right;
+          padding-right: 20px;
+        }
+      }
+
+      //label
+      //{
+      //  font-size: 40px;
+      //  font-family: $LatoLight;
+      //}
+    }
+  }
+
+  button
+  {
+    @extend .divTransition;
+
+    position: absolute;
+    bottom: 40px;
+    right: -10px;
+
+    width: 560px;
+    height: 100px;
+
+    border-radius: 12px;
+    border: none;
+
+    display: block;
+    font-size: 42px;
+
+    line-height: 111px;
+    text-align: left;
+    padding-left: 20px;
+    letter-spacing: 10px;
+    background-color: #666666;
+
+    span
+    {
+      color:white;
+    }
+
+    .arrow
+    {
+      position: absolute;
+      width: 30px;
+      margin-top: 27px;
+      margin-left: 20px;
+    }
+  }
+
+  button:hover
+  {
+    span
+    {
+      color: #666666;
+    }
+
+    background-color: white;
+
+    border: 1px solid #666666;
+  }
+}
+

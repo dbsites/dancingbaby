@@ -1,0 +1,226 @@
+@import "variables";
+@import "styles";
+
+
+.assessmentQuestionsComponent
+{
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: 5% 95%;
+
+  justify-items: center;
+
+  .titleContainer
+  {
+    grid-column: 2;
+    grid-row: 1;
+
+    font-size: 56px;
+    text-align: center;
+  }
+
+  .enterBtnContainer
+  {
+    display: grid;
+
+    //margin-top: 60px;
+    justify-content: center;
+  }
+
+  .enterBtn
+  {
+    @extend .divTransition;
+
+    font-size: 48px;
+    font-family: $ComfortBold;
+    letter-spacing: 10px;
+
+    background-color: #666666;
+    color: white;
+
+    padding-bottom: 0;
+    padding-left: 15px;
+    padding-right: 5px;
+
+    border-radius: 12px;
+
+    align-content: center;
+    justify-content: center;
+
+    border: 1px solid #666666;
+  }
+
+  .enterBtn:hover
+  {
+    color: #666666;
+    background-color: white;
+    border: 1px solid #666666;
+  }
+
+  .progressContainer
+  {
+    grid-column: 2;
+    grid-row: 2;
+
+    display: grid;
+
+    width:700px;
+    height: 26px;
+
+    //padding: 5px;
+    //margin: auto;
+
+    background-color: #CCCCCC;
+
+    border-radius: 12px;
+    box-sizing: initial;
+    padding: 2px;
+
+    color:white;
+
+    .progressBar
+    {
+      @extend .divTransition;
+
+      grid-column: 1;
+      grid-row: 1;
+
+      display: grid;
+      width: 0;
+      height: inherit;
+
+      background-image: linear-gradient( to right, #2E8B57, #FFFF00 );
+      border-radius: inherit;
+    }
+
+    .progressTxt
+    {
+      grid-column: 1;
+      grid-row: 1;
+
+      color:white;
+
+      font-size: 24px;
+      line-height: 31px;
+      text-indent: 20px;
+      letter-spacing: 3px;
+
+      z-index: 20;
+    }
+  }
+
+  .questionDisabled
+  {
+    pointer-events: none;
+    opacity: .5;
+  }
+
+  .questionDone
+  {
+    pointer-events: none;
+  }
+
+  .questionBox:nth-child(even)
+  {
+    background-color: white;
+  }
+
+  .subQuestionGrid
+  {
+    grid-template-columns: 10% 10% 80%;
+  }
+
+  .questionGrid
+  {
+    grid-template-columns: 0 10% 90%;
+  }
+
+  .questionsBox
+  {
+    grid-column: 2;
+    grid-row: 3;
+
+    display: grid;
+    overflow: auto;
+    grid-template-columns: 100%;
+
+    height: 80vh;
+  }
+
+  .questionBox
+  {
+    @extend .divTransition;
+
+    display: grid;
+
+    grid-gap: 10px;
+
+    font-size: 43px;
+    font-family: $LatoLight;
+
+    justify-items: center;
+
+    border-radius: 12px;
+    border: none;
+
+    padding: 60px;
+
+    background-color: #E6E6E6;
+
+    .questionNum
+    {
+      font-family: $ComfortRegular;
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .questionTxt
+    {
+      grid-column: 3;
+      grid-row: 1;
+    }
+
+    .questionBtns
+    {
+      grid-column: 2 / 4;
+      grid-row: 2;
+
+      display: grid;
+      grid-gap: 60px;
+      margin-top: 20px;
+
+      .questionBtn
+      {
+        grid-row: 1;
+
+        @extend .divTransition;
+
+        font-size: 29px;
+        font-family: $ComfortRegular;
+        color:white;
+
+        width:200px;
+        height:32px;
+
+        border-radius: 10px;
+        border: none;
+
+        background-color: #B3B3B3;
+
+        text-align: center;
+
+        cursor: pointer;
+      }
+
+      .questionBtn:hover
+      {
+        background-color: #666666;
+      }
+
+      .selected
+      {
+        background-color: #666666;
+      }
+    }
+  }
+}
