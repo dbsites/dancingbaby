@@ -1,6 +1,7 @@
 {
     "file": "default",
     "session-secret": "448e9Bec1035C2959Aa45521effa32d48a3deaa80956740276dEa06e781432D5",
+    "youtubeApiKey": "AIzaSyDapyM9CSUYKshB1MnQQ2mv4deUwRjvW7k",
     "fileValidation": {
         "questions": {
             "filename": "questions",
