@@ -11,6 +11,7 @@ const questionsController = require('./controllers/questionsController');
 const validationController = require('./controllers/fileValidation');
 const usersController = require('./controllers/usersController');
 const accountsController = require('./controllers/accountsController');
+const youtubeApiController = require('./controllers/youtubeApiController');
 const { pool, connect } = require('./models/dbModel');
 const { logger, morgan } = require('./util/loggingUtil');
 const { sessionConfig, secret } = require('./util/sessionConfig');
@@ -80,6 +81,13 @@ app.post('/api/uploadAccounts',
         res.status(200).redirect('/db42/');
     }
 ); 
+
+
+app.post('/api/videoInfo', 
+    youtubeApiController.getVideoInfo,
+    (req, res) => {
+        res.status(200).send(res.locals.youtubeData);
+    });
 
 
 // catch 404 and forward to error handler
