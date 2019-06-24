@@ -35,26 +35,21 @@
                 return resp.json();
             })
             .then((data) => {
-                console.log(`fetch returned`);
-
-                console.dir(data);
                 document.getElementById("questions").innerHTML = JSON.stringify(data, undefined, 2);
             })
             .catch((err) => {
-                console.log(`Error on fetch /api/questions: ${err}`)
+                console.error(`Error on fetch /api/questions: ${err}`)
             })
+
         fetch('/api/accounts')
             .then((resp) => {
                 return resp.json();
             })
             .then((data) => {
-                console.log(`fetch returned`);
-
-                console.dir(data);
                 document.getElementById("users").innerHTML = JSON.stringify(data, undefined, 2);
             })
             .catch((err) => {
-                console.log(`Error on fetch /api/questions: ${err}`)
+                console.error(`Error on fetch /api/questions: ${err}`)
             })
 
     });
