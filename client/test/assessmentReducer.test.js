@@ -1,5 +1,5 @@
 import assessmentReducer from '../reducers/assessmentReducer.js';
-import * as strings from '../constants/strings';
+import * as strings from '../constants/strings.js';
 
 describe('assessmentReducer', () => {
   let startState;
