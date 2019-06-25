@@ -39,7 +39,7 @@ CREATE TABLE "accounts" (
 	"_id" serial NOT NULL,
 	"username" varchar NOT NULL,
 	"password" varchar NOT NULL,
-	"create_timestamp" timestamp with time zone NOT NULL,
+	"create_timestamp" timestamp with time zone NOT NULL DEFAULT now(),
 	CONSTRAINT accounts_pk PRIMARY KEY ("_id")
 ) WITH (
   OIDS=FALSE
