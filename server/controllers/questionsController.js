@@ -15,7 +15,7 @@ questionsController.getAllQuestions = (req, res, next) => {
     WHERE parent_question is null
     ORDER BY _id`;
 
-const childQuery = `
+    const childQuery = `
     SELECT question_number, question_text, no_fair_use, no_infringement, yes_fair_use, yes_infringement, parent_question
     FROM questions 
     WHERE parent_question is not null
@@ -24,7 +24,7 @@ const childQuery = `
     let questions = [];
     let parentQuestions = await dbdb.query({ text: parentQuery });
 
-    if(parentQuestions || parentQuestions.rows) {
+    if(parentQuestions && parentQuestions.rows) {
       let childQuestions  = await dbdb.query({ text: childQuery });
 
       // loop through parent questions
@@ -42,8 +42,7 @@ const childQuery = `
 
         // find children for this parent...
         childQuestions.rows.forEach((child) => {  
-          if(child.parent_question.trim() === parent.question_number.trim()) {
-            
+         if(child.parent_question.trim() === parent.question_number.trim()) {
             const subQuestion = {
               questionNumber: child.question_number,
               questionText: child.question_text,
@@ -95,7 +94,6 @@ questionsController.uploadQuestions = (req, res, next) => {
 
     // keep it simple -- drop the questions table and reload from the file
     dbdb.query({ text: `truncate table questions` })
-    .then(result => dbdb.query({ text: `truncate table answer_matrix`}))
     .then(result => {
       questions.forEach( (question, order) => {
         const fields = CSVtoArray(question);
@@ -108,14 +106,8 @@ questionsController.uploadQuestions = (req, res, next) => {
           INSERT INTO questions (_id, question_number, question_text, no_fair_use, no_infringement, yes_infringement, yes_fair_use, branch_on, parent_question)
           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`;
   
-        dbdb.query({ text: questionsInsert, values: [order + 1, fields[0], fields[1], fields[2], fields[3], fields[4], fields[5], fields[11], parent] });
-
-        // we aren't using auto increment for answer_matrix._id so we can use it to be specific about the order of the matrix
-        const answerMatrixInsert = `
-        INSERT INTO answer_matrix (_id, question_number, very, strong, moderate, weak, no)
-        VALUES ($1, $2, $3, $4, $5, $6, $7)`;
-
-        dbdb.query({ text: answerMatrixInsert, values: [ order + 1, fields[0], fields[6], fields[7], fields[8], fields[9], fields[10] ]});
+        dbdb.query({ text: questionsInsert, values: [order + 1, fields[0], fields[1], fields[2], fields[3], fields[4], fields[5], fields[6], parent] });
+    
 
       });
   
