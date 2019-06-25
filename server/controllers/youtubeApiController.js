@@ -1,7 +1,7 @@
 const cfg = require('config');
 const fetch = require('node-fetch');
 
-const youtubeApiKey = cfg.get('youtubeApiKey');
+const youtubeApiKey = process.env.YOUTUBE_API_KEY || cfg.get('youtubeApiKey');
 
 const youtubeApi = {};
 
@@ -12,14 +12,13 @@ youtubeApi.getVideoInfo = (req, res, next) => {
     const error = new Error(`No video ids passed`)
     error.status = 400;
     return next(error)
-  } else if (!youtubeApi) {
+  } else if (!youtubeApiKey) {
     const error = new Error(`No youtube Api Key configured`)
     error.status = 400;
     return next(error)
   } 
   
   const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${req.videoIds}&key=${youtubeApiKey}`;
-  console.log(url)
 
   fetch(url)
     .then((response) => response.json())
@@ -29,8 +28,9 @@ youtubeApi.getVideoInfo = (req, res, next) => {
       next();
     })
     .catch(err => {
-      console.log(err);
-      next(err);
+      const error = new Error(err);
+      error.status = 500;
+      return next(error);
     })
 
 }
