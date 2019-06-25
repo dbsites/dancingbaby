@@ -43,8 +43,7 @@ app.post('/api/login',
    questionsController.getAllQuestions,
    (req, res) => { // login was successful
     res.status(200).send(res.locals.questions);
-   }
-);
+   });
 
 app.get('/db42/*', 
    // accountsController.checkAuthentication,
@@ -64,8 +63,7 @@ app.post('/api/uploadQuestions',
     questionsController.uploadQuestions,
     (req, res, next) => {
         res.status(200).redirect('/db42/');
-    }
-);   
+    });   
 
 app.get('/api/accounts', 
     accountsController.getAllAccounts,
@@ -79,8 +77,7 @@ app.post('/api/uploadAccounts',
     accountsController.uploadAccounts,
     (req, res, next) => {
         res.status(200).redirect('/db42/');
-    }
-); 
+    }); 
 
 
 app.post('/api/videoInfo', 
