@@ -15,7 +15,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: dbdb; Type: DATABASE; Schema: -; Owner: dbadmin
+-- Name: dbdb; Type: DATABASE; Schema: -; Owner: dbates42
 --
 
 \connect dbdb
@@ -151,12 +151,12 @@ ALTER TABLE "content" ADD CONSTRAINT "content_fk0" FOREIGN KEY ("file_type_id") 
 ALTER TABLE "questions" ADD CONSTRAINT "question_number_text_uq" UNIQUE ("question_number", "question_text");
 
 --
--- Name: public; Type: ACL; Schema: -; Owner: mmadmin
+-- Name: public; Type: ACL; Schema: -; Owner: dbates42
 --
 
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
-REVOKE ALL ON SCHEMA public FROM dbadmin;
-GRANT ALL ON SCHEMA public TO dbadmin;
+REVOKE ALL ON SCHEMA public FROM dbates42;
+GRANT ALL ON SCHEMA public TO dbates42;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
