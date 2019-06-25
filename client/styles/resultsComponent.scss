@@ -1,0 +1,234 @@
+@import "variables";
+
+
+.resultsComponent
+{
+
+  .veryStrongColor
+  {
+    color: #009245;
+  }
+
+  .strongColor
+  {
+    color: #8CC63F;
+  }
+
+  .moderateColor
+  {
+    color: #FCB721;
+  }
+
+  .weakColor
+  {
+    color: #F15A24;
+  }
+
+  .noEvidenceColor
+  {
+    color: #ED1C24;
+  }
+
+  .titleContainer
+  {
+    font-size: 56px;
+    text-align: center;
+  }
+
+  .subTitleContainer
+  {
+    font-size: 38px;
+    font-family: $LatoLight;
+    color: #999999;
+    text-align: center;
+  }
+
+  .downloadBtnContainer
+  {
+    display: grid;
+
+    margin-top: 60px;
+    justify-content: center;
+  }
+
+  .downloadBtn
+  {
+    @extend .divTransition;
+
+    font-size: 60px;
+    background-color: #666666;
+    color: white;
+
+    padding-bottom: 0;
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    border-radius: 12px;
+
+    align-content: center;
+    justify-content: center;
+
+    border: none;
+  }
+
+  .downloadBtn:hover
+  {
+    color: #666666;
+    background-color: white;
+    border: 1px solid #666666;
+  }
+
+  .wrapper {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 80%;
+    background-color: #fff;
+    color: #444;
+  }
+
+  .resultsContent
+  {
+    font-size: 20px;
+    font-family: $LatoMedium;
+
+    display: grid;
+    grid-template-columns: 40% 60%;
+    grid-gap: 10px;
+
+    align-items: center;
+    justify-items: center;
+
+    margin: 10px;
+
+    border-radius: 12px;
+    border: none;
+
+    padding: 10px;
+
+    background-color: #E6E6E6;
+
+    .resultTitle
+    {
+      grid-column: 1 / 3;
+      grid-row: 1;
+
+      margin-top: 10px;
+      margin-bottom: 20px;
+
+      font-size: 59px;
+      font-family: $LatoMedium;
+    }
+
+    .resultGage
+    {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .resultGageSVG
+    {
+      height: 214px;
+      margin-top: 12px;
+      margin-left: 100px;
+
+      display: grid;
+      justify-content: right;
+    }
+
+    .resultColorLegend
+    {
+      grid-column: 2;
+      grid-row: 2;
+
+      line-height: 41px;
+      font-size: 30px;
+      font-family: $LatoMedium;
+    }
+
+    .veryStrong
+    {
+      @extend .veryStrongColor;
+      font-family: $LatoMedium;
+    }
+
+    .strong
+    {
+      @extend .strongColor;
+      font-family: $LatoMedium;
+    }
+
+    .moderate
+    {
+      @extend .moderateColor;
+      font-family: $LatoMedium;
+    }
+
+    .weak
+    {
+      @extend .weakColor;
+      font-family: $LatoMedium;
+    }
+
+    .noEvidence
+    {
+      @extend .noEvidenceColor;
+      font-family: $LatoMedium;
+    }
+
+    .textIndicatorContainer
+    {
+      grid-column: 1 / 3;
+      grid-row: 3;
+
+      border-radius: 12px;
+      border: none;
+
+      margin-top: 20px;
+      margin-bottom: 20px;
+
+      text-align: center;
+
+      width: 90%;
+      //padding: 40px;
+
+      //padding-left: 160px;
+      //padding-right: 160px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+
+      background-color: white;
+
+      .textIndicator
+      {
+        //line-height: 41px;
+        font-size: 50px;
+        font-family: $LatoMedium;
+      }
+    }
+
+    .factorsContainer
+    {
+      grid-column: 1 / 3;
+      grid-row: 4;
+
+      //line-height: 41px;
+      font-size: 20px;
+      font-family: $LatoMedium;
+
+      margin-bottom: 20px;
+      text-align: center;
+
+      .factorsAgainst
+      {
+
+      }
+
+      .factorsTowards
+      {
+
+      }
+    }
+  }
+}
+

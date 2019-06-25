@@ -13,6 +13,11 @@ body
     padding-top: 10px;
 }
 
+button
+{
+    cursor: pointer;
+}
+
 .outerBox
 {
     max-width: 1200px;
@@ -27,32 +32,47 @@ body
     margin: 15px auto;
 }
 
-//.displayBox {
-//    overflow: hidden;
-//    padding-top: 10px;
-//}
-//
-//.marketBox {
-//    padding: 5px;
-//    width: 30%;
-//    margin: 5px 5px 13px 10px;
-//    float: left;
-//    font-size: .8em;
-//    box-shadow: 5px 5px 15px rgba(0, 0, 0, .2);
-//}
+.container
+{
+    display: grid;
+    //width:75%;
 
+    align-content: center;
+    justify-content: center;
+}
 
-//input {
-//    margin: 10px;
-//}
+.logoSmallUpperRight
+{
+    width: 100px;
+}
 
-//label
-//{
-//  font-family: $ComfortBold;
-//}
+.logoUpperRighContainer
+{
+    display: block;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
 
-//button
-//{
-//    padding: 3px;
-//    margin: 3px;
-//}
+.hide
+{
+    opacity: 0;
+    visibility: hidden;
+}
+
+.divTransition
+{
+    transition:         0.5s;
+    -webkit-transition: 0.5s;
+}
+
+.disabled
+{
+    pointer-events: none;
+    opacity: .5;
+}
+
+.inputDisabled
+{
+    opacity: .5;
+}

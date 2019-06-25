@@ -12,37 +12,117 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import LoginComponent from '../components/LoginComponent.jsx';
+import LoginComponent from '../components/LoginComponent';
+import DisclaimerComponent from '../components/DisclaimerComponent';
+import AssessmentInfoComponent from '../components/AssessmentInfoComponent';
+import AssessmentQuestionsComponent from '../components/AssessmentQuestionsComponent';
+import ResultsComponent from '../components/ResultsComponent';
+
+import userActions from '../actions/userActions';
+import * as assessmentActions from '../actions/assessmentActions';
+import * as screenActions from '../actions/screenActions';
+import * as strings from '../constants/strings';
 
 
 const mapStateToProps = store =>
 ({
-    totalCards:   store.cards.totalCards,
-    totalMarkets: store.cards.totalMarkets
+    currentScreen:store.screens.currentScreen,
+    questions: store.assessment.questions,
+    currentQuestionIndex: store.assessment.currentQuestionIndex,
+    progress: store.assessment.progress
 });
 
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch =>
+({
+    submitLogin: ( loginData ) =>
+    {
+        dispatch(userActions.userLoginRoute( loginData ));
+    },
+
+    submitAssessmentInfo: ( data ) =>
+    {
+        dispatch(assessmentActions.setAssessmentInfo( data ));
+    },
+
+    updateAssessment: ( question ) =>
+    {
+        dispatch( assessmentActions.updateAssessment( question ))
+    },
+
+    submitAssessmentQuestions: ( data ) =>
+    {
+        dispatch(assessmentActions.setAssessmentInfo( data ));
+    },
+
+    downloadReport: () =>
+    {
+        dispatch(assessmentActions.downloadReport());
+    },
+
+    startOver: () =>
+    {
+        dispatch(assessmentActions.startOver());
+    },
+
+    nextScreen: () =>
+    {
+        dispatch(screenActions.nextScreen());
+    }
+});
 
 
 class MainContainer extends Component
 {
-    componentDidMount()
-    {
-        // SVGLib.addSVGByID('header', SVGLib.GREEN_BABY_STATIC );
-        console.log( "COMPONENT MOUNTED" );
-    };
 
     openContact = ( e ) =>
     {
-        if( e ) e.stopImmediatePropagation();
         console.log( "OPEN CONTACT CLICKED" );
     };
 
-    submit = ( e ) =>
+    getCurrentScreen = () =>
     {
-        if( e ) e.stopImmediatePropagation();
-        console.log( "SUBMIT CLICKED" );
+        switch( this.props.currentScreen )
+        {
+            case strings.SCREEN_LOGIN:
+                return <LoginComponent
+                    onSubmit={this.props.submitLogin}
+                    openContact={this.openContact}
+                />;
+
+            case strings.SCREEN_DISCLAIMER:
+                return <DisclaimerComponent
+                    nextScreen={this.props.nextScreen}
+                />;
+
+            case strings.SCREEN_ASSESSMENT_GETINFO:
+                return <AssessmentInfoComponent
+                    onSubmit={this.props.submitAssessmentInfo}
+                />;
+
+            case strings.SCREEN_ASSESSMENT_QUESTIONS:
+                return <AssessmentQuestionsComponent
+                    questions={this.props.questions}
+                    progress={this.props.progress}
+                    currentQuestionIndex={this.props.currentQuestionIndex}
+                    submitAssessmentQuestions={ this.props.submitAssessmentQuestions }
+                    updateAssessment={this.props.updateAssessment}
+                />;
+
+
+            case strings.SCREEN_ASSESSMENT_CALCULATING:
+                return <ResultsComponent
+                    downloadReport={ this.props.downloadReport }
+                    startOver={this.props.startOver}
+                />;
+
+            case strings.SCREEN_ASSESSMENT_RESULTS:
+                return <ResultsComponent
+                    downloadReport={ this.props.downloadReport }
+                    startOver={this.props.startOver}
+                />;
+
+        }
     };
 
     render()
@@ -50,7 +130,7 @@ class MainContainer extends Component
         return(
           <div className="container">
             <div className="outerBox">
-                <LoginComponent submit={this.submit} openContact={this.openContact}/>
+                { this.getCurrentScreen() }
             </div>
           </div>
         )

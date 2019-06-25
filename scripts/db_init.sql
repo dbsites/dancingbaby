@@ -129,19 +129,6 @@ CREATE TABLE "questions" (
 );
 
 
-CREATE TABLE "answer_matrix" (
-	"_id" integer NOT NULL,
-	"question_number" varchar NOT NULL,
-	"very" varchar,
-	"strong" varchar,
-	"moderate" varchar,
-	"weak" varchar,
-	"no" varchar,
-	CONSTRAINT "answer_matrix_pk" PRIMARY KEY ("_id")
-) WITH (
-  OIDS=FALSE
-);
-
 CREATE TABLE "session" (
 	"sid" varchar NOT NULL,
 	"sess" JSON NOT NULL,

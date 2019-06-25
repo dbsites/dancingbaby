@@ -9,7 +9,8 @@
  * ************************************
  */
 
-import * as types from '../constants/actionTypes'
+import * as types from '../constants/actionTypes';
+import Services from '../services/services';
 
 const actions = {};
 
@@ -37,7 +38,6 @@ actions.updateMarkets = (markets) =>  ({
   type: types.UPDATE_MARKETS,
   payload: markets,
 });
-
 
 actions.createMarketThunk = (lastMarketId, location) => dispatch => {
   const marketId = +lastMarketId + 1;

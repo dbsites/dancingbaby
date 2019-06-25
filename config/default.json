@@ -1,18 +1,19 @@
 {
     "file": "default",
     "session-secret": "448e9Bec1035C2959Aa45521effa32d48a3deaa80956740276dEa06e781432D5",
+    "youtubeApiKey": "AIzaSyDapyM9CSUYKshB1MnQQ2mv4deUwRjvW7k",
     "fileValidation": {
         "questions": {
             "filename": "questions",
             "delimiter": ",",
             "trimFields": "true",
-            "minFields": 12,
-            "maxFields": 12,
+            "minFields": 7,
+            "maxFields": 7,
             "hasHeader": "true",
             "minRecords": 1,
             "maxRecords": 0,
-            "fieldNames": ["number", "text", "noFairUse", "noInfringement", "yesInfringement", "yesFairUse", "very", "strong", "moderate", "weak", "no", "branchOn"],
-            "regex": ["^\\d+[a-z]*$", ".+", "^\\.*\\d$", "^\\.*\\d$", "^\\.*\\d$", "^\\.*\\d$", "^No|Yes|null$", "^No|Yes|null$", "^No|Yes|null$", "^No|Yes|null$", "^No|Yes|null$", "^No|Yes|null$"]
+            "fieldNames": ["number", "text", "noFairUse", "noInfringement", "yesInfringement", "yesFairUse", "branchOn"],
+            "regex": ["^\\d+[a-z]*$", ".+", "^\\.*\\d$", "^\\.*\\d$", "^\\.*\\d$", "^\\.*\\d$", "^No|Yes|null$"]
         },
         "accounts": {
             "filename": "accounts",
