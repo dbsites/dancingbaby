@@ -58,31 +58,30 @@ export const updateAssessment = ( question ) =>
 
 export const setAssessmentInfo = ( info ) => ( dispatch ) =>
 {
-    const suspectId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED] );
-    const copyrightId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHTED] );
-
-
-    const copyrightVideoInfo = new Promise(( resolve, reject ) =>
-    {
-        getYoutubeVideoInfo( copyrightId, strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHTED, resolve );
-    });
-
-    const suspectVideoInfo = new Promise(( resolve, reject ) =>
-    {
-        getYoutubeVideoInfo( suspectId, strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED, resolve );
-    });
-
-    Promise.all( [copyrightVideoInfo, suspectVideoInfo] ).then(( result ) =>
-    {
-        console.log( "SET ASSESSMENT INFO: ", copyrightId, suspectId, result );
-
-        // this will show the results screen.
-        dispatch( screenActions.nextScreen() );
-        dispatch( submitAssessmentInfo({ info, youtubeVideo:result }));
-    });
+    // const suspectId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED] );
+    // const copyrightId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHTED] );
+    //
+    // const copyrightVideoInfo = new Promise(( resolve, reject ) =>
+    // {
+    //     getYoutubeVideoInfo( copyrightId, strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHTED, resolve );
+    // });
+    //
+    // const suspectVideoInfo = new Promise(( resolve, reject ) =>
+    // {
+    //     getYoutubeVideoInfo( suspectId, strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED, resolve );
+    // });
+    //
+    // Promise.all( [copyrightVideoInfo, suspectVideoInfo] ).then(( result ) =>
+    // {
+    //     console.log( "SET ASSESSMENT INFO: ", copyrightId, suspectId, result );
+    //
+    //     // this will show the results screen.
+    //     dispatch( screenActions.nextScreen() );
+    //     dispatch( submitAssessmentInfo({ info, youtubeVideo:result }));
+    // });
 
     // this will show the loading screen.
-    // dispatch( screenActions.nextScreen() );
+    dispatch( screenActions.nextScreen() );
 };
 
 
@@ -108,6 +107,8 @@ const getYTVideoId = ( path ) =>
 {
     let id = '';
 
+    if( !path ) return null;
+
     const url = path.replace(/(>|<)/gi, '').split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
 
     if( url[2] !== undefined )
@@ -126,6 +127,12 @@ const getYTVideoId = ( path ) =>
 
 const getYoutubeVideoInfo = ( videoId, videoType, resolve ) =>
 {
+
+    if( !videoId )
+    {
+        resolve({ res:null, type:videoType });
+        return null;
+    }
 
     Services.getYoutubeVideoInfo( videoId,
         ( res ) => // on success
