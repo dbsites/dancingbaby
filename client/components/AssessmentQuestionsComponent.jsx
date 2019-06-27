@@ -58,9 +58,9 @@ const AssessmentQuestionsComponent = ( props ) =>
 
 const Question = ( props ) =>
 {
-    const { index, questionTxt, answerSelected, number, isSubQuestion, currentQuestionIndex, isAnswered } = props;
+    const { index, questionTxt, answerSelected, number, isSubQuestion, isAnswered } = props;
 
-    const classNames = `questionBox ${ isSubQuestion ? 'subQuestionGrid' : 'questionGrid' } ${ isAnswered ? 'questionDone' : '' } ${ currentQuestionIndex < index ? 'questionDisabled' : '' }`;
+    const classNames = `questionBox ${ isSubQuestion ? 'subQuestionGrid' : 'questionGrid' } ${ isAnswered ? 'questionDone' : '' }}`;
 
     return (
         <div className={classNames}>
