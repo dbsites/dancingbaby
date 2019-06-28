@@ -13,8 +13,8 @@
 const routes = {
     userLoginRoute: '/api/login',
     assessmentRoute: '/api/assessment',
-    youtubeRoute: 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id={videoId},-VoFbH8jTzE&key={apiKey}',
-    youtubeNonAPIRoute: 'https://noembed.com/embed?url=https://www.youtube.com/watch?v={videoId}'
+    youtubeRoute: '/api/videoInfo',
+    // youtubeNonAPIRoute: 'https://noembed.com/embed?url=https://www.youtube.com/watch?v={videoId}'
 };
 
 const YOUTUBE_API_KEY = 'AIzaSyDapyM9CSUYKshB1MnQQ2mv4deUwRjvW7k';
@@ -92,16 +92,14 @@ Services.assessmentSubmitRoute = ( assessmentData, onSuccess, onError ) =>
         );
 };
 
-Services.getYoutubeVideoInfo = ( videoid, onSuccess, onError ) =>
+Services.getYoutubeVideoInfo = ( videoids, onSuccess, onError ) =>
 {
-    // const data = JSON.stringify( assessmentData );
-    // const youTubeRoute = routes.youtubeRoute.split('{videoId}').join('3Wf29RiKp70').split('{apiKey}').join(YOUTUBE_API_KEY);
-    const youTubeRoute = routes.youtubeNonAPIRoute.split('{videoId}').join(videoid);
+    const data = videoids.toString();
 
-    fetch(youTubeRoute,
+    fetch(routes.youtubeRoute,
         {
             method: 'POST',
-            // body: data,
+            body: data,
             headers: {'Content-Type': 'application/json'},
         })
         .then( res =>
