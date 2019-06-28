@@ -18,21 +18,13 @@ import resultGage from '../assets/svg/arrowAndGradient.svg';
 const ResultsComponent = ( props ) =>
 {
 
-    const { assessmentInfo, downloadReport } = props;
+    const { titleSuspect, resultText, fairUse, infringement, resultInfringement, startOver, downloadReport } = props;
 
-    const veryStrong = { txt:'VERY STRONG', color:'veryStrongColor' };
-    const strong = { txt:'STRONG', color:'strongColor' };
-    const moderate = { txt:'MODERATE', color:'moderateColor' };
-    const weak = { txt:'WEAK', color:'weakColor' };
-    const noEvidence = { txt:'No Evidence', color:'noEvidenceColor' };
+    const resultTitle = `${titleSuspect} exhibits a:`;
+    const resultTextIndicator = <span><span className={resultText.color}>{resultText.txt}</span> indication of fair use.</span>;
 
-    const title = "TITLE OF CONTENT";
-
-    const resultTitle = `${title} exhibits a:`;
-    const resultTextIndicator = <span><span className={strong.color}>{strong.txt}</span> indication of fair use.</span>;
-
-    const factorsAgainst = `Number of factors AGAINST FAIR USE:${5}`;
-    const factorsTowards = `Number of factors pointing towards FAIR USE:${5}`;
+    const factorsAgainst = `Number of factors AGAINST FAIR USE:${fairUse}`;
+    const factorsTowards = `Number of factors pointing towards FAIR USE:${infringement}`;
 
     return (
         <div className="resultsComponent">
