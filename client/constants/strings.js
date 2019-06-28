@@ -17,28 +17,16 @@ export const SCREEN_ASSESSMENT_QUESTIONS = 'SCREEN_ASSESSMENT_QUESTIONS';
 export const SCREEN_ASSESSMENT_CALCULATING = 'SCREEN_ASSESSMENT_CALCULATING';
 export const SCREEN_ASSESSMENT_RESULTS = 'SCREEN_ASSESSMENT_RESULTS';
 
+
 export const SCREEN_LIST = [
     SCREEN_LOGIN,
     SCREEN_DISCLAIMER,
     SCREEN_ASSESSMENT_GETINFO,
     SCREEN_ASSESSMENT_QUESTIONS,
-    SCREEN_ASSESSMENT_CALCULATING,
+    // SCREEN_ASSESSMENT_CALCULATING,
     SCREEN_ASSESSMENT_RESULTS
 ];
 
-/*
-firstName(pin): '' => 'xcvbg'
-lastName(pin): '' => 'sdfg'
-orgName(pin): '' => 'asdf'
-
-url_copyrighted(pin): 'sdf'
-contentTitle_copyrighted(pin): 'sdf'
-fileType_copyrighted(pin): '0000ff'
-
-url_suspected(pin): 'sdfsdf'
-contentTitle_suspected(pin): 'sdfsdfsdf'
-fileType_suspected(pin): '00ff00'
- */
 
 export const ASSESSMENT_INFO_IDS = {
 
@@ -53,4 +41,13 @@ export const ASSESSMENT_INFO_IDS = {
     URL_SUSPECTED:'URL_SUSPECTED',
     TITLE_SUSPECTED:'TITLE_SUSPECTED',
     FILETYPE_SUSPECTED:'FILETYPE_SUSPECTED',
+};
+
+
+export const ASSESSMENT_RESULTS_STRINGS = {
+    VERY_STRONG:{ value:0, txt:'VERY STRONG', color:'veryStrongColor' },
+    STRONG:{ value:.2, txt:'STRONG', color:'strongColor' },
+    MODERATE:{ value:.4, txt:'MODERATE', color:'moderateColor' },
+    WEAK:{ value:.6, txt:'WEAK', color:'weakColor' },
+    NO_EVIDENCE:{ value:.8, txt:'No Evidence', color:'noEvidenceColor' },
 };
