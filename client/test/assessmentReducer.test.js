@@ -9,30 +9,29 @@ describe('assessmentReducer', () => {
     startState = {
 
       progress: 0,
-
+  
       // questions
       questions: [],
       currentQuestion:{},
       currentQuestionIndex: 0,
-      totalQuestions: 0,
       questionsComplete:false,
-
+  
       // fair use
       noFairUse: 0,
       noInfringement: 0,
       yesFairUse: 0,
       yesInfringement: 0,
-
+  
       // assessment info
       [strings.ASSESSMENT_INFO_IDS.FIRST_NAME]:'',
       [strings.ASSESSMENT_INFO_IDS.LAST_NAME]:'',
       [strings.ASSESSMENT_INFO_IDS.ORG_NAME]:'',
-
+  
       // copyrighted content
       [strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHTED]:'',
       [strings.ASSESSMENT_INFO_IDS.TITLE_COPYRIGHTED]:'',
       [strings.ASSESSMENT_INFO_IDS.FILETYPE_COPYRIGHTED]:'',
-
+  
       // suspected content
       [strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED]:'',
       [strings.ASSESSMENT_INFO_IDS.TITLE_SUSPECTED]:'',
@@ -55,7 +54,7 @@ describe('assessmentReducer', () => {
     let action;
 
     beforeEach(() => {
-      action = {
+      action = { 
           type: 'ASSESSMENT_UPDATE',
           payload: {
               response: 'yes',
