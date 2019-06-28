@@ -41,9 +41,9 @@ inputValidationController.validateFile = filename => (req, res, next) => {
       if(header.length === config.fieldNames.length) {
         for ( let i = 0; i < config.fieldNames.length; i++ ) {
           if ( header[i].trim() !== config.fieldNames[i] ) {
-            errorText.push(`Expected field named [${config.fieldNames[i]}] in position ${i}.  Found [${header[i]}]`);
-         }
-        }
+            errorText.push(`Expected field named [${config.fieldNames[i]}] in position ${i}.  Found [${header[i]}]`); 
+         }  
+        } 
       } else {
         errorText.push(`Expected ${config.fieldNames.length} elements in csv header.  Found ${header.length}`);
       }

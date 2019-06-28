@@ -63,7 +63,7 @@ app.post('/api/uploadQuestions',
     questionsController.uploadQuestions,
     (req, res, next) => {
         res.status(200).redirect('/db42/');
-    });
+    });   
 
 app.get('/api/accounts', 
     accountsController.getAllAccounts,
@@ -77,10 +77,10 @@ app.post('/api/uploadAccounts',
     accountsController.uploadAccounts,
     (req, res, next) => {
         res.status(200).redirect('/db42/');
-    });
+    }); 
 
 
-app.post('/api/videoInfo',
+app.post('/api/videoInfo', 
     youtubeApiController.getVideoInfo,
     (req, res) => {
         res.status(200).send(res.locals.youtubeData);

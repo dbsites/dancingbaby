@@ -7,7 +7,7 @@ const youtubeApi = {};
 
 
 youtubeApi.getVideoInfo = (req, res, next) => {
-
+  
   if (!req.videoIds) {
     const error = new Error(`No video ids passed`)
     error.status = 400;
@@ -16,8 +16,8 @@ youtubeApi.getVideoInfo = (req, res, next) => {
     const error = new Error(`No youtube Api Key configured`)
     error.status = 400;
     return next(error)
-  }
-
+  } 
+  
   const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${req.videoIds}&key=${youtubeApiKey}`;
 
   fetch(url)

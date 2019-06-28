@@ -107,7 +107,7 @@ questionsController.uploadQuestions = (req, res, next) => {
           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`;
   
         dbdb.query({ text: questionsInsert, values: [order + 1, fields[0], fields[1], fields[2], fields[3], fields[4], fields[5], fields[6], parent] });
-
+    
 
       });
   
