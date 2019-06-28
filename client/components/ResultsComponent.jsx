@@ -23,8 +23,8 @@ const ResultsComponent = ( props ) =>
     const resultTitle = `${titleSuspect} exhibits a:`;
     const resultTextIndicator = <span><span className={resultText.color}>{resultText.txt}</span> indication of fair use.</span>;
 
-    const factorsAgainst = `Number of factors AGAINST FAIR USE:${fairUse}`;
-    const factorsTowards = `Number of factors pointing towards FAIR USE:${infringement}`;
+    const factorsAgainst = `Number of factors AGAINST FAIR USE:${infringement}`;
+    const factorsTowards = `Number of factors pointing towards FAIR USE:${fairUse}`;
 
     return (
         <div className="resultsComponent">
