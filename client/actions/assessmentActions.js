@@ -56,29 +56,29 @@ export const updateAssessment = ( question ) =>
     payload: question
 });
 
+
+export const submitAssessmentQuestions = ( question ) =>
+({
+    type: types.ASSESSMENT_SUBMIT,
+    payload: question
+});
+
+
 export const setAssessmentInfo = ( info ) => ( dispatch ) =>
 {
-    // const suspectId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED] );
-    // const copyrightId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHTED] );
-    //
-    // const copyrightVideoInfo = new Promise(( resolve, reject ) =>
-    // {
-    //     getYoutubeVideoInfo( copyrightId, strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHTED, resolve );
-    // });
-    //
-    // const suspectVideoInfo = new Promise(( resolve, reject ) =>
-    // {
-    //     getYoutubeVideoInfo( suspectId, strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED, resolve );
-    // });
-    //
-    // Promise.all( [copyrightVideoInfo, suspectVideoInfo] ).then(( result ) =>
-    // {
-    //     console.log( "SET ASSESSMENT INFO: ", copyrightId, suspectId, result );
-    //
-    //     // this will show the results screen.
-    //     dispatch( screenActions.nextScreen() );
-    //     dispatch( submitAssessmentInfo({ info, youtubeVideo:result }));
-    // });
+    const suspectId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED] );
+    const copyrightId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHTED] );
+
+    Services.getYoutubeVideoInfo( [suspectId, copyrightId],
+        ( res ) => // on success
+        {
+            console.log( "ON SUCCESS IN YOUTUBE ACTION: ", res );
+        },
+        ( res ) => // on error or unauthorized
+        {
+            console.log( "ON ERROR IN ACTION: ", res );
+        }
+    );
 
     // this will show the loading screen.
     dispatch( screenActions.nextScreen() );
