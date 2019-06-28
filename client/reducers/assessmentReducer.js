@@ -22,13 +22,14 @@ const initialState = {
     currentQuestion:{},
     currentQuestionIndex: 0,
     totalQuestions: 0,
+    questionsUpdated: Date.now(),
     questionsComplete:false,
 
     // fair use
-    noFairUse: 0,
-    noInfringement: 0,
-    yesFairUse: 0,
-    yesInfringement: 0,
+    fairUse: 0,
+    infringement: 0,
+    resultInfringement: 0,
+    resultText:{},
 
     // assessment info
     [strings.ASSESSMENT_INFO_IDS.FIRST_NAME]:'',
@@ -37,12 +38,12 @@ const initialState = {
 
     // copyrighted content
     [strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHTED]:'',
-    [strings.ASSESSMENT_INFO_IDS.TITLE_COPYRIGHTED]:'',
+    [strings.ASSESSMENT_INFO_IDS.TITLE_COPYRIGHTED]:'COPYRIGHT TITLE',
     [strings.ASSESSMENT_INFO_IDS.FILETYPE_COPYRIGHTED]:'',
 
     // suspected content
     [strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED]:'',
-    [strings.ASSESSMENT_INFO_IDS.TITLE_SUSPECTED]:'',
+    [strings.ASSESSMENT_INFO_IDS.TITLE_SUSPECTED]:'SUSPECT TITLE',
     [strings.ASSESSMENT_INFO_IDS.FILETYPE_SUSPECTED]:'',
 };
 
@@ -60,8 +61,7 @@ const assessmentReducer = ( state=initialState, action ) =>
             questions = getQuestions( action.payload );
             return {
                 ...state,
-                questions,
-                totalQuestions:questions.length
+                questions
             };
 
         case types.ASSESSMENT_INFO_SUBMIT:
@@ -83,26 +83,25 @@ const assessmentReducer = ( state=initialState, action ) =>
 
         case types.ASSESSMENT_SUBMIT:
             return {
-                ...state
+                ...state,
+                ...getAssessmentData( state.questions )
             };
 
-        // going to update question count, current fairuse value, update progress bar.
-        case types.ASSESSMENT_UPDATE:
-            // console.log( "ASSESSMENT_UPDATE: ", state.questions[action.payload.index], action.payload.response );
 
+        // update question count, update progress bar, get sub questions.
+        // TODO: fix bug where sub questions stay if user changes selection on parent question.
+        case types.ASSESSMENT_UPDATE:
             const currentQuestionIndex = action.payload.index+1;
             const currentQuestion = state.questions[action.payload.index];
 
             currentQuestion.isAnswered = action.payload.response;
-
             questions = getSubquestions( state.questions, currentQuestion, action.payload );
-            const fairUseValues = getFairuseValues( state, currentQuestion, action.payload.response );
 
             return {
                 ...state,
-                ...fairUseValues,
                 questions,
                 currentQuestionIndex,
+                questionsUpdated:Date.now(),
                 progress:action.payload.index/(state.questions.length-1),
             };
 
@@ -126,15 +125,6 @@ const getSubquestions = ( questions, question, payload ) =>
     return updateQuestions;
 };
 
-const getFairuseValues = ( state, question, response ) =>
-{
-    if( response === 'unsure' ) return null;
-
-    return {
-        [`${response}FairUse`]:state[`${response}FairUse`] + parseFloat(question[`${response}FairUse`]),
-        [`${response}Infringement`]:state[`${response}Infringement`] + parseFloat(question[`${response}Infringement`])
-    }
-};
 
 const question = ( value, isSubQuestion = false ) =>
 {
@@ -147,12 +137,13 @@ const question = ( value, isSubQuestion = false ) =>
         questionText: value.questionText,
         subQuestions: getQuestions(value.subQuestions),
 
-        noFairUse: value.noFairUse,
-        noInfringement: value.noInfringement,
-        yesFairUse: value.yesFairUse,
-        yesInfringement: value.yesInfringement
+        noFairUse: parseFloat( value.noFairUse ),
+        noInfringement: parseFloat( value.noInfringement ),
+        yesFairUse: parseFloat( value.yesFairUse ),
+        yesInfringement: parseFloat( value.yesInfringement )
     }
 };
+
 
 const getQuestions = ( list, isSubQuestion ) =>
 {
@@ -169,21 +160,45 @@ const getQuestions = ( list, isSubQuestion ) =>
     return questions;
 };
 
-/*
-firstName(pin): '' => 'xcvbg'
-lastName(pin): '' => 'sdfg'
-orgName(pin): '' => 'asdf'
-url_copyrighted(pin): 'sdf'
-contentTitle_copyrighted(pin): 'sdf'
-fileType_copyrighted(pin): '0000ff'
-url_suspected(pin): 'sdfsdf'
-contentTitle_suspected(pin): 'sdfsdfsdf'
-fileType_suspected(pin): '00ff00'
- */
 
-const getAssessmentInfo = ( info ) =>
+const getAssessmentData = ( questions ) =>
 {
-    const infoObj = {
-
+    let resultData = {
+        fairUse: 0,
+        infringement: 0,
+        resultInfringement: 0,
+        resultText:{}
     };
+
+    let response;
+
+    questions.forEach(( question ) =>
+    {
+        response = question.isAnswered;
+
+        if( response !== 'unsure' )
+        {
+            resultData.fairUse += parseFloat( question[`${response}FairUse`] );
+            resultData.infringement += parseFloat( question[`${response}Infringement`] );
+        }
+    });
+
+    resultData.resultInfringement = resultData.infringement / ( resultData.fairUse + resultData.infringement );
+    resultData.resultText = getResultText( resultData.resultInfringement );
+
+    return resultData;
+};
+
+
+const getResultText = ( resultValue ) =>
+{
+    const values = Object.values( strings.ASSESSMENT_RESULTS_STRINGS );
+
+    for( let i = 0; i < values.length; i++ )
+    {
+        if( values[i].value > resultValue )
+        {
+            return values[i-1];
+        }
+    }
 };
