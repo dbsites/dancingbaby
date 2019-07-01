@@ -10,6 +10,12 @@
 
   justify-items: center;
 
+  .contentHub
+  {
+    grid-column: 1;
+    grid-row: 1 / 100;
+  }
+
   .titleContainer
   {
     grid-column: 2;

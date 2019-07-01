@@ -11,50 +11,63 @@
 
 
 import React from 'react';
+import ContentHubComponent from './ContentHubComponent';
 import dbLogo from '../assets/svg/db_logo_greenyellow.svg';
 
 
-const AssessmentQuestionsComponent = ( props ) =>
+export default class AssessmentQuestionsComponent extends React.Component
 {
 
-    const { questions, submitAssessmentQuestions } = props;
-    const buttonCls = props.progress < 1 ? 'enterBtn disabled' : 'enterBtn';
-    const questionsList = [];
-
-    questions.forEach(( item, index ) =>
+    getQuestions()
     {
-       questionsList.push( <Question
-           key={index}
-           index={index}
-           isAnswered={item.isAnswered}
-           isSubQuestion={item.isSubQuestion}
-           currentQuestionIndex={props.currentQuestionIndex}
-           number={item.questionNumber}
-           questionTxt={item.questionText}
-           answerSelected={props.updateAssessment}
-       />);
-    });
+        const buttonCls = this.props.progress < 1 ? 'enterBtn disabled' : 'enterBtn';
+        const questionsList = [];
 
-    questionsList.push( <div key={questionsList.length} className='enterBtnContainer'><button className={buttonCls} onClick={submitAssessmentQuestions}>SUBMIT</button></div> );
+        this.props.questions.forEach(( item, index ) =>
+        {
+            questionsList.push( <Question
+                key={index}
+                index={index}
+                isAnswered={item.isAnswered}
+                isSubQuestion={item.isSubQuestion}
+                currentQuestionIndex={this.props.currentQuestionIndex}
+                number={item.questionNumber}
+                questionTxt={item.questionText}
+                answerSelected={this.props.updateAssessment}
+            />);
+        });
 
-    return (
-        <div className="assessmentQuestionsComponent">
+        questionsList.push( <div key={questionsList.length} className='enterBtnContainer'><button className={buttonCls} onClick={this.props.submitAssessmentQuestions}>SUBMIT</button></div> );
 
-            <div className='logoUpperRighContainer'>
-                <img src={dbLogo} className='logoSmallUpperRight' alt='logo' />
+        return questionsList;
+    }
+
+    render()
+    {
+        return (
+            <div className="assessmentQuestionsComponent">
+
+                <div className='logoUpperRighContainer'>
+                    <img src={dbLogo} className='logoSmallUpperRight' alt='logo'/>
+                </div>
+
+                {/*<div className='contentHub' >*/}
+                {/*    <ContentHubComponent />*/}
+                {/*</div>*/}
+
+                <div className='titleContainer'>ASSESSMENT</div>
+
+                <ProgressBar currentProgress={this.props.progress}/>
+
+                <div className='questionsBox'>
+                    { this.getQuestions() }
+                </div>
+
             </div>
-
-            <div className='titleContainer'>ASSESSMENT</div>
-
-            <ProgressBar currentProgress={props.progress}/>
-
-            <div className='questionsBox'>
-                { questionsList }
-            </div>
-
-        </div>
-    );
+        );
+    }
 };
+
 
 const Question = ( props ) =>
 {
@@ -74,6 +87,7 @@ const Question = ( props ) =>
     )
 };
 
+
 const ProgressBar = ( props ) =>
 {
     const { currentProgress } = props;
@@ -88,6 +102,3 @@ const ProgressBar = ( props ) =>
         </div>
     )
 };
-
-
-export default AssessmentQuestionsComponent;
