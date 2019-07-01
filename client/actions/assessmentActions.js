@@ -57,28 +57,37 @@ export const updateAssessment = ( question ) =>
 });
 
 
-export const submitAssessmentQuestions = ( question ) =>
+export const submitAssessment = () =>
 ({
     type: types.ASSESSMENT_SUBMIT,
-    payload: question
+    payload: null
 });
+
+
+export const submitAssessmentQuestions = () => ( dispatch ) =>
+{
+    dispatch( submitAssessment() );
+    dispatch( screenActions.nextScreen() );
+};
 
 
 export const setAssessmentInfo = ( info ) => ( dispatch ) =>
 {
-    const suspectId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED] );
-    const copyrightId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHTED] );
+    /*
+        const suspectId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED] );
+        const copyrightId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHTED] );
+    */
 
-    Services.getYoutubeVideoInfo( [suspectId, copyrightId],
-        ( res ) => // on success
-        {
-            console.log( "ON SUCCESS IN YOUTUBE ACTION: ", res );
-        },
-        ( res ) => // on error or unauthorized
-        {
-            console.log( "ON ERROR IN ACTION: ", res );
-        }
-    );
+    // Services.getYoutubeVideoInfo( [suspectId, copyrightId],
+    //     ( res ) => // on success
+    //     {
+    //         console.log( "ON SUCCESS IN YOUTUBE ACTION: ", res );
+    //     },
+    //     ( res ) => // on error or unauthorized
+    //     {
+    //         console.log( "ON ERROR IN ACTION: ", res );
+    //     }
+    // );
 
     // this will show the loading screen.
     dispatch( screenActions.nextScreen() );
@@ -87,19 +96,19 @@ export const setAssessmentInfo = ( info ) => ( dispatch ) =>
 
 export const submitCompletedAssessment = ( data ) => dispatch =>
 {
-    Services.assessmentSubmitRoute( data,
-        ( res ) => // on success
-        {
-            console.log( "ON SUCCESS IN ACTION: ", res );
-            dispatch( submitAssessmentSuccess( res ) );
-            dispatch( screenActions.nextScreen() );
-        },
-        ( res ) => // on error or unauthorized
-        {
-            console.log( "ON ERROR IN ACTION: ", res );
-            dispatch(submitAssessmentError( res ))
-        }
-    );
+    // Services.assessmentSubmitRoute( data,
+    //     ( res ) => // on success
+    //     {
+    //         console.log( "ON SUCCESS IN ACTION: ", res );
+    //         dispatch( submitAssessmentSuccess( res ) );
+    //         dispatch( screenActions.nextScreen() );
+    //     },
+    //     ( res ) => // on error or unauthorized
+    //     {
+    //         console.log( "ON ERROR IN ACTION: ", res );
+    //         dispatch(submitAssessmentError( res ))
+    //     }
+    // );
 };
 
 
@@ -128,22 +137,22 @@ const getYTVideoId = ( path ) =>
 const getYoutubeVideoInfo = ( videoId, videoType, resolve ) =>
 {
 
-    if( !videoId )
-    {
-        resolve({ res:null, type:videoType });
-        return null;
-    }
-
-    Services.getYoutubeVideoInfo( videoId,
-        ( res ) => // on success
-        {
-            console.log( "ON SUCCESS IN YOUTUBE ACTION: ", res.title, videoType );
-            resolve({ res, type:videoType });
-        },
-        ( error ) => // on error or unauthorized
-        {
-            console.log( "ON ERROR IN ACTION: ", error );
-            resolve({ error, type:videoType });
-        }
-    );
+    // if( !videoId )
+    // {
+    //     resolve({ res:null, type:videoType });
+    //     return null;
+    // }
+    //
+    // Services.getYoutubeVideoInfo( videoId,
+    //     ( res ) => // on success
+    //     {
+    //         console.log( "ON SUCCESS IN YOUTUBE ACTION: ", res.title, videoType );
+    //         resolve({ res, type:videoType });
+    //     },
+    //     ( error ) => // on error or unauthorized
+    //     {
+    //         console.log( "ON ERROR IN ACTION: ", error );
+    //         resolve({ error, type:videoType });
+    //     }
+    // );
 };
