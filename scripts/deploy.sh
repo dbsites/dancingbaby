@@ -1,6 +1,6 @@
 echo "Processing deploy.sh"
 # Set EB BUCKET as env variable
-EB_BUCKET=elasticbeanstalk-us-west-2-295078398723 
+EB_BUCKET=elasticbeanstalk-us-west-2-295078398723
 # Set ECR REPO as env variable
 ECR_REPO=295078398723.dkr.ecr.us-west-2.amazonaws.com/dancing-baby
 # Set the default region for aws cli

@@ -95,7 +95,7 @@
   {
     font-size: 36px;
 
-    grid-column: 1;
+    grid-column: 2;
     grid-row: 1;
 
     label
@@ -124,7 +124,7 @@
   {
     @extend .loginField;
 
-    grid-column: 2;
+    grid-column: 1;
     grid-row: 1;
   }
 }
