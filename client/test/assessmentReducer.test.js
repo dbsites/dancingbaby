@@ -15,7 +15,7 @@ describe('assessmentReducer', () => {
       currentQuestion:{},
       currentQuestionIndex: 0,
       totalQuestions: 0,
-      questionsUpdated: Date.now(),
+      questionsUpdated: 'init',
       questionsComplete:false,
 
       // fair use
