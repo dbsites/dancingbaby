@@ -45,9 +45,9 @@ export const ASSESSMENT_INFO_IDS = {
 
 
 export const ASSESSMENT_RESULTS_STRINGS = {
-    VERY_STRONG:{ value:0, txt:'VERY STRONG', color:'veryStrongColor' },
-    STRONG:{ value:.2, txt:'STRONG', color:'strongColor' },
-    MODERATE:{ value:.4, txt:'MODERATE', color:'moderateColor' },
-    WEAK:{ value:.6, txt:'WEAK', color:'weakColor' },
-    NO_EVIDENCE:{ value:.8, txt:'No Evidence', color:'noEvidenceColor' },
+    VERY_STRONG:{ value:0, txt:'VERY STRONG', color:'veryStrongColor', legendClass:'veryStrong' },
+    STRONG:{ value:.2, txt:'STRONG', color:'strongColor', legendClass:'strong' },
+    MODERATE:{ value:.4, txt:'MODERATE', color:'moderateColor', legendClass:'moderate' },
+    WEAK:{ value:.6, txt:'WEAK', color:'weakColor', legendClass:'weak' },
+    NO_EVIDENCE:{ value:.8, txt:'No Evidence', color:'noEvidenceColor', legendClass:'noEvidence' },
 };
