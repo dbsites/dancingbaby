@@ -28,8 +28,8 @@ const initialState = {
     // fair use
     fairUse: 0,
     infringement: 0,
-    resultInfringement: 0,
-    resultText:{},
+    resultInfringement: .5,
+    resultText:strings.ASSESSMENT_RESULTS_STRINGS[1],
 
     // assessment info
     [strings.ASSESSMENT_INFO_IDS.FIRST_NAME]:'',
