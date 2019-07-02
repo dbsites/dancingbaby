@@ -10,10 +10,19 @@
 
   justify-items: center;
 
+  margin-top: 30px;
+
   .contentHub
   {
+
+    display: grid;
     grid-column: 1;
     grid-row: 1 / 100;
+
+    justify-content: right;
+
+    width: 100%;
+    height: 1000px;
   }
 
   .titleContainer
@@ -28,6 +37,7 @@
   .enterBtnContainer
   {
     display: grid;
+    grid-column: 1 / 3;
 
     margin-top: 60px;
     justify-content: center;
@@ -145,6 +155,9 @@
   {
     grid-column: 2;
     grid-row: 3;
+
+    margin-top: 30px;
+    width: 90%;
 
     display: grid;
     overflow: auto;
