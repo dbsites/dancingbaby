@@ -51,9 +51,9 @@ export default class AssessmentQuestionsComponent extends React.Component
                     <img src={dbLogo} className='logoSmallUpperRight' alt='logo'/>
                 </div>
 
-                {/*<div className='contentHub' >*/}
-                {/*    <ContentHubComponent />*/}
-                {/*</div>*/}
+                <div className='contentHub' >
+                    <ContentHubComponent />
+                </div>
 
                 <div className='titleContainer'>ASSESSMENT</div>
 

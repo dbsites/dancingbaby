@@ -10,10 +10,19 @@
 
   justify-items: center;
 
+  margin-top: 30px;
+
   .contentHub
   {
+
+    display: grid;
     grid-column: 1;
     grid-row: 1 / 100;
+
+    justify-content: right;
+
+    width: 100%;
+    height: 1000px;
   }
 
   .titleContainer
@@ -28,8 +37,9 @@
   .enterBtnContainer
   {
     display: grid;
+    grid-column: 1 / 3;
 
-    //margin-top: 60px;
+    margin-top: 60px;
     justify-content: center;
   }
 
@@ -133,12 +143,12 @@
 
   .subQuestionGrid
   {
-    grid-template-columns: 10% 10% 80%;
+    grid-column: 2 / 3;
   }
 
   .questionGrid
   {
-    grid-template-columns: 0 10% 90%;
+    grid-column: 1 / 3;
   }
 
   .questionsBox
@@ -146,9 +156,13 @@
     grid-column: 2;
     grid-row: 3;
 
+    margin-top: 30px;
+    width: 90%;
+
     display: grid;
     overflow: auto;
-    grid-template-columns: 100%;
+
+    grid-template-columns: 10% 90%;
 
     height: 80vh;
   }
@@ -158,7 +172,7 @@
     @extend .divTransition;
 
     display: grid;
-
+    grid-template-columns: 0 10% 90%;
     grid-gap: 10px;
 
     font-size: 43px;

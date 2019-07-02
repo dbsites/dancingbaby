@@ -25,6 +25,11 @@ class ContentHubComponent extends Component
         }
     }
 
+    openCloseHub = () =>
+    {
+
+    };
+
     render()
     {
         return (
@@ -34,15 +39,14 @@ class ContentHubComponent extends Component
 
                 <div className='hubContent' >
 
-                    <ContentPanelItem title='COPYRIGHTED CONTENT' data={null} />
-                    <ContentPanelItem title='SUSPECTED CONTENT' data={null} />
+                    {/*<ContentPanelItem title='COPYRIGHTED CONTENT' data={null} />*/}
+                    {/*<ContentPanelItem title='SUSPECTED CONTENT' data={null} />*/}
 
-                    <div className='openCloseBtn' onClick={this.props.nextScreen}>
+                    <div className='openCloseBtn' onClick={this.openCloseHub}>
                         <img className='arrowBtn' src={arrow} alt='arrow' />
                     </div>
 
                 </div>
-
             </div>
         );
     }

@@ -3,9 +3,14 @@
 
 .disclaimerComponent
 {
+  display: grid;
+  grid-template-columns: 100%;
+
+  width: 80%;
 
   .titleContainer
   {
+    margin-top: 30px;
     font-size: 56px;
     text-align: center;
   }

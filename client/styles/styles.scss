@@ -10,7 +10,7 @@
 
 body
 {
-    padding-top: 10px;
+    //padding-top: 10px;
 }
 
 button
@@ -20,17 +20,20 @@ button
 
 .outerBox
 {
-    max-width: 1200px;
+    display: grid;
+    justify-items: center;
+
+    max-width: 2000px;
     margin: 0 auto;
-    padding: 10px;
+
 }
 
-.innerbox
-{
-    padding: 10px;
-    width: 95%;
-    margin: 15px auto;
-}
+//.innerbox
+//{
+//    //padding: 10px;
+//    width: 95%;
+//    //margin: 15px auto;
+//}
 
 .container
 {
@@ -39,6 +42,9 @@ button
 
     align-content: center;
     justify-content: center;
+
+    justify-items: center;
+    align-items: center;
 }
 
 .logoSmallUpperRight
