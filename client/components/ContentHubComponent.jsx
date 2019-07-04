@@ -11,6 +11,7 @@
 
 
 import React, {Component} from 'react';
+import { TweenLite } from 'gsap';
 import arrow from '../assets/svg/greyArrow.svg';
 
 
@@ -25,13 +26,28 @@ class ContentHubComponent extends Component
         }
     }
 
-    openCloseHub = () =>
+    componentDidMount()
     {
+        this.openCloseHub();
+    }
 
-    };
+    componentDidUpdate()
+    {
+        this.openCloseHub();
+    }
+
+    openCloseHub()
+    {
+        const rotateTo = this.props.isHubOpen ? -180 : 0;
+        const rotateStart = this.props.isHubOpen ? 0 : -180;
+
+        TweenLite.fromTo( '#arrowBtn', .5, { rotation:rotateStart }, { rotation:rotateTo } );
+    }
 
     render()
     {
+        const classNames = `arrowBtn ${ this.props.isHubOpen ? 'arrowBtnOpen' : '' }`;
+
         return (
             <div className="contentHubComponent">
 
@@ -42,8 +58,8 @@ class ContentHubComponent extends Component
                     {/*<ContentPanelItem title='COPYRIGHTED CONTENT' data={null} />*/}
                     {/*<ContentPanelItem title='SUSPECTED CONTENT' data={null} />*/}
 
-                    <div className='openCloseBtn' onClick={this.openCloseHub}>
-                        <img className='arrowBtn' src={arrow} alt='arrow' />
+                    <div className='openCloseBtn' onClick={this.props.openCloseContentHub}>
+                        <img id='arrowBtn' className={classNames} src={arrow} alt='arrow' />
                     </div>
 
                 </div>
