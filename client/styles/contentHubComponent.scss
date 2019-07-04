@@ -1,4 +1,5 @@
 @import "variables";
+@import "styles";
 
 
 .contentHubComponent
@@ -35,6 +36,9 @@
 
     .openCloseBtn
     {
+      //@extend .divTransition;
+
+      cursor: pointer;
       display: grid;
 
       width: 50px;
@@ -42,6 +46,13 @@
       .arrowBtn
       {
         width: 50px;
+        //@extend .divTransition;
+      }
+
+      .arrowBtnOpen
+      {
+        //width: 50px;
+        //transform: scale(-1,1);
       }
     }
   }
