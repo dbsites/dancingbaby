@@ -29,6 +29,7 @@ const mapStateToProps = store =>
     currentScreen:store.screens.currentScreen,
 
     // questions component
+    isHubOpen: store.assessment.isHubOpen,
     questions: store.assessment.questions,
     questionsUpdated: store.assessment.questionsUpdated,
     currentQuestionIndex: store.assessment.currentQuestionIndex,
@@ -61,6 +62,11 @@ const mapDispatchToProps = dispatch =>
     updateAssessment: ( question ) =>
     {
         dispatch( assessmentActions.updateAssessment( question ))
+    },
+
+    openCloseContentHub: ( question ) =>
+    {
+        dispatch( assessmentActions.openCloseContentHub( question ))
     },
 
     submitAssessmentQuestions: ( data ) =>
@@ -116,11 +122,13 @@ class MainContainer extends Component
             case strings.SCREEN_ASSESSMENT_QUESTIONS:
                 return <AssessmentQuestionsComponent
 
-                    questions={this.props.questions}
-                    progress={this.props.progress}
-                    questionsUpdate={this.props.questionsUpdated}
-                    currentQuestionIndex={this.props.currentQuestionIndex}
+                    questions={ this.props.questions }
+                    isHubOpen={ this.props.isHubOpen }
+                    progress={ this.props.progress }
+                    questionsUpdate={ this.props.questionsUpdated }
+                    currentQuestionIndex={ this.props.currentQuestionIndex }
 
+                    openCloseContentHub={ this.props.openCloseContentHub }
                     submitAssessmentQuestions={ this.props.submitAssessmentQuestions }
                     updateAssessment={ this.props.updateAssessment }
                 />;
