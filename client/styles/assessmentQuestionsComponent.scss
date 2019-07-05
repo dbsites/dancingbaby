@@ -4,9 +4,10 @@
 
 .assessmentQuestionsComponent
 {
+  //@extend .divTransition;
+
   display: grid;
   grid-gap: 10px;
-  grid-template-columns: 5% 95%;
 
   justify-items: center;
 
@@ -14,6 +15,7 @@
 
   .contentHub
   {
+    @extend .divTransition;
 
     display: grid;
     grid-column: 1;
@@ -21,8 +23,17 @@
 
     justify-content: right;
 
-    width: 100%;
     height: 1000px;
+  }
+
+  .hubOpen
+  {
+    width: 500px;
+  }
+
+  .hubClosed
+  {
+    width: 100px;
   }
 
   .titleContainer
@@ -239,7 +250,7 @@
 
       .selected
       {
-        background-color: #666666;
+        background-color: #4cb537;
       }
     }
   }

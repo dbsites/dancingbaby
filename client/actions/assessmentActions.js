@@ -56,6 +56,11 @@ export const updateAssessment = ( question ) =>
     payload: question
 });
 
+export const openCloseContentHub = () =>
+({
+    type: types.OPEN_CLOSE_CONTENTHUB,
+    payload: null
+});
 
 export const submitAssessment = () =>
 ({

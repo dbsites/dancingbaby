@@ -16,6 +16,7 @@ import * as strings from '../constants/strings';
 const initialState = {
 
     progress: 0,
+    isHubOpen: true,
 
     // questions
     questions: [],
@@ -62,6 +63,12 @@ const assessmentReducer = ( state=initialState, action ) =>
             return {
                 ...state,
                 questions
+            };
+
+        case types.OPEN_CLOSE_CONTENTHUB:
+            return {
+                ...state,
+                isHubOpen:!state.isHubOpen
             };
 
         case types.ASSESSMENT_INFO_SUBMIT:
