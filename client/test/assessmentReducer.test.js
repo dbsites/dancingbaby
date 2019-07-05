@@ -9,6 +9,7 @@ describe('assessmentReducer', () => {
     startState = {
 
       progress: 0,
+      isHubOpen: true,
 
       // questions
       questions: [],
