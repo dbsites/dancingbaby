@@ -23,10 +23,10 @@ passport.use(new LocalStrategy((username, password, cb) => {
         }
 
         if(res) {
-          console.log(`Found username:[${account.username}] pw:[${password}]`);
+          // found user with password
           cb(null, { id: account._id, username: account.username })
          } else {
-          console.log(`Did not find username:[${account.username}] pw:[${password}]`);
+           // did not find user with password
           cb(null, false)
          }
          
@@ -40,7 +40,6 @@ passport.use(new LocalStrategy((username, password, cb) => {
 }))
 
 passport.serializeUser((user, done) => {
-  console.log(user);
   done(null, user.id)
 })
 
