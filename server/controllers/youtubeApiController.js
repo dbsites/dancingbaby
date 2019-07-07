@@ -8,7 +8,7 @@ const youtubeApi = {};
 
 youtubeApi.getVideoInfo = (req, res, next) => {
   
-  if (!req.videoIds) {
+  if (!req.query.videoIds) {
     const error = new Error(`No video ids passed`)
     error.status = 400;
     return next(error)
@@ -18,20 +18,20 @@ youtubeApi.getVideoInfo = (req, res, next) => {
     return next(error)
   } 
   
-  const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${req.videoIds}&key=${youtubeApiKey}`;
+  const videoUrls = req.query.videoIds.split(',').map( id => `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${id}&key=${youtubeApiKey}`)
 
-  fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      res.locals.youtubeData = data;
-      next();
-    })
-    .catch(err => {
-      const error = new Error(err);
-      error.status = 500;
-      return next(error);
-    })
+
+  Promise.all(videoUrls.map(url => fetch(url)))
+  .then(resp => Promise.all( resp.map(r => r.text()) ))
+  .then(result => {
+    res.locals.youtubeData = result;
+    return next();
+  })
+  .catch(err => {
+    const error = new Error(err);
+    error.status = 500;
+    return next(error);
+  })
 
 }
 
