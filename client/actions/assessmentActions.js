@@ -78,10 +78,10 @@ export const submitAssessmentQuestions = () => ( dispatch ) =>
 
 export const setAssessmentInfo = ( info ) => ( dispatch ) =>
 {
-    /*
-        const suspectId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED] );
-        const copyrightId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHTED] );
-    */
+
+    const suspectId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED] );
+    const copyrightId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHTED] );
+
 
     // Services.getYoutubeVideoInfo( [suspectId, copyrightId],
     //     ( res ) => // on success
@@ -93,6 +93,8 @@ export const setAssessmentInfo = ( info ) => ( dispatch ) =>
     //         console.log( "ON ERROR IN ACTION: ", res );
     //     }
     // );
+
+    dispatch( submitAssessmentInfo({ [strings.ASSESSMENT_INFO_IDS.YOUTUBE_COPYRIGHTED_VIDEO_ID]:copyrightId, [strings.ASSESSMENT_INFO_IDS.YOUTUBE_SUSPECTED_VIDEO_ID]:suspectId }) );
 
     // this will show the loading screen.
     dispatch( screenActions.nextScreen() );

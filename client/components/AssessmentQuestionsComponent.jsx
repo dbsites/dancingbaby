@@ -78,7 +78,11 @@ export default class AssessmentQuestionsComponent extends React.Component
                 </div>
 
                 <div className={ classNames } >
-                    <ContentHubComponent openCloseContentHub={ this.props.openCloseContentHub } isHubOpen={ this.props.isHubOpen } />
+                    <ContentHubComponent
+                        openCloseContentHub={ this.props.openCloseContentHub }
+                        isHubOpen={ this.props.isHubOpen }
+                        assessmentInfo={ this.props.assessmentInfo }
+                    />
                 </div>
 
                 <div className='titleContainer'>ASSESSMENT</div>
