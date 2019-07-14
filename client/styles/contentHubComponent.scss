@@ -6,7 +6,6 @@
 {
   width: 500px;
   background-color: #CCCCCC;
-  display: grid;
 
   .hubTitle
   {
@@ -21,25 +20,40 @@
   .hubContent
   {
     width: 95%;
-    height: 1000px;
+    height: 90vh;
 
+    grid-template-rows: 400px 100px 400px;
     font-size: 20px;
     font-family: "LatoMedium", sans-serif;
 
     display: grid;
     justify-items: right;
-    align-content: center;
 
     padding: 0;
 
     background-color: white;
+
+    .panelItem
+    {
+      margin-right: 28px;
+      margin-top: 100px;
+
+      .panelItemTitle
+      {
+        text-align: center;
+      }
+    }
 
     .openCloseBtn
     {
       cursor: pointer;
       display: grid;
 
+      text-align: right;
+      justify-items: right;
+
       width: 50px;
+      margin-top: 50px;
 
       .arrowBtn
       {
