@@ -35,7 +35,9 @@ class ContentHubComponent extends Component
 
         this.state = {
 
-        }
+        };
+
+        this.youTubeVideos = [];
     }
 
     componentDidMount()
@@ -48,6 +50,11 @@ class ContentHubComponent extends Component
         this.openCloseHub();
     }
 
+    videoReady = ( event ) =>
+    {
+        this.youTubeVideos.push( event.target );
+    };
+
     openCloseHub()
     {
         const rotateTo = this.props.isHubOpen ? -180 : 0;
@@ -58,6 +65,11 @@ class ContentHubComponent extends Component
 
         TweenLite.fromTo( '#arrowBtn', .5, { rotation:rotateStart }, { rotation:rotateTo } );
         TweenLite.fromTo( '.panelItem', .5, { opacity:opacityStart }, { opacity:opacityEnd } );
+
+        this.youTubeVideos.forEach(( video ) =>
+        {
+            video.pauseVideo();
+        });
     }
 
     render()
@@ -66,8 +78,6 @@ class ContentHubComponent extends Component
         const copyrightId = this.props.assessmentInfo[strings.ASSESSMENT_INFO_IDS.YOUTUBE_COPYRIGHTED_VIDEO_ID];
         const suspectId = this.props.assessmentInfo[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SUSPECTED_VIDEO_ID];
 
-        console.log( "CONTENT HUB VIDEO IDS: ", copyrightId, suspectId, this.props );
-
         return (
             <div className="contentHubComponent">
 
@@ -75,13 +85,23 @@ class ContentHubComponent extends Component
 
                 <div className='hubContent' >
 
-                    <ContentPanelItem title='COPYRIGHTED CONTENT' id={copyrightId} info={null} />
+                    <ContentPanelItem
+                        title='COPYRIGHTED CONTENT'
+                        id={copyrightId}
+                        info={null}
+                        videoReady={ this.videoReady }
+                    />
 
                     <div className='openCloseBtn' onClick={this.props.openCloseContentHub}>
                         <img id='arrowBtn' className={classNames} src={arrow} alt='arrow' />
                     </div>
 
-                    <ContentPanelItem title='SUSPECTED CONTENT' id={suspectId} info={null} />
+                    <ContentPanelItem
+                        title='SUSPECTED CONTENT'
+                        id={suspectId}
+                        info={null}
+                        videoReady={ this.videoReady }
+                    />
 
                 </div>
             </div>
@@ -100,6 +120,7 @@ const ContentPanelItem = ( props ) =>
                 videoId={ props.id }
                 opts={videoOptions}
                 className="youtubeModalVideo"
+                onReady={ props.videoReady }
             />
 
             <div className='panelItemInfo'>
