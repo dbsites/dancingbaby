@@ -43,7 +43,9 @@ const mapStateToProps = store =>
     infringement: store.assessment.infringement,
 
     titleCopyright: store.assessment[strings.ASSESSMENT_INFO_IDS.TITLE_COPYRIGHTED],
-    titleSuspect: store.assessment[strings.ASSESSMENT_INFO_IDS.TITLE_SUSPECTED]
+    titleSuspect: store.assessment[strings.ASSESSMENT_INFO_IDS.TITLE_SUSPECTED],
+
+    assessmentInfo: store.assessment.assessmentInfo
 });
 
 
@@ -127,6 +129,7 @@ class MainContainer extends Component
                     progress={ this.props.progress }
                     questionsUpdate={ this.props.questionsUpdated }
                     currentQuestionIndex={ this.props.currentQuestionIndex }
+                    assessmentInfo={ this.props.assessmentInfo }
 
                     openCloseContentHub={ this.props.openCloseContentHub }
                     submitAssessmentQuestions={ this.props.submitAssessmentQuestions }
