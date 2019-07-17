@@ -191,7 +191,7 @@ let AssessmentInfoComponent = ( props ) =>
                         url_id={strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHTED}
                         title_id={strings.ASSESSMENT_INFO_IDS.TITLE_COPYRIGHTED}
                         fileType_id={strings.ASSESSMENT_INFO_IDS.FILETYPE_COPYRIGHTED}
-                        title='COPYRIGHTED CONTENT'
+                        title='PRIMARY CONTENT'
                     />
                     <ContentBox
                         resetFields={resetFields}
@@ -199,7 +199,7 @@ let AssessmentInfoComponent = ( props ) =>
                         url_id={strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED}
                         title_id={strings.ASSESSMENT_INFO_IDS.TITLE_SUSPECTED}
                         fileType_id={strings.ASSESSMENT_INFO_IDS.FILETYPE_SUSPECTED}
-                        title='SUSPECTED CONTENT' />
+                        title='SECONDARY CONTENT' />
                 </div>
 
                 <button type='submit'>
