@@ -6,20 +6,25 @@ const youtubeApiKey = process.env.YOUTUBE_API_KEY || cfg.get('youtubeApiKey');
 const youtubeApi = {};
 
 
-youtubeApi.getVideoInfo = (req, res, next) => {
-  
-  if (!req.query.videoIds) {
-    const error = new Error(`No video ids passed`)
+youtubeApi.getVideoInfo = (req, res, next) =>
+{
+  console.log( "GET VIDEO INFO IN API: ", req.body );
+
+  if(!req.body.videoIds )
+  {
+    const error = new Error(`No video ids passed`);
     error.status = 400;
     return next(error)
-  } else if (!youtubeApiKey) {
-    const error = new Error(`No youtube Api Key configured`)
+
+  }
+  else if (!youtubeApiKey)
+  {
+    const error = new Error(`No youtube Api Key configured`);
     error.status = 400;
     return next(error)
   } 
-  
-  const videoUrls = req.query.videoIds.split(',').map( id => `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${id}&key=${youtubeApiKey}`)
 
+  const videoUrls = req.body.videoIds.map( id => `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${id}&key=${youtubeApiKey}`)
 
   Promise.all(videoUrls.map(url => fetch(url)))
   .then(resp => Promise.all( resp.map(r => r.text()) ))
