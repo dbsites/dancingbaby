@@ -25,8 +25,6 @@ Services.userLoginRoute = ( loginData, onSuccess, onError ) =>
 {
     const data = JSON.stringify( loginData );
 
-    console.log( "USER LOGIN CALLED: ", data );
-
     fetch(routes.userLoginRoute,
     {
         method: 'POST',
@@ -92,14 +90,13 @@ Services.assessmentSubmitRoute = ( assessmentData, onSuccess, onError ) =>
         );
 };
 
-Services.getYoutubeVideoInfo = ( videoids, onSuccess, onError ) =>
+Services.getYoutubeVideoInfo = ( videoIds, onSuccess, onError ) =>
 {
-    const data = videoids.toString();
 
     fetch(routes.youtubeRoute,
         {
             method: 'POST',
-            body: data,
+            body: JSON.stringify({ videoIds }),
             headers: {'Content-Type': 'application/json'},
         })
         .then( res =>
@@ -124,6 +121,5 @@ Services.getYoutubeVideoInfo = ( videoids, onSuccess, onError ) =>
             }
         );
 };
-
 
 export default Services

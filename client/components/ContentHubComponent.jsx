@@ -86,7 +86,7 @@ class ContentHubComponent extends Component
                 <div className='hubContent' >
 
                     <ContentPanelItem
-                        title='COPYRIGHTED CONTENT'
+                        title='PRIMARY CONTENT'
                         id={copyrightId}
                         info={null}
                         videoReady={ this.videoReady }
@@ -97,7 +97,7 @@ class ContentHubComponent extends Component
                     </div>
 
                     <ContentPanelItem
-                        title='SUSPECTED CONTENT'
+                        title='SECONDARY CONTENT'
                         id={suspectId}
                         info={null}
                         videoReady={ this.videoReady }

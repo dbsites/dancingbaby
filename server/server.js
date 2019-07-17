@@ -80,10 +80,10 @@ app.post('/api/uploadAccounts',
     }); 
 
 
-app.get('/api/videoInfo', 
+app.post('/api/videoInfo',
     youtubeApiController.getVideoInfo,
     (req, res) => {
-        res.status(200).send(res.locals.youtubeData);
+        res.status(200).json(res.locals.youtubeData);
     });
 
 
