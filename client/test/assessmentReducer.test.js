@@ -25,20 +25,24 @@ describe('assessmentReducer', () => {
       resultInfringement: .5,
       resultText:strings.ASSESSMENT_RESULTS_STRINGS[1],
 
-      // assessment info
-      [strings.ASSESSMENT_INFO_IDS.FIRST_NAME]:'',
-      [strings.ASSESSMENT_INFO_IDS.LAST_NAME]:'',
-      [strings.ASSESSMENT_INFO_IDS.ORG_NAME]:'',
+      assessmentInfo: {
+        // assessment info
+        [strings.ASSESSMENT_INFO_IDS.FIRST_NAME]:'',
+        [strings.ASSESSMENT_INFO_IDS.LAST_NAME]:'',
+        [strings.ASSESSMENT_INFO_IDS.ORG_NAME]:'',
 
-      // copyrighted content
-      [strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHTED]:'',
-      [strings.ASSESSMENT_INFO_IDS.TITLE_COPYRIGHTED]:'COPYRIGHT TITLE',
-      [strings.ASSESSMENT_INFO_IDS.FILETYPE_COPYRIGHTED]:'',
+        // copyrighted content
+        [strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHTED]:'',
+        [strings.ASSESSMENT_INFO_IDS.TITLE_COPYRIGHTED]:'COPYRIGHT TITLE',
+        [strings.ASSESSMENT_INFO_IDS.FILETYPE_COPYRIGHTED]:'',
+        [strings.ASSESSMENT_INFO_IDS.YOUTUBE_COPYRIGHTED_VIDEO_ID]:'',
 
-      // suspected content
-      [strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED]:'',
-      [strings.ASSESSMENT_INFO_IDS.TITLE_SUSPECTED]:'SUSPECT TITLE',
-      [strings.ASSESSMENT_INFO_IDS.FILETYPE_SUSPECTED]:'',
+        // suspected content
+        [strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED]:'',
+        [strings.ASSESSMENT_INFO_IDS.TITLE_SUSPECTED]:'SUSPECT TITLE',
+        [strings.ASSESSMENT_INFO_IDS.FILETYPE_SUSPECTED]:'',
+        [strings.ASSESSMENT_INFO_IDS.YOUTUBE_SUSPECTED_VIDEO_ID]:'',
+      },
     };
 
   });

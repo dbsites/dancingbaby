@@ -6,6 +6,8 @@
 {
   width: 500px;
   background-color: #CCCCCC;
+  height: 100vh;
+  overflow: hidden;
 
   .hubTitle
   {
@@ -20,7 +22,7 @@
   .hubContent
   {
     width: 95%;
-    height: 90vh;
+    height: 100vh;
 
     grid-template-rows: 400px 100px 400px;
     font-size: 20px;
