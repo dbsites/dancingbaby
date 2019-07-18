@@ -39,14 +39,14 @@ app.use(express.static('dist'));
 // begin routes
 
 app.post('/api/login',
-   passport.authenticate('local'), // will return 401 Unauthorized on failure
+   passport.authenticate('local', { failureRedirect: '/' }), // will return 401 Unauthorized on failure
    questionsController.getAllQuestions,
    (req, res) => { // login was successful
+    logger.info(`Login successful, returning ${res.locals.questions.length} questions`);
     res.status(200).send(res.locals.questions);
    });
 
 app.get('/db42/*', 
-   // accountsController.checkAuthentication,
     (req, res) => {
         res.sendFile(path.resolve(__dirname, '../admin.html')); 
     });
