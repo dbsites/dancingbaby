@@ -87,9 +87,16 @@ accountsController.uploadAccounts = (req, res, next) => {
           INSERT INTO accounts (username, password)
           VALUES ($1, $2)`;
 
-          logger.info(`Created user ${fields[0].trim()}`);
-  
-          dbdb.query({ text: insert, values: [ fields[0].trim(), hashedPassword ] });
+          
+          dbdb.query({ text: insert, values: [ fields[0].trim(), hashedPassword ] })
+          .then( result=> {
+            logger.info(`Created user ${fields[0].trim()}`);
+          })
+          .catch( err => {
+            const error = new Error(err);
+            error.status = 500;
+            return next(error);
+          })
         });
 
         
