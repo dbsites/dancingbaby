@@ -1,6 +1,7 @@
 const dbdb = require('../models/dbModel');
 const cfg = require('config');
 const bcrypt = require('bcrypt');
+const { logger } = require('../util/loggingUtil');
 
 const accountsController = {};
 
@@ -85,6 +86,8 @@ accountsController.uploadAccounts = (req, res, next) => {
           const insert = `
           INSERT INTO accounts (username, password)
           VALUES ($1, $2)`;
+
+          logger.info(`Created user ${fields[0].trim()}`);
   
           dbdb.query({ text: insert, values: [ fields[0].trim(), hashedPassword ] });
         });
