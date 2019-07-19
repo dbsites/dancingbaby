@@ -11,7 +11,8 @@
 
 
 import React from 'react';
-import { TweenLite, Back, Circ, Sine } from 'gsap';
+import { TweenLite, Sine } from 'gsap';
+import * as strings from '../constants/strings';
 import dbLogo from '../assets/svg/db_logo_greenyellow.svg';
 import Utils from "../js/Utils";
 
@@ -41,13 +42,13 @@ export default class ResultsComponent extends React.Component
 
     render()
     {
-        const { titleSuspect, resultText, fairUse, infringement, resultInfringement, startOver, downloadReport } = this.props;
+        const { suspectContent, resultText, fairUse, infringement, resultInfringement, startOver, downloadReport } = this.props;
 
-        const resultTitle = `${titleSuspect} exhibits a:`;
+        const resultTitle = `${suspectContent[strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE]} exhibits a:`;
         const resultTextIndicator = resultText ? <span><span className={resultText.color}>{resultText.txt}</span> indication of fair use.</span> : 'indication of fair use.';
 
-        const factorsAgainst = `Number of factors AGAINST FAIR USE:${infringement}`;
-        const factorsTowards = `Number of factors pointing towards FAIR USE:${fairUse}`;
+        const factorsAgainst = `Number of factors AGAINST FAIR USE: ${infringement}`;
+        const factorsTowards = `Number of factors pointing towards FAIR USE: ${fairUse}`;
 
         return (
 

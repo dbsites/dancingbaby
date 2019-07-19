@@ -18,28 +18,6 @@ import dbLogo from '../assets/svg/db_logo_greenyellow.svg';
 export default class AssessmentQuestionsComponent extends React.Component
 {
 
-    componentDidMount()
-    {
-        this.openCloseHub();
-    }
-
-    componentDidUpdate()
-    {
-        this.openCloseHub();
-    }
-
-    openCloseHub()
-    {
-        console.log( "COMPONENT DID MOUNT" );
-
-        const gridEnd = this.props.isHubOpen ? '500px 1fr' : '5% 95%';
-        const gridStart = this.props.isHubOpen ? '5% 95%' : '500px 1fr';
-
-        console.log( "TEMPLATE VALUES: ", this.props.isHubOpen, gridStart, gridEnd );
-
-        // TweenLite.fromTo( '#assessmentQuestionsComponent', .5, { gridTemplateRows:gridStart }, { gridTemplateRows:gridEnd } );
-    }
-
     getQuestions()
     {
         const buttonCls = this.props.progress < 1 ? 'enterBtn disabled' : 'enterBtn';
@@ -67,8 +45,6 @@ export default class AssessmentQuestionsComponent extends React.Component
     render()
     {
         const classNames = `contentHub ${ this.props.isHubOpen ? 'hubOpen' : 'hubClosed' }`;
-
-        console.log( 'RENDER CLASSNAMES: ', classNames );
 
         return (
             <div id='assessmentQuestionsComponent' className='assessmentQuestionsComponent'>

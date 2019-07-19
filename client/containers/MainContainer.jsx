@@ -39,11 +39,9 @@ const mapStateToProps = store =>
     resultInfringement: store.assessment.resultInfringement,
     resultText: store.assessment.resultText,
 
+
     fairUse: store.assessment.fairUse,
     infringement: store.assessment.infringement,
-
-    titleCopyright: store.assessment[strings.ASSESSMENT_INFO_IDS.TITLE_COPYRIGHTED],
-    titleSuspect: store.assessment[strings.ASSESSMENT_INFO_IDS.TITLE_SUSPECTED],
 
     assessmentInfo: store.assessment.assessmentInfo
 });
@@ -96,11 +94,6 @@ const mapDispatchToProps = dispatch =>
 class MainContainer extends Component
 {
 
-    openContact = ( e ) =>
-    {
-        console.log( "OPEN CONTACT CLICKED" );
-    };
-
     getCurrentScreen = () =>
     {
         switch( this.props.currentScreen )
@@ -108,7 +101,6 @@ class MainContainer extends Component
             case strings.SCREEN_LOGIN:
                 return <LoginComponent
                     onSubmit={ this.props.submitLogin }
-                    openContact={ this.openContact }
                 />;
 
             case strings.SCREEN_DISCLAIMER:
@@ -142,8 +134,7 @@ class MainContainer extends Component
                     resultInfringement={ this.props.resultInfringement }
                     resultText={ this.props.resultText }
 
-                    titleCopyright={ this.props.titleCopyright }
-                    titleSuspect={ this.props.titleSuspect }
+                    suspectContent={ this.props.assessmentInfo[strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT] }
 
                     fairUse={ this.props.fairUse }
                     infringement={ this.props.infringement }

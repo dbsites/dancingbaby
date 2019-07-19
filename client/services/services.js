@@ -17,7 +17,6 @@ const routes = {
     // youtubeNonAPIRoute: 'https://noembed.com/embed?url=https://www.youtube.com/watch?v={videoId}'
 };
 
-const YOUTUBE_API_KEY = 'AIzaSyDapyM9CSUYKshB1MnQQ2mv4deUwRjvW7k';
 
 const Services = {};
 

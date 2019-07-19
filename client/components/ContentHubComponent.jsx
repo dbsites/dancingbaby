@@ -11,6 +11,7 @@
 
 
 import React, {Component} from 'react';
+import moment from 'moment';
 import YouTube from 'react-youtube';
 import { TweenLite } from 'gsap';
 import arrow from '../assets/svg/greyArrow.svg';
@@ -63,8 +64,8 @@ class ContentHubComponent extends Component
         const opacityStart = this.props.isHubOpen ? 0 : 1;
         const opacityEnd = this.props.isHubOpen ? 1 : 0;
 
-        TweenLite.fromTo( '#arrowBtn', .5, { rotation:rotateStart }, { rotation:rotateTo } );
-        TweenLite.fromTo( '.panelItem', .5, { opacity:opacityStart }, { opacity:opacityEnd } );
+        TweenLite.to( '#arrowBtn', .5, { rotation:rotateTo } );
+        TweenLite.to( '.panelItem', .5, { opacity:opacityEnd } );
 
         this.youTubeVideos.forEach(( video ) =>
         {
@@ -75,8 +76,12 @@ class ContentHubComponent extends Component
     render()
     {
         const classNames = `arrowBtn ${ this.props.isHubOpen ? 'arrowBtnOpen' : '' }`;
-        const copyrightId = this.props.assessmentInfo[strings.ASSESSMENT_INFO_IDS.YOUTUBE_COPYRIGHTED_VIDEO_ID];
-        const suspectId = this.props.assessmentInfo[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SUSPECTED_VIDEO_ID];
+
+        const suspectContent = this.props.assessmentInfo[strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT];
+        const copyrightContent = this.props.assessmentInfo[strings.ASSESSMENT_INFO_IDS.COPYRIGHTED_CONTENT];
+
+        const copyrightId = copyrightContent[strings.ASSESSMENT_INFO_IDS.VIDEO_ID];
+        const suspectId = suspectContent[strings.ASSESSMENT_INFO_IDS.VIDEO_ID];
 
         return (
             <div className="contentHubComponent">
@@ -88,7 +93,7 @@ class ContentHubComponent extends Component
                     <ContentPanelItem
                         title='PRIMARY CONTENT'
                         id={copyrightId}
-                        info={null}
+                        info={copyrightContent}
                         videoReady={ this.videoReady }
                     />
 
@@ -99,7 +104,7 @@ class ContentHubComponent extends Component
                     <ContentPanelItem
                         title='SECONDARY CONTENT'
                         id={suspectId}
-                        info={null}
+                        info={suspectContent}
                         videoReady={ this.videoReady }
                     />
 
@@ -111,6 +116,15 @@ class ContentHubComponent extends Component
 
 const ContentPanelItem = ( props ) =>
 {
+
+    console.log( "CONTENT PANEL ITEM: ", props );
+
+    const title = props.info[strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE] || 'n/a';
+    const publisher = props.info[strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISHER] || 'n/a';
+    const viewCount = props.info[strings.ASSESSMENT_INFO_IDS.VIDEO_VIEW_COUNT] || 'n/a';
+    const date = props.info[strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISH_DATE] || 'n/a';
+    const url = props.info[strings.ASSESSMENT_INFO_IDS.VIDEO_URL] || 'n/a';
+
     return (
         <div className='panelItem'>
 
@@ -124,7 +138,11 @@ const ContentPanelItem = ( props ) =>
             />
 
             <div className='panelItemInfo'>
-
+                <div className='itemTitle'>Title: {title}</div>
+                <div className='itemURL'><a className='urlLink' href={url} target='blank'>URL</a></div>
+                <div className='itemDate'>Publish Date: {moment( date ).format('ll')}</div>
+                <div className='itemPublisher'>Author: {publisher}</div>
+                <div className='itemCount'>View Count: {viewCount}</div>
             </div>
         </div>
     )
