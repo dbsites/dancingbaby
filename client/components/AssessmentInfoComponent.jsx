@@ -188,9 +188,9 @@ let AssessmentInfoComponent = ( props ) =>
                     <ContentBox
                         resetFields={resetFields}
                         contentType={copyrightedContent}
-                        url_id={strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHTED}
-                        title_id={strings.ASSESSMENT_INFO_IDS.TITLE_COPYRIGHTED}
-                        fileType_id={strings.ASSESSMENT_INFO_IDS.FILETYPE_COPYRIGHTED}
+                        url_id={strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHT}
+                        title_id={strings.ASSESSMENT_INFO_IDS.TITLE_COPYRIGHT}
+                        fileType_id={strings.ASSESSMENT_INFO_IDS.FILETYPE_COPYRIGHT}
                         title='PRIMARY CONTENT'
                     />
                     <ContentBox
