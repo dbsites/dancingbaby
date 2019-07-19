@@ -46,8 +46,6 @@ export default class AssessmentQuestionsComponent extends React.Component
     {
         const classNames = `contentHub ${ this.props.isHubOpen ? 'hubOpen' : 'hubClosed' }`;
 
-        console.log( 'RENDER CLASSNAMES: ', classNames );
-
         return (
             <div id='assessmentQuestionsComponent' className='assessmentQuestionsComponent'>
 
