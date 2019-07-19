@@ -26,7 +26,7 @@
 
     grid-template-rows: 400px 100px 400px;
     font-size: 20px;
-    font-family: "LatoMedium", sans-serif;
+    font-family: $LatoMedium, sans-serif;
 
     display: grid;
     justify-items: right;
@@ -43,6 +43,55 @@
       .panelItemTitle
       {
         text-align: center;
+      }
+
+      .panelItemInfo
+      {
+
+        grid-template-columns: 50% 50%;
+        font-size: 16px;
+        font-family: $LatoLight, sans-serif;
+        color: #4D4D4D;
+
+        display: grid;
+
+        padding: 0;
+
+        .itemTitle
+        {
+          grid-row: 1;
+          grid-column: 1;
+        }
+
+        .itemURL
+        {
+          grid-row: 2;
+          grid-column: 1;
+
+          .urlLink
+          {
+            text-decoration: none;
+            color: #4D4D4D;
+          }
+        }
+
+        .itemDate
+        {
+          grid-row: 3;
+          grid-column: 1;
+        }
+
+        .itemPublisher
+        {
+          grid-row: 1;
+          grid-column: 2;
+        }
+
+        .itemCount
+        {
+          grid-row: 2;
+          grid-column: 2;
+        }
       }
     }
 
