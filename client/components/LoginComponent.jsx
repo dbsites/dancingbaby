@@ -26,7 +26,7 @@ let LoginComponent = ( props ) =>
                 <img src={dbLogo} className='logo' alt='logo' />
             </div>
 
-            <div className='contactLink' onClick={openContact} id='contact'>contact</div>
+            <div className='contactLink' onClick={openContact} id='contact'><a className='urlLink' href='http://www.google.com' target='blank'>contact</a></div>
 
             <form className='loginForm' onSubmit={handleSubmit( onSubmit )}>
 
