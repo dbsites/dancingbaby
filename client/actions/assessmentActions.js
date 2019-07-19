@@ -80,8 +80,13 @@ export const setAssessmentInfo = ( info ) => ( dispatch ) =>
 {
 
     const suspectId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED] );
-    const copyrightId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHTED] );
-    const parsed = [];
+    const copyrightId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHT] );
+    const results = {
+        [strings.ASSESSMENT_INFO_IDS.YOUTUBE_COPYRIGHTED_VIDEO_ID]:copyrightId,
+        [strings.ASSESSMENT_INFO_IDS.YOUTUBE_SUSPECTED_VIDEO_ID]:suspectId,
+        info,
+        videoInfo:[]
+    };
 
     Services.getYoutubeVideoInfo( [suspectId, copyrightId],
         ( res ) => // on success
@@ -90,22 +95,20 @@ export const setAssessmentInfo = ( info ) => ( dispatch ) =>
             {
                 res.forEach(( item ) =>
                 {
-                    parsed.push( JSON.parse( item ));
-                })
+                    results.videoInfo.push( JSON.parse( item ));
+                });
+
+                dispatch( submitAssessmentInfo( results ));
+                dispatch( screenActions.nextScreen() );
             }
 
-            console.log( "ON SUCCESS IN YOUTUBE ACTION: ", parsed );
+            console.log( "ON SUCCESS IN YOUTUBE ACTION: ", results.videoInfo );
         },
         ( res ) => // on error or unauthorized
         {
             console.log( "ON ERROR IN ACTION: ", res );
         }
     );
-
-    dispatch( submitAssessmentInfo({ [strings.ASSESSMENT_INFO_IDS.YOUTUBE_COPYRIGHTED_VIDEO_ID]:copyrightId, [strings.ASSESSMENT_INFO_IDS.YOUTUBE_SUSPECTED_VIDEO_ID]:suspectId }) );
-
-    // this will show the loading screen.
-    dispatch( screenActions.nextScreen() );
 };
 
 
