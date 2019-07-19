@@ -13,6 +13,21 @@ import * as types from '../constants/actionTypes';
 import * as strings from '../constants/strings';
 
 
+
+const content = () =>
+{
+    return {
+        [strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE]: '',
+        [strings.ASSESSMENT_INFO_IDS.VIDEO_ID]: '',
+        [strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISHER]: '',
+        [strings.ASSESSMENT_INFO_IDS.VIDEO_VIEW_COUNT]: '',
+        [strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISH_DATE]: '',
+        [strings.ASSESSMENT_INFO_IDS.VIDEO_URL]: '',
+        [strings.ASSESSMENT_INFO_IDS.FILETYPE]: '',
+    }
+};
+
+
 const initialState = {
 
     progress: 0,
@@ -38,18 +53,9 @@ const initialState = {
         [strings.ASSESSMENT_INFO_IDS.LAST_NAME]:'',
         [strings.ASSESSMENT_INFO_IDS.ORG_NAME]:'',
 
-        // copyrighted content
-        [strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHTED]:'',
-        [strings.ASSESSMENT_INFO_IDS.TITLE_COPYRIGHTED]:'COPYRIGHT TITLE',
-        [strings.ASSESSMENT_INFO_IDS.FILETYPE_COPYRIGHTED]:'',
-        [strings.ASSESSMENT_INFO_IDS.YOUTUBE_COPYRIGHTED_VIDEO_ID]:'',
-
-        // suspected content
-        [strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED]:'',
-        [strings.ASSESSMENT_INFO_IDS.TITLE_SUSPECTED]:'SUSPECT TITLE',
-        [strings.ASSESSMENT_INFO_IDS.FILETYPE_SUSPECTED]:'',
-        [strings.ASSESSMENT_INFO_IDS.YOUTUBE_SUSPECTED_VIDEO_ID]:'',
-    },
+        [strings.ASSESSMENT_INFO_IDS.COPYRIGHTED_CONTENT]: content(),
+        [strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT]: content()
+    }
 };
 
 
@@ -77,13 +83,9 @@ const assessmentReducer = ( state=initialState, action ) =>
             };
 
         case types.ASSESSMENT_INFO_SUBMIT:
-            result = Object.assign({}, state.assessmentInfo );
-            result[strings.ASSESSMENT_INFO_IDS.YOUTUBE_COPYRIGHTED_VIDEO_ID] = action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_COPYRIGHTED_VIDEO_ID];
-            result[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SUSPECTED_VIDEO_ID] = action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SUSPECTED_VIDEO_ID];
-
             return {
                 ...state,
-                assessmentInfo:result
+                assessmentInfo:getYoutubeVideoInfo( action, state )
             };
 
         case types.ASSESSMENT_START:
@@ -157,6 +159,55 @@ const question = ( value, isSubQuestion = false ) =>
         yesFairUse: parseFloat( value.yesFairUse ),
         yesInfringement: parseFloat( value.yesInfringement )
     }
+};
+
+
+const getYoutubeVideoInfo = ( action, state ) =>
+{
+    console.log( "GETTING YOUTUBE VIDEO INFO: ", action.payload );
+
+    const { info, videoInfo } = action.payload;
+    const result = {
+
+        [strings.ASSESSMENT_INFO_IDS.FIRST_NAME]: info[strings.ASSESSMENT_INFO_IDS.FIRST_NAME],
+        [strings.ASSESSMENT_INFO_IDS.LAST_NAME]: info[strings.ASSESSMENT_INFO_IDS.LAST_NAME],
+        [strings.ASSESSMENT_INFO_IDS.ORG_NAME]: info[strings.ASSESSMENT_INFO_IDS.ORG_NAME],
+
+        [strings.ASSESSMENT_INFO_IDS.COPYRIGHTED_CONTENT]: setVideoData( action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_COPYRIGHTED_VIDEO_ID], videoInfo ),
+        [strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT]: setVideoData( action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SUSPECTED_VIDEO_ID], videoInfo ),
+    };
+
+    return result;
+};
+
+
+const setVideoData = ( id, videoInfo ) =>
+{
+    console.log( "SET VIDEO DATA: ", id, videoInfo );
+
+    let result = null;
+    let item = null;
+
+    videoInfo.forEach(( info ) =>
+    {
+        item = info.items[0];
+
+        if( item && item.id === id )
+        {
+            console.log("SET VIDEO INFO: ", item );
+
+            result = {
+                [strings.ASSESSMENT_INFO_IDS.VIDEO_ID]: id,
+                [strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE]: item.snippet.title,
+                [strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISHER]: item.snippet.channelTitle,
+                [strings.ASSESSMENT_INFO_IDS.VIDEO_VIEW_COUNT]: item.statistics.viewCount,
+                [strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISH_DATE]: item.snippet.publishedAt,
+                [strings.ASSESSMENT_INFO_IDS.VIDEO_URL]: `https://www.youtube.com/watch?v=${id}`,
+            }
+        }
+    });
+
+    return result;
 };
 
 
