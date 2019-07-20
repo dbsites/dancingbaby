@@ -60,12 +60,9 @@ questionsController.getAllQuestions = (req, res, next) => {
         questions.push(question);
       })
     } else {
-      // return reason why query failed
-      req.flash('error', [`An error occurred`]);
-      next({ status: 500, 
-              message: `questionController.getAllQuestions: No questions found`, 
-              flash: { ...res.locals.flash }
-      });
+      const error = new Error(`questionController.getAllQuestions: No questions found`);
+      error.status = 500;
+      return next(error)
     }
 
     // all questions and subquestions
@@ -79,9 +76,9 @@ questionsController.getAllQuestions = (req, res, next) => {
     return next();
   })
   .catch( err => {
-    return next({ status: 500, 
-           message: `questionController.getAllQuestions: ${err}` 
-        });
+    const error = new Error(`questionController.getAllQuestions: ${err}`);
+    error.status = 500;
+    return next(error)    
   })
 
 };
@@ -114,7 +111,7 @@ questionsController.uploadQuestions = (req, res, next) => {
       return next();
     })
     .catch(err => {
-      const error = new Error(err);
+      const error = new Error(`questionController.uploadQuestions: ${err}`);
       error.status = 400;
       return next(error);
     });

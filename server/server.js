@@ -89,7 +89,7 @@ app.post('/api/videoInfo',
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    const err = new Error('Not Found');
+    const err = new Error(`{req.url} Not Found`);
     err.status = 404;
     next(err);
   });
@@ -98,11 +98,7 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
     logger.error(`${err.status ? err.status : ''} ${err.message}`);
-    if (err.flash) {
-        res.status(err.status || 500).json(err.flash);
-    } else {
-        res.status(err.status || 500).send(err.message);
-    }
+    res.status(err.status || 500).json({ error: err.message });
 });
 
 app.listen(PORT, (err) => {
