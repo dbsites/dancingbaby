@@ -22,12 +22,9 @@ usersController.getAllUsers = (req, res, next) => {
         users.push(user);
       })
     } else {
-      // return reason why query failed
-      req.flash('error', [`An error occurred`]);
-      next({ status: 500, 
-              message: `userController.getAllUsers: No users found`, 
-              flash: { ...res.locals.flash }
-      });
+      const error = new Error(`userController.getAllUsers: No users found`);
+      error.status = 500;
+      return next(error)
     }
 
     return users;
@@ -40,9 +37,9 @@ usersController.getAllUsers = (req, res, next) => {
     return next();
   })
   .catch( err => {
-    return next({ status: 500, 
-           message: `usersController.getAllUsers: ${err}` 
-        });
+    const error = new Error(`usersController.getAllUsers: ${err}`);
+    error.status = 500;
+    return next(error)
   })
 
 };
