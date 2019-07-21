@@ -24,7 +24,7 @@
     width: 95%;
     height: 100vh;
 
-    grid-template-rows: 400px 100px 400px;
+    grid-template-rows: 500px 50px 500px;
     font-size: 20px;
     font-family: $LatoMedium, sans-serif;
 
@@ -37,6 +37,8 @@
 
     .panelItem
     {
+      width: 420px;
+
       margin-right: 28px;
       margin-top: 100px;
 
@@ -49,6 +51,7 @@
       {
 
         grid-template-columns: 50% 50%;
+        grid-gap: 10px;
         font-size: 16px;
         font-family: $LatoLight, sans-serif;
         color: #4D4D4D;
@@ -95,6 +98,11 @@
       }
     }
 
+    .panelItem:last-child
+    {
+      margin-top: 50px;
+    }
+
     .openCloseBtn
     {
       cursor: pointer;
@@ -103,8 +111,8 @@
       text-align: right;
       justify-items: right;
 
+      height: 50px;
       width: 50px;
-      margin-top: 50px;
 
       .arrowBtn
       {
