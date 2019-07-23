@@ -34,12 +34,13 @@ const initialState = {
     isHubOpen: true,
 
     // questions
-    questions: [],
-    currentQuestion:{},
+    questions: {},
+    currentQuestions: [],
+    currentQuestion: {},
     currentQuestionIndex: 0,
     totalQuestions: 0,
     questionsUpdated: 'init',
-    questionsComplete:false,
+    questionsComplete: false,
 
     // fair use
     fairUse: 0,
@@ -53,13 +54,15 @@ const initialState = {
         [strings.ASSESSMENT_INFO_IDS.LAST_NAME]:'',
         [strings.ASSESSMENT_INFO_IDS.ORG_NAME]:'',
 
-        [strings.ASSESSMENT_INFO_IDS.COPYRIGHTED_CONTENT]: content(),
-        [strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT]: content()
+        [strings.ASSESSMENT_INFO_IDS.COPYRIGHTED_CONTENT]: new content(),
+        [strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT]: new content()
     }
 };
 
 
-const assessmentReducer = ( state=initialState, action ) =>
+let initQuestions;
+
+const assessmentReducer = ( state = initialState, action ) =>
 {
 
     let questions;
@@ -70,10 +73,13 @@ const assessmentReducer = ( state=initialState, action ) =>
 
         // going to grab questions from successful login here and add them to state
         case types.USER_LOGIN_SUCCESS:
-            questions = getQuestions( action.payload );
+            questions = getQuestions( action.payload, false, null );
+            initQuestions = JSON.stringify( questions );
+
             return {
                 ...state,
-                questions
+                questions,
+                currentQuestions:Object.values( questions )
             };
 
         case types.OPEN_CLOSE_CONTENTHUB:
@@ -83,9 +89,12 @@ const assessmentReducer = ( state=initialState, action ) =>
             };
 
         case types.ASSESSMENT_INFO_SUBMIT:
+
+            console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ASSESSMENT INFO SUBMIT: ", action );
+
             return {
                 ...state,
-                assessmentInfo:getYoutubeVideoInfo( action, state )
+                assessmentInfo:setVideoInfo( action, state )
             };
 
         case types.ASSESSMENT_START:
@@ -106,17 +115,17 @@ const assessmentReducer = ( state=initialState, action ) =>
 
 
         // update question count, update progress bar, get sub questions.
-        // TODO: fix bug where sub questions stay if user changes selection on parent question.
         case types.ASSESSMENT_UPDATE:
-            const currentQuestionIndex = action.payload.index+1;
-            const currentQuestion = state.questions[action.payload.index];
 
-            currentQuestion.isAnswered = action.payload.response;
-            questions = getSubquestions( state.questions, currentQuestion, action.payload );
+            const currentQuestionIndex = action.payload.questionData.index+1;
+            questions = updateCurrentQuestion( Object.assign( {}, state.questions ), action.payload );
+
+            const currentQuestions = getQuestionList( questions );
 
             return {
                 ...state,
                 questions,
+                currentQuestions,
                 currentQuestionIndex,
                 questionsUpdated:Date.now(),
                 progress:action.payload.index/(state.questions.length-1),
@@ -130,96 +139,73 @@ const assessmentReducer = ( state=initialState, action ) =>
 export default assessmentReducer;
 
 
-const getSubquestions = ( questions, question, payload ) =>
+const updateCurrentQuestion = ( questions, payload ) =>
 {
-    if( !question.branchOn || question.branchOn.toLowerCase() !== payload.response.toLowerCase() || !question.subQuestions ) return questions;
 
-    const subQuestions = getQuestions( question.subQuestions, true );
-    const updateQuestions = [].concat( questions );
+    const { parentIndex, number } = payload.questionData;
+    const parentQuestion = Object.assign( {}, questions[parentIndex] );
 
-    updateQuestions.splice( payload.index+1, 0, ...subQuestions );
+    let subQuestion;
 
-    return updateQuestions;
-};
-
-
-const question = ( value, isSubQuestion = false ) =>
-{
-    return {
-        isAnswered:false,
-        isSubQuestion,
-
-        branchOn: value.branchOn || '',
-        questionNumber: value.questionNumber,
-        questionText: value.questionText,
-        subQuestions: getQuestions(value.subQuestions),
-
-        noFairUse: parseFloat( value.noFairUse ),
-        noInfringement: parseFloat( value.noInfringement ),
-        yesFairUse: parseFloat( value.yesFairUse ),
-        yesInfringement: parseFloat( value.yesInfringement )
-    }
-};
-
-
-const getYoutubeVideoInfo = ( action, state ) =>
-{
-    console.log( "GETTING YOUTUBE VIDEO INFO: ", action.payload );
-
-    const { info, videoInfo } = action.payload;
-    const result = {
-
-        [strings.ASSESSMENT_INFO_IDS.FIRST_NAME]: info[strings.ASSESSMENT_INFO_IDS.FIRST_NAME],
-        [strings.ASSESSMENT_INFO_IDS.LAST_NAME]: info[strings.ASSESSMENT_INFO_IDS.LAST_NAME],
-        [strings.ASSESSMENT_INFO_IDS.ORG_NAME]: info[strings.ASSESSMENT_INFO_IDS.ORG_NAME],
-
-        [strings.ASSESSMENT_INFO_IDS.COPYRIGHTED_CONTENT]: setVideoData( action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_COPYRIGHTED_VIDEO_ID], videoInfo ),
-        [strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT]: setVideoData( action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SUSPECTED_VIDEO_ID], videoInfo ),
-    };
-
-    return result;
-};
-
-
-const setVideoData = ( id, videoInfo ) =>
-{
-    console.log( "SET VIDEO DATA: ", id, videoInfo );
-
-    let result = null;
-    let item = null;
-
-    videoInfo.forEach(( info ) =>
+    if( parentIndex === number )
     {
-        item = info.items[0];
+        parentQuestion.isAnswered = payload.response;
 
-        if( item && item.id === id )
+        if( parentQuestion.branchOn && parentQuestion.branchOn.toLowerCase() === payload.response.toLowerCase() && parentQuestion.subQuestions )
         {
-            console.log("SET VIDEO INFO: ", item );
-
-            result = {
-                [strings.ASSESSMENT_INFO_IDS.VIDEO_ID]: id,
-                [strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE]: item.snippet.title,
-                [strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISHER]: item.snippet.channelTitle,
-                [strings.ASSESSMENT_INFO_IDS.VIDEO_VIEW_COUNT]: item.statistics.viewCount,
-                [strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISH_DATE]: item.snippet.publishedAt,
-                [strings.ASSESSMENT_INFO_IDS.VIDEO_URL]: `https://www.youtube.com/watch?v=${id}`,
-            }
+            parentQuestion.showSubQuestions = true;
         }
+        else
+        {
+            parentQuestion.showSubQuestions = false;
+        }
+
+        questions[parentIndex] = parentQuestion;
+    }
+    else
+    {
+        subQuestion = Object.assign( {}, parentQuestion.subQuestions[number] );
+        subQuestion.isAnswered = payload.response;
+
+        parentQuestion.subQuestions[number] = subQuestion;
+        questions[parentIndex] = parentQuestion;
+    }
+
+    return questions;
+};
+
+const getSubquestions = ( subQuestions ) =>
+{
+    const resultList = [];
+
+    if( !subQuestions || !Object.keys( subQuestions ).length ) return [];
+
+    Object.values( subQuestions ).forEach(( item ) =>
+    {
+        resultList.push( item );
     });
 
-    return result;
+    return resultList;
 };
 
 
-const getQuestions = ( list, isSubQuestion ) =>
+/**
+ * takes in array of question objects and returns an object using the question numbers as the key.
+ * @param list Array
+ * @param isSubQuestion Boolean
+ * @param parentIndex String - the question number, can be int or int with text
+ */
+const getQuestions = ( list, isSubQuestion, parentIndex ) =>
 {
-    const questions = [];
+    const questions = {};
+    let newQuestion = null;
 
     if( list )
     {
-        list.forEach(( item ) =>
+        list.forEach(( item, index ) =>
         {
-            questions.push( new question( item, isSubQuestion ));
+            newQuestion = new Question( item, index, parentIndex, isSubQuestion );
+            questions[newQuestion.questionNumber] = newQuestion;
         })
     }
 
@@ -227,8 +213,130 @@ const getQuestions = ( list, isSubQuestion ) =>
 };
 
 
+const getQuestionList = ( questions ) =>
+{
+    let questionItem;
+    let results = [];
+
+    Object.keys( questions ).forEach(( key ) =>
+    {
+        questionItem = questions[key];
+        results.push( questionItem );
+
+        if( questionItem.showSubQuestions )
+        {
+            results = results.concat( getSubquestions( questionItem.subQuestions ));
+        }
+    });
+
+    return results;
+};
+
+
+const Question = ( value, index, parentIndex, isSubQuestion = false ) =>
+{
+    return {
+        isAnswered:false,
+        isSubQuestion,
+        index,
+        parentIndex: parentIndex || value.questionNumber,
+
+        branchOn: value.branchOn || '',
+        questionNumber: value.questionNumber,
+        questionText: value.questionText,
+        subQuestions: value.subQuestions ? getQuestions( value.subQuestions, true, value.questionNumber ) : null,
+        showSubQuestions: false,
+
+        noFairUse: parseFloat( value.noFairUse ),
+        noInfringement: parseFloat( value.noInfringement ),
+        yesFairUse: parseFloat( value.yesFairUse ),
+        yesInfringement: parseFloat( value.yesInfringement ),
+    }
+};
+
+
+const setVideoInfo = ( action, state ) =>
+{
+    const { info, videoInfo } = action.payload;
+    const result = {
+
+        [strings.ASSESSMENT_INFO_IDS.FIRST_NAME]: info[strings.ASSESSMENT_INFO_IDS.FIRST_NAME],
+        [strings.ASSESSMENT_INFO_IDS.LAST_NAME]: info[strings.ASSESSMENT_INFO_IDS.LAST_NAME],
+        [strings.ASSESSMENT_INFO_IDS.ORG_NAME]: info[strings.ASSESSMENT_INFO_IDS.ORG_NAME],
+
+        [strings.ASSESSMENT_INFO_IDS.COPYRIGHTED_CONTENT]: setVideoData( action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_COPYRIGHTED_VIDEO_ID], videoInfo, info ),
+        [strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT]: setVideoData( action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SUSPECTED_VIDEO_ID], videoInfo, info ),
+    };
+
+    console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> GET VIDEO INFO INFO: ", info, videoInfo, result );
+
+    return result;
+};
+
+
+const setVideoData = ( id, videoInfo, info ) =>
+{
+    console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SET VIDEO DATA: ", id, videoInfo, info );
+
+    let result = null;
+    let item = null;
+
+    videoInfo.forEach(( videoItem ) =>
+    {
+        item = videoItem.items ? videoItem.items[0] : null;
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SET VIDEO INFO: ", item, videoItem );
+
+        if( item && item.id === id )
+        {
+
+            result = getYoutubeVideoData( id, item );
+        }
+
+        if( !item && !id )
+        {
+            result = getVideoData( info, videoItem )
+        }
+
+
+    });
+
+    return result;
+};
+
+
+const getYoutubeVideoData = ( id, item ) =>
+{
+    return {
+        [strings.ASSESSMENT_INFO_IDS.VIDEO_ID]: id,
+        [strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE]: item.snippet.title,
+        [strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISHER]: item.snippet.channelTitle,
+        [strings.ASSESSMENT_INFO_IDS.VIDEO_VIEW_COUNT]: item.statistics.viewCount,
+        [strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISH_DATE]: item.snippet.publishedAt,
+        [strings.ASSESSMENT_INFO_IDS.VIDEO_URL]: `https://www.youtube.com/watch?v=${id}`,
+    }
+};
+
+const getVideoData = ( info, videoItem ) =>
+{
+    console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> GET VIDEO DATA: ", info, videoItem );
+
+    return null;
+
+    return {
+        [strings.ASSESSMENT_INFO_IDS.VIDEO_ID]: null,
+        [strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE]: info[strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE],
+        [strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISHER]: null,
+        [strings.ASSESSMENT_INFO_IDS.VIDEO_VIEW_COUNT]: null,
+        [strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISH_DATE]: null,
+        [strings.ASSESSMENT_INFO_IDS.VIDEO_URL]: info[strings.ASSESSMENT_INFO_IDS.VIDEO_URL],
+    }
+};
+
+
 const getAssessmentData = ( questions ) =>
 {
+    console.log( "GET ASSESSMENT DATA: ", questions );
+
     let resultData = {
         fairUse: 0,
         infringement: 0,
@@ -238,7 +346,7 @@ const getAssessmentData = ( questions ) =>
 
     let response;
 
-    questions.forEach(( question ) =>
+    Object.values( questions ).forEach(( question ) =>
     {
         response = question.isAnswered;
 
