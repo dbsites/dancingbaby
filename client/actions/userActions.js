@@ -10,7 +10,6 @@
  */
 
 import * as types from '../constants/actionTypes';
-import * as screenActions from './screenActions';
 import Services from '../services/services';
 
 const actions = {};
@@ -45,7 +44,6 @@ actions.userLoginRoute = ( loginData ) => dispatch =>
         {
             console.log( "ON SUCCESS IN ACTION: ", res );
             dispatch( userLoginSuccess( res ) );
-            dispatch( screenActions.nextScreen() );
         },
         ( res ) => // on error or unauthorized
         {
