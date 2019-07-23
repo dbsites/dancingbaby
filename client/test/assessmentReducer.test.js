@@ -27,12 +27,13 @@ describe('assessmentReducer', () => {
       isHubOpen: true,
 
       // questions
-      questions: [],
-      currentQuestion:{},
+      questions: {},
+      currentQuestions: [],
+      currentQuestion: {},
       currentQuestionIndex: 0,
       totalQuestions: 0,
       questionsUpdated: 'init',
-      questionsComplete:false,
+      questionsComplete: false,
 
       // fair use
       fairUse: 0,

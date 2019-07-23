@@ -31,6 +31,7 @@ const mapStateToProps = store =>
     // questions component
     isHubOpen: store.assessment.isHubOpen,
     questions: store.assessment.questions,
+    currentQuestions: store.assessment.currentQuestions,
     questionsUpdated: store.assessment.questionsUpdated,
     currentQuestionIndex: store.assessment.currentQuestionIndex,
     progress: store.assessment.progress,
@@ -116,7 +117,7 @@ class MainContainer extends Component
             case strings.SCREEN_ASSESSMENT_QUESTIONS:
                 return <AssessmentQuestionsComponent
 
-                    questions={ this.props.questions }
+                    questions={ this.props.currentQuestions }
                     isHubOpen={ this.props.isHubOpen }
                     progress={ this.props.progress }
                     questionsUpdate={ this.props.questionsUpdated }
@@ -134,6 +135,7 @@ class MainContainer extends Component
                     resultInfringement={ this.props.resultInfringement }
                     resultText={ this.props.resultText }
 
+                    assessmentInfo={ this.props.assessmentInfo }
                     suspectContent={ this.props.assessmentInfo[strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT] }
 
                     fairUse={ this.props.fairUse }

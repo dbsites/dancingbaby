@@ -10,7 +10,6 @@
  */
 
 import * as types from '../constants/actionTypes';
-import * as screenActions from './screenActions';
 import * as strings from '../constants/strings';
 import Services from '../services/services';
 
@@ -72,105 +71,119 @@ export const submitAssessment = () =>
 export const submitAssessmentQuestions = () => ( dispatch ) =>
 {
     dispatch( submitAssessment() );
-    dispatch( screenActions.nextScreen() );
 };
 
 
 export const setAssessmentInfo = ( info ) => ( dispatch ) =>
 {
-
-    const suspectId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED] );
-    const copyrightId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHT] );
     const results = {
-        [strings.ASSESSMENT_INFO_IDS.YOUTUBE_COPYRIGHTED_VIDEO_ID]:copyrightId,
-        [strings.ASSESSMENT_INFO_IDS.YOUTUBE_SUSPECTED_VIDEO_ID]:suspectId,
         info,
         videoInfo:[]
     };
 
-    Services.getYoutubeVideoInfo( [suspectId, copyrightId],
-        ( res ) => // on success
-        {
-            if( res )
-            {
-                res.forEach(( item ) =>
-                {
-                    results.videoInfo.push( JSON.parse( item ));
-                });
+    console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SET ASSESSMENT INFO: ", results );
 
-                dispatch( submitAssessmentInfo( results ));
-                dispatch( screenActions.nextScreen() );
-            }
-
-            console.log( "ON SUCCESS IN YOUTUBE ACTION: ", results.videoInfo );
-        },
-        ( res ) => // on error or unauthorized
-        {
-            console.log( "ON ERROR IN ACTION: ", res );
-        }
-    );
+    setVideoInfo( info, results, dispatch )
 };
 
 
 export const submitCompletedAssessment = ( data ) => dispatch =>
 {
-    // Services.assessmentSubmitRoute( data,
-    //     ( res ) => // on success
-    //     {
-    //         console.log( "ON SUCCESS IN ACTION: ", res );
-    //         dispatch( submitAssessmentSuccess( res ) );
-    //         dispatch( screenActions.nextScreen() );
-    //     },
-    //     ( res ) => // on error or unauthorized
-    //     {
-    //         console.log( "ON ERROR IN ACTION: ", res );
-    //         dispatch(submitAssessmentError( res ))
-    //     }
-    // );
+    Services.assessmentSubmitRoute( data,
+        ( res ) => // on success
+        {
+            console.log( "ON SUCCESS IN ACTION: ", res );
+            dispatch( submitAssessmentSuccess( res ) );
+        },
+        ( res ) => // on error or unauthorized
+        {
+            console.log( "ON ERROR IN ACTION: ", res );
+            dispatch(submitAssessmentError( res ))
+        }
+    );
 };
 
 
 const getYTVideoId = ( path ) =>
 {
-    let id = '';
-
     if( !path ) return null;
 
-    const url = path.replace(/(>|<)/gi, '').split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+    const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+    const match = path.match(regExp);
 
-    if( url[2] !== undefined )
+    if( match && match[7].length === 11 )
     {
-        id = url[2].split(/[^0-9a-z_\-]/i);
-        id = id[0];
+        return match[7];
     }
     else
     {
-        id = null;
+        return null;
     }
-
-    return id;
 };
 
 
-const getYoutubeVideoInfo = ( videoId, videoType, resolve ) =>
+const setVideoInfo = ( info, results, dispatch ) =>
 {
 
-    // if( !videoId )
-    // {
-    //     resolve({ res:null, type:videoType });
-    //     return null;
-    // }
-    //
-    // Services.getYoutubeVideoInfo( videoId,
-    //     ( res ) => // on success
-    //     {
-    //         console.log( "ON SUCCESS IN YOUTUBE ACTION: ", res.title, videoType );
-    //         resolve({ res, type:videoType });
-    //     },
-    //     ( error ) => // on error or unauthorized
-    //     {
-    //         console.log( "ON ERROR IN ACTION: ", error );
-    //         resolve({ error, type:videoType });
-    //     }
-    // );
+    console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SET VIDEO INFO :: ", info, results );
+
+    // Youtube video data
+    const videoIds = [];
+    const suspectId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED] );
+    const copyrightId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHT] );
+
+    let videoInfo = {};
+
+    if( suspectId )
+    {
+        results[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SUSPECTED_VIDEO_ID] = suspectId;
+        videoIds.push( suspectId );
+    }
+
+    if( copyrightId )
+    {
+        results[strings.ASSESSMENT_INFO_IDS.YOUTUBE_COPYRIGHTED_VIDEO_ID] = copyrightId;
+        videoIds.push( copyrightId );
+    }
+
+    if( !videoIds.length )
+    {
+        console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SET ASSESSMENT INFO :: NON YOUTUBE CONTENT ", results );
+
+        dispatch( submitAssessmentInfo( results ));
+    }
+    else
+    {
+        if( videoIds.length === 1 )
+        {
+            videoInfo = { videoType:'html' };
+            results.videoInfo.push( videoInfo );
+        }
+
+        Services.getYoutubeVideoInfo( videoIds,
+            ( res ) =>
+            {
+                if( res )
+                {
+                    res.forEach(( item ) =>
+                    {
+                        videoInfo = JSON.parse( item );
+                        videoInfo.videoType = 'yt';
+
+                        results.videoInfo.push( videoInfo );
+                    });
+
+                    console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SET ASSESSMENT INFO :: YOUTUBE CONTENT ", results );
+
+                    dispatch( submitAssessmentInfo( results ));
+                }
+
+                console.log( "ON SUCCESS IN YOUTUBE ACTION: ", results.videoInfo );
+            },
+            ( res ) =>
+            {
+                console.log( "ON ERROR IN ACTION: ", res );
+            }
+        );
+    }
 };

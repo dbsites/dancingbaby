@@ -80,8 +80,8 @@ class ContentHubComponent extends Component
         const suspectContent = this.props.assessmentInfo[strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT];
         const copyrightContent = this.props.assessmentInfo[strings.ASSESSMENT_INFO_IDS.COPYRIGHTED_CONTENT];
 
-        const copyrightId = copyrightContent[strings.ASSESSMENT_INFO_IDS.VIDEO_ID];
-        const suspectId = suspectContent[strings.ASSESSMENT_INFO_IDS.VIDEO_ID];
+        const copyrightId = copyrightContent ? copyrightContent[strings.ASSESSMENT_INFO_IDS.VIDEO_ID] : null;
+        const suspectId = suspectContent ? suspectContent[strings.ASSESSMENT_INFO_IDS.VIDEO_ID] : null;
 
         return (
             <div className="contentHubComponent">
@@ -117,25 +117,42 @@ class ContentHubComponent extends Component
 const ContentPanelItem = ( props ) =>
 {
 
-    console.log( "CONTENT PANEL ITEM: ", props );
+    console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CONTENT PANEL ITEM: ", props );
 
-    const title = props.info[strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE] || 'n/a';
-    const publisher = props.info[strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISHER] || 'n/a';
-    const viewCount = props.info[strings.ASSESSMENT_INFO_IDS.VIDEO_VIEW_COUNT] || 'n/a';
-    const date = props.info[strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISH_DATE] || 'n/a';
-    const url = props.info[strings.ASSESSMENT_INFO_IDS.VIDEO_URL] || 'n/a';
+    const info = props && props.info ? props.info : {};
+
+    const title     = info[strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE] || 'n/a';
+    const publisher = info[strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISHER] || 'n/a';
+    const viewCount = info[strings.ASSESSMENT_INFO_IDS.VIDEO_VIEW_COUNT] || 'n/a';
+    const date      = info[strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISH_DATE] || 'n/a';
+    const url       = info[strings.ASSESSMENT_INFO_IDS.VIDEO_URL] || 'n/a';
+
+    const getContent = () =>
+    {
+        if( !props.id && info[strings.ASSESSMENT_INFO_IDS.VIDEO_URL] )
+        {
+            return <div>REGULAR VIDEO</div>
+        }
+
+        if( !props.id && !info[strings.ASSESSMENT_INFO_IDS.VIDEO_URL] )
+        {
+            return <div>NO VIDEO CONTENT</div>
+        }
+
+        return <YouTube
+            videoId={ props.id }
+            opts={videoOptions}
+            className="youtubeModalVideo"
+            onReady={ props.videoReady }
+        />
+    };
 
     return (
         <div className='panelItem'>
 
             <div className='panelItemTitle'>{props.title}</div>
 
-            <YouTube
-                videoId={ props.id }
-                opts={videoOptions}
-                className="youtubeModalVideo"
-                onReady={ props.videoReady }
-            />
+            { getContent() }
 
             <div className='panelItemInfo'>
                 <div className='itemTitle'>Title: {title}</div>

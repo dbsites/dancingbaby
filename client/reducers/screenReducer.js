@@ -22,11 +22,12 @@ const initialState = {
 const screenReducer = ( state=initialState, action ) =>
 {
 
-    console.log( "SCREEN REDUCER: ", action );
-
     switch( action.type )
     {
-
+        case types.USER_LOGIN_SUCCESS:
+        case types.ASSESSMENT_SUBMIT:
+        case types.ASSESSMENT_INFO_SUBMIT:
+        case types.ASSESSMENT_UPDATE_SUCCESS:
         case types.NEXT_SCREEN:
 
             const newIndex = state.currentScreenIndex < strings.SCREEN_LIST.length -1 ? state.currentScreenIndex + 1 : strings.SCREEN_LIST.length -1;
