@@ -31,6 +31,7 @@ export default class AssessmentQuestionsComponent extends React.Component
                 isAnswered={item.isAnswered}
                 isSubQuestion={item.isSubQuestion}
                 currentQuestionIndex={this.props.currentQuestionIndex}
+                parentIndex={item.parentIndex}
                 number={item.questionNumber}
                 questionTxt={item.questionText}
                 answerSelected={this.props.updateAssessment}
@@ -77,17 +78,18 @@ export default class AssessmentQuestionsComponent extends React.Component
 
 const Question = ( props ) =>
 {
-    const { index, questionTxt, answerSelected, number, isSubQuestion, currentQuestionIndex, isAnswered } = props;
+    const { index, questionTxt, answerSelected, number, isSubQuestion, currentQuestionIndex, isAnswered, parentIndex } = props;
     const classNames = `questionBox ${ isSubQuestion ? 'subQuestionGrid' : 'questionGrid' } ${ currentQuestionIndex < index ? 'questionDisabled' : '' }`;
+    const questionData = { number, parentIndex, index };
 
     return (
         <div className={classNames}>
             <div className='questionNum'>{`${number}.`}</div>
             <div className='questionTxt'>{questionTxt}</div>
             <div className='questionBtns'>
-                <div onClick={ () => answerSelected({ response:'no', index })} className={`questionBtn ${isAnswered === 'no' ? 'selected' : ''}`}>no</div>
-                <div onClick={ () => answerSelected({ response:'unsure', index })} className={`questionBtn ${isAnswered === 'unsure' ? 'selected' : ''}`}>unsure</div>
-                <div onClick={ () => answerSelected({ response:'yes', index })} className={`questionBtn ${isAnswered === 'yes' ? 'selected' : ''}`}>yes</div>
+                <div onClick={ () => answerSelected({ response:'no', questionData })} className={`questionBtn ${isAnswered === 'no' ? 'selected' : ''}`}>no</div>
+                <div onClick={ () => answerSelected({ response:'unsure', questionData })} className={`questionBtn ${isAnswered === 'unsure' ? 'selected' : ''}`}>unsure</div>
+                <div onClick={ () => answerSelected({ response:'yes', questionData })} className={`questionBtn ${isAnswered === 'yes' ? 'selected' : ''}`}>yes</div>
             </div>
         </div>
     )
