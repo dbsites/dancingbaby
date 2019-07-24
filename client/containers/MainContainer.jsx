@@ -111,6 +111,7 @@ class MainContainer extends Component
 
             case strings.SCREEN_ASSESSMENT_GETINFO:
                 return <AssessmentInfoComponent
+                    assessmentInfo={ this.props.assessmentInfo }
                     onSubmit={ this.props.submitAssessmentInfo }
                 />;
 
