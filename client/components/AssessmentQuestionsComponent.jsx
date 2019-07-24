@@ -55,11 +55,6 @@ export default class AssessmentQuestionsComponent extends React.Component
                     <img src={dbLogo} className='logoSmallUpperRight' alt='logo'/>
                 </div>
 
-                {/*<div className='backBtnContainer' onClick={this.props.startOver}>*/}
-                {/*    BACK*/}
-                {/*    <img id='arrowBackBtn' className='backBtnArrow' src={arrow} alt='arrow' />*/}
-                {/*</div>*/}
-
                 <button className='backBtn' onClick={this.props.startOver}>
                     <span>BACK</span>
                     <img src={arrow} className='arrow' alt='arrow' />
