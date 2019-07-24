@@ -150,16 +150,7 @@ const updateCurrentQuestion = ( questions, payload ) =>
     if( parentIndex === number )
     {
         parentQuestion.isAnswered = payload.response;
-
-        if( parentQuestion.branchOn && parentQuestion.branchOn.toLowerCase() === payload.response.toLowerCase() && parentQuestion.subQuestions )
-        {
-            parentQuestion.showSubQuestions = true;
-        }
-        else
-        {
-            parentQuestion.showSubQuestions = false;
-        }
-
+        parentQuestion.showSubQuestions = parentQuestion.branchOn && parentQuestion.branchOn.toLowerCase() === payload.response.toLowerCase() && parentQuestion.subQuestions;
         questions[parentIndex] = parentQuestion;
     }
     else

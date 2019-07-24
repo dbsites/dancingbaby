@@ -82,7 +82,7 @@ const mapDispatchToProps = dispatch =>
 
     startOver: () =>
     {
-        dispatch(assessmentActions.startOver());
+        dispatch(screenActions.startOver());
     },
 
     nextScreen: () =>
@@ -127,6 +127,7 @@ class MainContainer extends Component
                     openCloseContentHub={ this.props.openCloseContentHub }
                     submitAssessmentQuestions={ this.props.submitAssessmentQuestions }
                     updateAssessment={ this.props.updateAssessment }
+                    startOver={ this.props.startOver }
                 />;
 
             case strings.SCREEN_ASSESSMENT_RESULTS:

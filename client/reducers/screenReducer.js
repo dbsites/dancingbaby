@@ -38,6 +38,13 @@ const screenReducer = ( state=initialState, action ) =>
                 currentScreen: strings.SCREEN_LIST[newIndex]
             };
 
+        case types.ASSESSMENT_START_OVER:
+            return {
+                ...state,
+                currentScreenIndex:2,
+                currentScreen: strings.SCREEN_LIST[2]
+            };
+
         default:
             return state;
     }
