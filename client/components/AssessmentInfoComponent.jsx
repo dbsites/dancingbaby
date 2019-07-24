@@ -72,6 +72,7 @@ class ContentBox extends React.Component
         }
     };
 
+
     render()
     {
         const { url_id, title_id, fileType_id, title, contentType } = this.props;
@@ -129,7 +130,7 @@ class ContentBox extends React.Component
 
 let AssessmentInfoComponent = ( props ) =>
 {
-    const { handleSubmit, onSubmit } = props;
+    const { handleSubmit, onSubmit, assessmentInfo } = props;
 
     const resetFields = ( formName, fieldsObj ) =>
     {
@@ -139,6 +140,29 @@ let AssessmentInfoComponent = ( props ) =>
             props.dispatch( change( formName, fieldKey, fieldsObj[fieldKey] ));
         });
     };
+
+    const showCurrentInfo = () =>
+    {
+        if( assessmentInfo[strings.ASSESSMENT_INFO_IDS.FIRST_NAME] )
+        {
+            const suspectedContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT];
+            const copyrightedContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.COPYRIGHTED_CONTENT];
+
+            resetFields( 'assessmentForm', {
+                [strings.ASSESSMENT_INFO_IDS.FIRST_NAME]: assessmentInfo[strings.ASSESSMENT_INFO_IDS.FIRST_NAME],
+                [strings.ASSESSMENT_INFO_IDS.LAST_NAME]: assessmentInfo[strings.ASSESSMENT_INFO_IDS.LAST_NAME],
+                [strings.ASSESSMENT_INFO_IDS.ORG_NAME]: assessmentInfo[strings.ASSESSMENT_INFO_IDS.ORG_NAME],
+                [strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHT]: copyrightedContent[strings.ASSESSMENT_INFO_IDS.VIDEO_URL],
+                [strings.ASSESSMENT_INFO_IDS.TITLE_COPYRIGHT]: copyrightedContent[strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE],
+                [strings.ASSESSMENT_INFO_IDS.FILETYPE_COPYRIGHT]: copyrightedContent[strings.ASSESSMENT_INFO_IDS.FILETYPE],
+                [strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED]: suspectedContent[strings.ASSESSMENT_INFO_IDS.VIDEO_URL],
+                [strings.ASSESSMENT_INFO_IDS.TITLE_SUSPECTED]: suspectedContent[strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE],
+                [strings.ASSESSMENT_INFO_IDS.FILETYPE_SUSPECTED]: suspectedContent[strings.ASSESSMENT_INFO_IDS.FILETYPE],
+            });
+        }
+    };
+
+    showCurrentInfo();
 
     return (
         <div className='assessmentInfoComponent'>
