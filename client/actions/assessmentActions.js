@@ -43,12 +43,6 @@ export const downloadReport = () =>
 });
 
 
-export const startOver = () =>
-({
-    type: types.ASSESSMENT_START_OVER,
-    payload: null
-});
-
 export const updateAssessment = ( question ) =>
 ({
     type: types.ASSESSMENT_UPDATE,
