@@ -128,7 +128,7 @@ const assessmentReducer = ( state = initialState, action ) =>
                 currentQuestions,
                 currentQuestionIndex,
                 questionsUpdated:Date.now(),
-                progress:action.payload.index/(state.questions.length-1),
+                progress:currentQuestionIndex/(currentQuestions.length-1),
             };
 
         default:
