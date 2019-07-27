@@ -7,8 +7,10 @@
   display: grid;
   grid-template-columns: 100%;
 
+  width: 100vw;
   margin-top: 30px;
-  font-family: $LatoLight;
+
+  //font-family: $LatoLight, sans-serif;
 
   .logoContainer
   {
@@ -21,7 +23,7 @@
 
     .logo
     {
-      width:800px;
+      width: 50vw;
     }
   }
 
@@ -29,20 +31,23 @@
   {
     grid-column: 1;
     grid-row: 2;
-
     text-align: center;
     font-size: 36px;
+    margin-top: 16px;
+    font-family: $LatoLight, sans-serif;
+    letter-spacing: 4px;
   }
 
   .assessmentForm
   {
     grid-column: 1 / 4;
     grid-row: 3;
-
     display: grid;
-    grid-column-gap: 20px;
-    grid-row-gap: 40px;
+    grid-column-gap: 50px;
+    grid-row-gap: 25px;
     grid-template-columns: 1fr 1fr 1fr;
+    margin-left: 40px;
+    margin-right: 40px;
   }
 
   .topInputs
@@ -64,10 +69,10 @@
 
     label
     {
-      font-size: 32px;
+      font-size: 28px;
       display: block;
-
-      font-family: $LatoLight;
+      color: #606060;
+      letter-spacing: 2px;
     }
   }
 
@@ -109,7 +114,14 @@
   .contentBox
   {
     display: grid;
-    font-size: 32px;
+    font-size: 28px;
+    letter-spacing: 2px;
+
+    .title
+    {
+      letter-spacing: 4px;
+      color: #606060;
+    }
 
     .inputFields
     {
@@ -161,9 +173,9 @@
           grid-column: 1;
           grid-row: 1;
 
-          margin-top: 4px;
+          margin-top: 16px;
 
-          font-size: 36px;
+          font-size: 30px;
           font-family: $LatoLight;
 
           text-align: right;
@@ -201,7 +213,7 @@
           padding-left: 6px;
           padding-right: 6px;
 
-          font-size: 30px;
+          font-size: 24px;
           line-height: 50px;
 
           border-radius: 12px;
@@ -237,7 +249,7 @@
           grid-row: 1;
 
           padding: 6px;
-          font-size: 30px;
+          font-size: 24px;
 
           border-radius: 12px;
           border: none;
@@ -264,22 +276,22 @@
     @extend .divTransition;
 
     position: absolute;
-    top: 760px;
+    top: 670px;
     right: -10px;
 
-    width: 560px;
-    height: 100px;
+    width: 460px;
+    height: 80px;
 
     border-radius: 12px;
     border: none;
 
     display: block;
-    font-size: 42px;
+    font-size: 34px;
 
-    line-height: 111px;
+    line-height: 92px;
     text-align: left;
     padding-left: 20px;
-    letter-spacing: 10px;
+    letter-spacing: 8px;
     background-color: #666666;
 
     span
@@ -291,7 +303,7 @@
     {
       position: absolute;
       width: 30px;
-      margin-top: 27px;
+      margin-top: 18px;
       margin-left: 20px;
     }
   }

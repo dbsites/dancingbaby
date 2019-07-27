@@ -234,7 +234,7 @@
     grid-template-columns: 0 10% 90%;
     grid-gap: 10px;
 
-    font-size: 43px;
+    font-size: 24px;
     font-family: $LatoLight;
 
     justify-items: center;
@@ -256,7 +256,9 @@
     .questionTxt
     {
       grid-column: 3;
+      width: 100%;
       grid-row: 1;
+      text-align: left;
     }
 
     .questionBtns

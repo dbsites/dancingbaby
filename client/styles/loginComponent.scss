@@ -23,7 +23,8 @@
 
     .logo
     {
-      width: 448px;
+      //width: 448px;
+      width: 26vw;
     }
   }
 
@@ -34,7 +35,7 @@
     grid-column-gap: 180px;
     grid-template-columns: 1fr 1fr;
 
-    margin-top: 60px;
+    margin-top: 6vh;
 
     .submitBtnContainer
     {
@@ -44,7 +45,7 @@
 
       display: grid;
 
-      margin-top: 40px;
+      margin-top: 4vh;
       justify-content: center;
 
       button
@@ -53,10 +54,10 @@
 
         display: grid;
 
-        font-size: 60px;
+        font-size: 40px;
 
         padding-bottom: 0;
-        padding-top: 15px;
+        padding-top: 10px;
         padding-left: 15px;
         padding-right: 15px;
 
@@ -101,7 +102,7 @@
 
   .loginField
   {
-    font-size: 36px;
+    font-size: 24px;
 
     grid-column: 2;
     grid-row: 1;
@@ -119,7 +120,7 @@
       height: 80px;
 
       padding: 10px;
-      font-size: 30px;
+      font-size: 24px;
 
       border-radius: 12px;
       border: none;
