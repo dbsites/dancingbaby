@@ -48,7 +48,7 @@ actions.userLoginRoute = ( loginData ) => dispatch =>
         ( res ) => // on error or unauthorized
         {
             console.log( "ON ERROR IN ACTION: ", res );
-            dispatch(userLoginError( res ))
+            dispatch( userLoginError( res ))
         }
     );
 };
