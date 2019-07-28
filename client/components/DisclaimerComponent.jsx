@@ -59,17 +59,17 @@ class DisclaimerComponent extends Component
 
                     <div className='checkBoxContainer top'>
                         <CheckBox updateCheck={this.updateCheck.bind( this, 'top')} checked={this.state.checkMarks.top} />
-                        <div>I understand that this assessment tool is for demonstration purposes only and does not constitute legal advice.</div>
+                        <div><span>I understand that this assessment tool is for demonstration purposes only and does not constitute legal advice.</span></div>
                     </div>
 
                     <div className='checkBoxContainer middle'>
                         <CheckBox updateCheck={this.updateCheck.bind( this, 'middle')} checked={this.state.checkMarks.middle}/>
-                        <div>I understand that the information contained in this demonstration is confidential, copyrighted, may constitute trade secrets, and may not be shared with others without permission</div>
+                        <div><span>I understand that the information contained in this demonstration is confidential, copyrighted, may constitute trade secrets, and may not be shared with others without permission.</span></div>
                     </div>
 
                     <div className='checkBoxContainer bottom'>
                         <CheckBox updateCheck={this.updateCheck.bind( this, 'bottom')} checked={this.state.checkMarks.bottom} />
-                        <div>I have read and agree to the Terms of Use and Privacy Policy.</div>
+                        <div><span>I have read and agree to the <div className='modalLink' onClick={this.props.showHideModal.bind( null, 'terms')} >Terms of Use</div> and <div className='modalLink' onClick={this.props.showHideModal.bind( null, 'privacy')} >Privacy Policy.</div></span></div>
                     </div>
 
                 </div>
@@ -94,6 +94,12 @@ const CheckBox = ( props ) =>
             </div>
         </div>
     )
+};
+
+
+const Url = ( props ) =>
+{
+
 };
 
 
