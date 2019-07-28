@@ -14,6 +14,7 @@ import React from 'react';
 import ContentHubComponent from './ContentHubComponent';
 import dbLogo from '../assets/svg/db_logo_greenyellow.svg';
 import arrow from '../assets/svg/backBtn.svg';
+import greenArrow from '../assets/svg/arrow.svg';
 
 
 export default class AssessmentQuestionsComponent extends React.Component
@@ -21,7 +22,7 @@ export default class AssessmentQuestionsComponent extends React.Component
 
     getQuestions()
     {
-        const buttonCls = this.props.progress < 1 ? 'enterBtn disabled' : 'enterBtn';
+        const buttonCls = 'enterBtn'; //this.props.progress < 1 ? 'enterBtn disabled' : 'enterBtn';
         const questionsList = [];
 
         this.props.questions.forEach(( item, index ) =>
@@ -39,7 +40,12 @@ export default class AssessmentQuestionsComponent extends React.Component
             />);
         });
 
-        questionsList.push( <div key={questionsList.length} className='enterBtnContainer'><button className={buttonCls} onClick={this.props.submitAssessmentQuestions}>SUBMIT</button></div> );
+        questionsList.push( <div key={questionsList.length} className='enterBtnContainer'>
+            <button className={buttonCls} onClick={this.props.submitAssessmentQuestions}>
+                <span>SUBMIT</span>
+                <img src={greenArrow} className='greenArrow' alt='arrow' />
+            </button>
+        </div> );
 
         return questionsList;
     }
