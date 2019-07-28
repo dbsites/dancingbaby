@@ -26,18 +26,18 @@ inputValidationController.validateFile = filename => (req, res, next) => {
     
     res.locals.validated[config.filename] = [];
 
+    // We'll build up an array of errors as we encounter them
     const errorText = [];
-    let records = 0;
     // default delimiter to csv
     const delimiter = config.delimiter || ',';
 
+    // if our file is configured with a header, verify it
     if ( config.hasHeader === 'true' ) {
 
       const headerLine = lines.shift();
-
-      // verify header
       const header = headerLine.split(delimiter);
-
+      
+      // Ensure that all of the expected field names are in order 
       if(header.length === config.fieldNames.length) {
         for ( let i = 0; i < config.fieldNames.length; i++ ) {
           if ( header[i].trim() !== config.fieldNames[i] ) {
@@ -51,17 +51,17 @@ inputValidationController.validateFile = filename => (req, res, next) => {
     } 
     
     // verify number of records
-    records = lines.length;
-    if ( records < config.minRecords ) {
-      errorText.push(`fileValidation: Must have at least ${config.minRecords} records.  Found ${records}`);
+    const numRecords = lines.length;
+    if ( numRecords < config.minRecords ) {
+      errorText.push(`fileValidation: Must have at least ${config.minRecords} records.  Found ${numRecords}`);
     }
 
-    if ( config.maxRecords && records > config.maxRecords ) {
-      errorText.push(`fileValidation: Must have at most ${config.maxRecords} records.  Found ${records}`);
+    if ( config.maxRecords && numRecords > config.maxRecords ) {
+      errorText.push(`fileValidation: Must have at most ${config.maxRecords} records.  Found ${numRecords}`);
     }
     
-    // validate data
-    for ( let i = 0; i < lines.length; i++ ) {
+    // validate each record
+    for ( let i = 0; i < numRecords; i++ ) {
       let fields = [];
       if ( delimiter === ',') {
         fields = CSVtoArray(lines[i]);
@@ -74,7 +74,6 @@ inputValidationController.validateFile = filename => (req, res, next) => {
       } else {
         fields = lines[i].split(delimiter);
       }
-
       
       
       if ( config.minFields && fields.length < config.minFields ) {
@@ -85,6 +84,7 @@ inputValidationController.validateFile = filename => (req, res, next) => {
         errorText.push(`fileValidation: Expected ${config.maxFields} values.  Found ${fields.length} values in record ${i + 1}`);
       }
 
+      // validate each field in the record
       for ( let k = 0; k < fields.length; k++ ) {
         // trim left and right spaces if configured
         if ( config.trimFields ) {
@@ -99,6 +99,7 @@ inputValidationController.validateFile = filename => (req, res, next) => {
         }
       }      
 
+      // store the validated record in res.locals, indexed by filename
       res.locals.validated[config.filename].push(fields.join(delimiter));
 
     }
@@ -110,7 +111,7 @@ inputValidationController.validateFile = filename => (req, res, next) => {
       return next(error)
     } else {
       // everything we need hereafter should be in res.locals.validated[config.filename]
-      next();
+      return next();
     } 
   } 
 }
