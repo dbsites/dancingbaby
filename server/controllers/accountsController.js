@@ -56,26 +56,7 @@ accountsController.uploadAccounts = (req, res, next) => {
 
   if (res.locals.validated[config.filename].length) {
     const accounts = res.locals.validated[config.filename];    
-
     
-    // validate all accounts in the file before saving to the db
-    if (!accounts.length) {
-      const error = new Error('No accounts found in uploaded file')
-      error.status = 400;
-      return next(error)
-    }
-
-    accounts.forEach( rec  => {
-      
-      const fields = rec.split(',');
-      if(fields.length !== 2) {
-        const error = new Error(`Invalid number of fields. username:${fields[0]} `);
-        error.status = 400;
-        return next(error)
-      }
-    });
-
-
     // keep it simple -- drop the accounts table and reload from the file
     dbdb.query({ text: `truncate table accounts` })
     .then(result => {
@@ -121,7 +102,7 @@ accountsController.uploadAccounts = (req, res, next) => {
 accountsController.checkAuthentication = (req, res, next) => {
   if(req.isAuthenticated()) {
     // thanks to passport, req.isAuthenticated() will return true if user is logged in
-    next();
+    return next();
   } else {
     res.redirect("/");
   }
