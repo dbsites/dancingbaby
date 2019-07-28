@@ -10,8 +10,8 @@
 
   .titleContainer
   {
-    margin-top: 30px;
-    font-size: 56px;
+    margin-top: 50px;
+    font-size: 45px;
     text-align: center;
   }
 
@@ -51,14 +51,6 @@
     border: 1px solid #666666;
   }
 
-  .wrapper {
-    display: grid;
-    grid-gap: 10px;
-    grid-template-columns: 80%;
-    background-color: #fff;
-    color: #444;
-  }
-
   .disclaimerBox
   {
     font-size: 20px;
@@ -77,6 +69,14 @@
     padding: 60px;
 
     background-color: #CCCCCC;
+  }
+
+  .modalLink
+  {
+    display: inline;
+    text-decoration: underline;
+    color: #2C8755;
+    cursor: pointer;
   }
 
   .top
@@ -102,21 +102,28 @@
     display: flex;
     width: 100%;
     padding-right: 20px;
+
+    span
+    {
+      font-size: 20px;
+      font-family: $LatoMedium;
+    }
   }
 
   .checkbox
   {
     background-color: white;
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     border-radius: 12px;
     margin-right: 40px;
   }
 
   .checkmark
   {
-    width: 80px;
-    top: -26px;
+    width: 55px;
+    top: -12px;
+    left: 7px;
     position: relative;
   }
 }
