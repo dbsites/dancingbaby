@@ -87,12 +87,12 @@ export const submitCompletedAssessment = ( data ) => dispatch =>
         ( res ) => // on success
         {
             console.log( "ON SUCCESS IN ACTION: ", res );
-            dispatch( submitAssessmentSuccess( res ) );
+            dispatch( submitAssessmentSuccess( res ));
         },
         ( res ) => // on error or unauthorized
         {
             console.log( "ON ERROR IN ACTION: ", res );
-            dispatch(submitAssessmentError( res ))
+            dispatch( submitAssessmentError( res ))
         }
     );
 };
