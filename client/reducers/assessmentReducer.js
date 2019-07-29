@@ -73,7 +73,7 @@ const assessmentReducer = ( state = initialState, action ) =>
 
         // going to grab questions from successful login here and add them to state
         case types.USER_LOGIN_SUCCESS:
-            questions = getQuestions( action.payload, false, null );
+            questions = getQuestions( action.payload.questions, false, null );
             initQuestions = JSON.stringify( questions );
 
             return {
