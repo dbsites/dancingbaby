@@ -6,6 +6,7 @@ import React from 'react';
 import { Modal } from 'react-bootstrap';
 
 
+
 const modalTypes = {
     terms:{
         title:'TERMS OF USE',
@@ -33,9 +34,14 @@ export default class ModalComponent extends React.Component
         console.log( "SHOW MODAL: ", show, modalData );
 
         return (
-            <Modal show={show} onHide={ showHideModal.bind( null, false )} bsSize="large" centered >
-
-                <Modal.Header closeButton>
+            <Modal
+                animation={false}
+                show={show}
+                onHide={ showHideModal.bind( null, false )}
+                size="lg"
+                centered
+            >
+                <Modal.Header closeButton >
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
 
