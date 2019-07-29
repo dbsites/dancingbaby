@@ -1,73 +1,77 @@
 /**
  * ************************************
  *
- * @module  ResultsComponent
+ * @module  DisclaimerComponent
  * @author  katzman
- * @date    06/18/2019
+ * @date    06/04/2019
  * @description
  *
  * ************************************
  */
 
 
-import React from 'react';
-import { TweenLite, Sine } from 'gsap';
-import * as strings from '../constants/strings';
+import React, {Component} from 'react';
 import dbLogo from '../assets/svg/db_logo_greenyellow.svg';
-import Utils from "../js/Utils";
-import PrintPDFComponent from './PrintPDFComponent';
+import * as strings from "../constants/strings";
+
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 
-export default class ResultsComponent extends React.Component
+export default class PrintPDFComponent extends Component
 {
-    constructor(props)
-    {
-        super(props);
 
-        this.state = {
-            downloadPDF: false
-        }
+    componentDidUpdate()
+    {
+        this.exportPdf();
     }
 
-
-    componentDidMount()
+    exportPdf = () =>
     {
-        this.animateGauge();
-        this.setLegendElementBold();
-    }
+        console.log( "EXPORT PDF CALLED: ", this.props.downloadPDF );
 
-    animateGauge()
-    {
-        const rotateTo = 180 * ( 1 - this.props.resultInfringement );
-        TweenLite.to( '.resultGageArrowSVG', 3, {rotation:rotateTo, transformOrigin:"50% 50%", ease:Sine.easeInOut});
-    }
+        if( !this.props.downloadPDF ) return null;
 
-    setLegendElementBold()
-    {
-        if( !this.props.resultText ) return;
+        const pdf = new jsPDF("p", "mm", "a4");
+        // const divHeight = $('#printPDFComponent').height();
+        // const divWidth = $('#printPDFComponent').width();
+        // const ratio = divHeight / divWidth;
 
-        const element = document.querySelector( `.${this.props.resultText.legendClass}` );
-        Utils.addClass( element, 'currentLegendElement' );
-    }
+        const width = pdf.internal.pageSize.getWidth();
+        const height = pdf.internal.pageSize.getHeight();
+        // height = ratio * width;
 
-    downloadReport = () =>
-    {
-        this.setState({ downloadPDF:true });
+        html2canvas( document.querySelector("#printPDFComponent")).then( canvas =>
+        {
+            // console.log( "EXPORT PDF CALLED: CANVAS: ", canvas );
+
+            document.body.appendChild( canvas );  // if you want see your screenshot in body.
+
+            const imgData = canvas.toDataURL('image/png');
+            pdf.addImage( imgData, 'PNG', 0, 0, width, height );
+
+            // console.log( "EXPORT PDF CALLED: PDF: ", pdf );
+            pdf.save("download.pdf");
+
+        });
+
     };
 
     render()
     {
-        const { suspectContent, resultText, fairUse, infringement, resultInfringement, startOver } = this.props;
+        console.log( "PRINT PDF COMPONENT: ", this.props );
+
+        const { suspectContent, resultText, fairUse, infringement } = this.props;
         const resultTitle = `${suspectContent[strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE]} exhibits a:`;
         const resultTextIndicator = resultText ? <span><span className={resultText.color}>{resultText.txt}</span> indication of fair use.</span> : 'indication of fair use.';
 
         const factorsAgainst = `Number of factors AGAINST FAIR USE: ${infringement}`;
         const factorsTowards = `Number of factors pointing towards FAIR USE: ${fairUse}`;
 
+        if( !this.props.downloadPDF ) return null;
+
         return (
-
-            <div className="resultsComponent">
-
+            <div id='printPDFComponent' className="printPDFComponent">
                 <div className='logoUpperRighContainer'>
                     <img src={dbLogo} className='logoSmallUpperRight' alt='logo' />
                 </div>
@@ -103,12 +107,6 @@ export default class ResultsComponent extends React.Component
                         </div>
                     </div>
                 </div>
-
-                <div className='downloadBtnContainer'>
-                    <button className='downloadBtn' onClick={this.downloadReport} type='submit'>DOWNLOAD REPORT</button>
-                </div>
-
-                <PrintPDFComponent {...this.props} downloadPDF={this.state.downloadPDF} />
             </div>
         );
     }

@@ -13,6 +13,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import LoginComponent from '../components/LoginComponent';
+import ModalComponent from '../components/ModalComponent';
 import DisclaimerComponent from '../components/DisclaimerComponent';
 import AssessmentInfoComponent from '../components/AssessmentInfoComponent';
 import AssessmentQuestionsComponent from '../components/AssessmentQuestionsComponent';
@@ -27,6 +28,7 @@ import * as strings from '../constants/strings';
 const mapStateToProps = store =>
 ({
     currentScreen:store.screens.currentScreen,
+    showModal:store.screens.showModal,
 
     // questions component
     isHubOpen: store.assessment.isHubOpen,
@@ -75,6 +77,11 @@ const mapDispatchToProps = dispatch =>
         dispatch(assessmentActions.submitAssessmentQuestions( data ));
     },
 
+    showHideModal: ( modal ) =>
+    {
+        dispatch(screenActions.showModal( modal ));
+    },
+
     downloadReport: () =>
     {
         dispatch(assessmentActions.downloadReport());
@@ -107,6 +114,7 @@ class MainContainer extends Component
             case strings.SCREEN_DISCLAIMER:
                 return <DisclaimerComponent
                     nextScreen={ this.props.nextScreen }
+                    showHideModal={ this.props.showHideModal }
                 />;
 
             case strings.SCREEN_ASSESSMENT_GETINFO:
@@ -155,6 +163,7 @@ class MainContainer extends Component
         return(
           <div className="container">
             <div className="outerBox">
+                <ModalComponent showHideModal={ this.props.showHideModal } modalData={this.props.showModal} />
                 { this.getCurrentScreen() }
             </div>
           </div>

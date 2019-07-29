@@ -169,11 +169,13 @@
       font-family: $LatoMedium;
 
       padding-left: 20px;
+      opacity: .5;
     }
 
     .currentLegendElement
     {
       font-weight: 900;
+      opacity: 1;
     }
 
     .veryStrong

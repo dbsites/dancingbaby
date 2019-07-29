@@ -15,7 +15,8 @@ import * as strings from '../constants/strings';
 
 const initialState = {
     currentScreen: strings.SCREEN_LOGIN,
-    currentScreenIndex: 0
+    currentScreenIndex: 0,
+    showModal: false
 };
 
 
@@ -25,6 +26,7 @@ const screenReducer = ( state=initialState, action ) =>
     switch( action.type )
     {
         case types.USER_LOGIN_SUCCESS:
+        case types.USER_LOGIN_ERROR:
         case types.ASSESSMENT_SUBMIT:
         case types.ASSESSMENT_INFO_SUBMIT:
         case types.ASSESSMENT_UPDATE_SUCCESS:
@@ -43,6 +45,12 @@ const screenReducer = ( state=initialState, action ) =>
                 ...state,
                 currentScreenIndex:2,
                 currentScreen: strings.SCREEN_LIST[2]
+            };
+
+        case types.SHOW_MODAL:
+            return {
+                ...state,
+                showModal: action.payload
             };
 
         default:

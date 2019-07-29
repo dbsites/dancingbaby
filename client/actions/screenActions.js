@@ -26,3 +26,10 @@ export const startOver = () =>
     type: types.ASSESSMENT_START_OVER,
     payload: null
 });
+
+
+export const showModal = ( modalData ) =>
+({
+    type: types.SHOW_MODAL,
+    payload: modalData
+});

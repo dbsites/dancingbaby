@@ -7,8 +7,10 @@
   display: grid;
   grid-template-columns: 100%;
 
+  width: 100vw;
   margin-top: 30px;
-  font-family: $LatoLight;
+
+  //font-family: $LatoLight, sans-serif;
 
   .logoContainer
   {
@@ -21,7 +23,7 @@
 
     .logo
     {
-      width:800px;
+      width: 500px;
     }
   }
 
@@ -29,20 +31,23 @@
   {
     grid-column: 1;
     grid-row: 2;
-
     text-align: center;
-    font-size: 36px;
+    font-size: 22px;
+    margin-top: 16px;
+    font-family: $LatoLight, sans-serif;
+    letter-spacing: 4px;
   }
 
   .assessmentForm
   {
     grid-column: 1 / 4;
     grid-row: 3;
-
     display: grid;
-    grid-column-gap: 20px;
-    grid-row-gap: 40px;
+    grid-column-gap: 50px;
+    grid-row-gap: 25px;
     grid-template-columns: 1fr 1fr 1fr;
+    margin-left: 40px;
+    margin-right: 40px;
   }
 
   .topInputs
@@ -52,7 +57,7 @@
       display: block;
       width: 100%;
       padding: 10px;
-      font-size: 24px;
+      font-size: 18px;
 
       border-radius: 12px;
       border: none;
@@ -64,10 +69,10 @@
 
     label
     {
-      font-size: 32px;
+      font-size: 18px;
       display: block;
-
-      font-family: $LatoLight;
+      color: #606060;
+      letter-spacing: 8px;
     }
   }
 
@@ -109,7 +114,14 @@
   .contentBox
   {
     display: grid;
-    font-size: 32px;
+    font-size: 18px;
+    letter-spacing: 2px;
+
+    .title
+    {
+      letter-spacing: 8px;
+      color: #606060;
+    }
 
     .inputFields
     {
@@ -118,10 +130,15 @@
       grid-row-gap: 10px;
       grid-template-columns: 100%;
 
-      padding: 10px;
+      padding-left: 10px;
+      padding-right: 10px;
+
       border-radius: 12px;
       border: none;
       width: 100%;
+
+      padding-top: 20px;
+      padding-bottom: 20px;
 
       background-color: #CCCCCC;
 
@@ -130,8 +147,8 @@
         display: grid;
         grid-column: 1;
         grid-row: 1;
-        grid-column-gap: 27px;
-        grid-template-columns: 20% 75%;
+        //grid-column-gap: 27px;
+        grid-template-columns: 15% 85%;
         justify-content: center;
 
         .urlInputField
@@ -145,7 +162,7 @@
 
           padding-left: 10px;
           padding-right: 10px;
-          font-size: 20px;
+          font-size: 18px;
           line-height: 60px;
 
           border-radius: 12px;
@@ -161,9 +178,9 @@
           grid-column: 1;
           grid-row: 1;
 
-          margin-top: 4px;
+          margin-top: 16px;
 
-          font-size: 36px;
+          font-size: 22px;
           font-family: $LatoLight;
 
           text-align: right;
@@ -180,16 +197,18 @@
 
         text-align: center;
         font-family: $LatoLight;
+        font-size: 22px;
       }
 
       .contentTitleField
       {
         display: grid;
+
         grid-column: 1;
         grid-row: 3;
 
-        grid-template-columns: 45% 55%;
-        justify-content: center;
+        width: 100%;
+        grid-template-columns: 35% 65%;
 
         .titleInputField
         {
@@ -201,7 +220,7 @@
           padding-left: 6px;
           padding-right: 6px;
 
-          font-size: 30px;
+          font-size: 18px;
           line-height: 50px;
 
           border-radius: 12px;
@@ -213,7 +232,7 @@
 
         label
         {
-          font-size: 30px;
+          font-size: 22px;
           margin-top: 16px;
           font-family: $LatoLight;
 
@@ -227,8 +246,8 @@
         display: grid;
         grid-column: 1;
         grid-row: 4;
-        grid-template-columns: 45% 55%;
-        justify-content: center;
+        grid-template-columns: 35% 65%;
+        //justify-content: center;
 
         .fileTypeSelectField
         {
@@ -237,7 +256,7 @@
           grid-row: 1;
 
           padding: 6px;
-          font-size: 30px;
+          font-size: 18px;
 
           border-radius: 12px;
           border: none;
@@ -248,7 +267,7 @@
 
         label
         {
-          font-size: 30px;
+          font-size: 22px;
           margin-top: 16px;
           font-family: $LatoLight;
 
@@ -264,22 +283,22 @@
     @extend .divTransition;
 
     position: absolute;
-    top: 760px;
+    top: 80vh;
     right: -10px;
 
-    width: 560px;
-    height: 100px;
+    width: 344px;
+    height: 62px;
 
     border-radius: 12px;
     border: none;
 
     display: block;
-    font-size: 42px;
+    font-size: 26px;
 
-    line-height: 111px;
+    line-height: 70px;
     text-align: left;
     padding-left: 20px;
-    letter-spacing: 10px;
+    letter-spacing: 4px;
     background-color: #666666;
 
     span
@@ -290,8 +309,8 @@
     .arrow
     {
       position: absolute;
-      width: 30px;
-      margin-top: 27px;
+      width: 20px;
+      margin-top: 16px;
       margin-left: 20px;
     }
   }

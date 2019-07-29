@@ -19,8 +19,8 @@ import * as strings from '../constants/strings';
 
 
 const videoOptions = {
-    height: '236',
-    width: '420',
+    height: '157',
+    width: '265',
     playerVars: {
         autoplay: 0,
         modestbranding: 1
@@ -139,12 +139,16 @@ const ContentPanelItem = ( props ) =>
             return <div>NO VIDEO CONTENT</div>
         }
 
-        return <YouTube
-            videoId={ props.id }
-            opts={videoOptions}
-            className="youtubeModalVideo"
-            onReady={ props.videoReady }
-        />
+        return (
+            <div className='videoContainer'>
+                <YouTube
+                    videoId={ props.id }
+                    opts={videoOptions}
+                    className="youtubeModalVideo"
+                    onReady={ props.videoReady }
+                />
+            </div>
+        )
     };
 
     return (
