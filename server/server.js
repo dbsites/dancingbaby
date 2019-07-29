@@ -43,8 +43,8 @@ app.post('/api/login',
    passport.authenticate('local', { failureRedirect: '/' }), // will return 401 Unauthorized on failure
    questionsController.getAllQuestions,
    (req, res) => { // login was successful
-    logger.info(`Login successful, returning ${res.locals.questions.length} questions`);
-    res.status(200).send(res.locals.questions);
+    logger.info(`Login successful for account id ${req.user.id}, returning ${res.locals.questions.length} questions`);
+    res.status(200).send({ accountId: req.user.id, questions: res.locals.questions });
    });
 
 app.get('/db42/*', 
@@ -104,6 +104,7 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
     logger.error(`${err.status ? err.status : ''} ${err.message}`);
+    console.error(err);
     res.status(err.status || 500).json({ error: err.message });
 });
 
