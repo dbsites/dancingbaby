@@ -82,6 +82,11 @@ const assessmentReducer = ( state = initialState, action ) =>
                 currentQuestions:Object.values( questions )
             };
 
+        case types.ASSESSMENT_DOWNLOAD_REPORT:
+            return {
+                ...state
+            };
+
         case types.OPEN_CLOSE_CONTENTHUB:
             return {
                 ...state,
