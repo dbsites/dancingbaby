@@ -13,7 +13,8 @@ import * as types from '../constants/actionTypes';
 
 const initialState = {
     userLoggedIn: false,
-    username:''
+    username:'',
+    accountId:''
 };
 
 
@@ -36,7 +37,8 @@ const userReducer = ( state=initialState, action ) =>
 
         case types.USER_LOGIN_SUCCESS:
             return {
-                ...state
+                ...state,
+                accountId:action.payload.accountId
             };
 
         default:
