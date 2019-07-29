@@ -12,6 +12,7 @@ const validationController = require('./controllers/fileValidation');
 const usersController = require('./controllers/usersController');
 const accountsController = require('./controllers/accountsController');
 const youtubeApiController = require('./controllers/youtubeApiController');
+const assessmentController = require('./controllers/assessmentController');
 const { pool, connect } = require('./models/dbModel');
 const { logger, morgan } = require('./util/loggingUtil');
 const { sessionConfig, secret } = require('./util/sessionConfig');
@@ -86,10 +87,15 @@ app.post('/api/videoInfo',
         res.status(200).json(res.locals.youtubeData);
     });
 
-
+app.post('/api/assessment',
+    assessmentController.storeResults,
+    (req, res) => {
+        res.status(200).send();
+    }
+)
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    const err = new Error(`{req.url} Not Found`);
+    const err = new Error(`${req.url} Not Found`);
     err.status = 404;
     next(err);
   });
