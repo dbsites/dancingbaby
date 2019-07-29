@@ -32,6 +32,8 @@ fi
 echo -e "\033[1;32mpackage.json has been updated\033[0m"
 echo -e "\033[1;36mRemoving existing image from local environment...\033[0m"
 docker image rm dbsites/db-dependencies --force
+echo -e "\033[1;36mRemoving existing volume from local environment...\033[0m"
+docker volume rm dancingbaby_dev-db-volume
 echo -e "\033[1;36mRebuilding image with updated package.json...\033[0m"
 docker build -t dbsites/db-dependencies -f Dockerfile-dependencies .
 echo -e "\033[1;32mDone!\033[0m"
