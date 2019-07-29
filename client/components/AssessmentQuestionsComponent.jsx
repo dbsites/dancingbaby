@@ -15,10 +15,43 @@ import ContentHubComponent from './ContentHubComponent';
 import dbLogo from '../assets/svg/db_logo_greenyellow.svg';
 import arrow from '../assets/svg/backBtn.svg';
 import greenArrow from '../assets/svg/arrow.svg';
+import { TweenLite } from 'gsap';
 
 
 export default class AssessmentQuestionsComponent extends React.Component
 {
+    constructor( props )
+    {
+        super( props );
+
+        this.hubState = this.props.isHubOpen;
+    }
+
+    componentDidUpdate()
+    {
+        this.openCloseHub();
+    }
+
+    openCloseHub()
+    {
+        if( this.hubState === this.props.isHubOpen ) return null;
+        this.hubState = this.props.isHubOpen;
+
+        const startWidth = this.props.isHubOpen ? 60 : 332;
+        const endWidth = this.props.isHubOpen ? 332 : 60;
+        const target = document.getElementById('assessmentQuestionsComponent');
+
+        const targetObj = {};
+        targetObj.target = target;
+        targetObj.count = startWidth;
+
+        const updateFired = () =>
+        {
+            target.style.gridTemplateColumns = `${targetObj.count}px 1fr`
+        };
+
+        TweenLite.to( targetObj, .5, { count:endWidth, onUpdate:updateFired } );
+    }
 
     getQuestions()
     {
@@ -53,9 +86,10 @@ export default class AssessmentQuestionsComponent extends React.Component
     render()
     {
         const classNames = `contentHub ${ this.props.isHubOpen ? 'hubOpen' : 'hubClosed' }`;
+        const parentClassNames = `assessmentQuestionsComponent parentHubOpen`; // ${this.props.isHubOpen ? 'parentHubOpen' : 'parentHubClosed'}`;
 
         return (
-            <div id='assessmentQuestionsComponent' className='assessmentQuestionsComponent'>
+            <div id='assessmentQuestionsComponent' className={parentClassNames}>
 
                 <div className='logoUpperRighContainer'>
                     <img src={dbLogo} className='logoSmallUpperRight' alt='logo'/>
@@ -117,8 +151,10 @@ const ProgressBar = ( props ) =>
 
     return (
         <div className='progressContainer'>
-            <div style={progressWidth} className='progressBar'/>
-            <div className='progressTxt' >{progressTxt}</div>
+            <div className='progressBarHolder'>
+                <div style={progressWidth} className='progressBar'/>
+                <div className='progressTxt' >{progressTxt}</div>
+            </div>
         </div>
     )
 };
