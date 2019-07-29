@@ -24,7 +24,7 @@ passport.use(new LocalStrategy((username, password, cb) => {
 
         if(res) {
           // found user with password
-          cb(null, { id: account._id, username: account.username })
+          cb(null, { id: account._id, username: account.username } )
          } else {
            // did not find user with password
           cb(null, false)
