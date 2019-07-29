@@ -21,17 +21,11 @@
   .hubContent
   {
     width: 95%;
-
-    height: 88vh;
-
-
-    //grid-template-rows: 430px 50px 500px;
-
+    height: 100%;
     font-size: 20px;
-    font-family: "LatoMedium", sans-serif, sans-serif;
-
+    grid-template-rows: 332px 60px;
+    font-family: $LatoMedium, sans-serif, sans-serif;
     display: grid;
-
     justify-items: right;
     padding: 0;
     background-color: white;
@@ -57,14 +51,11 @@
       .panelItemInfo
       {
 
-        grid-template-columns: 100%;
-        grid-gap: 2px;
+        grid-gap: 0;
         font-size: 10px;
-        font-family: $LatoLight, sans-serif;
+        font-family: "LatoLight", sans-serif, sans-serif;
         color: #4D4D4D;
-
         display: grid;
-
         padding-left: 2vw;
         padding-right: 2vw;
 
