@@ -15,10 +15,20 @@ import { TweenLite, Sine } from 'gsap';
 import * as strings from '../constants/strings';
 import dbLogo from '../assets/svg/db_logo_greenyellow.svg';
 import Utils from "../js/Utils";
+import PrintPDFComponent from './PrintPDFComponent';
 
 
 export default class ResultsComponent extends React.Component
 {
+    constructor(props)
+    {
+        super(props);
+
+        this.state = {
+            downloadPDF: false
+        }
+    }
+
 
     componentDidMount()
     {
@@ -40,9 +50,14 @@ export default class ResultsComponent extends React.Component
         Utils.addClass( element, 'currentLegendElement' );
     }
 
+    downloadReport = () =>
+    {
+        this.setState({ downloadPDF:true });
+    };
+
     render()
     {
-        const { suspectContent, resultText, fairUse, infringement, resultInfringement, startOver, downloadReport } = this.props;
+        const { suspectContent, resultText, fairUse, infringement, resultInfringement, startOver } = this.props;
         const resultTitle = `${suspectContent[strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE]} exhibits a:`;
         const resultTextIndicator = resultText ? <span><span className={resultText.color}>{resultText.txt}</span> indication of fair use.</span> : 'indication of fair use.';
 
@@ -90,8 +105,10 @@ export default class ResultsComponent extends React.Component
                 </div>
 
                 <div className='downloadBtnContainer'>
-                    <button className='downloadBtn' onClick={downloadReport} type='submit'>DOWNLOAD REPORT</button>
+                    <button className='downloadBtn' onClick={this.downloadReport} type='submit'>DOWNLOAD REPORT</button>
                 </div>
+
+                <PrintPDFComponent {...this.props} downloadPDF={this.state.downloadPDF} />
             </div>
         );
     }
