@@ -1,0 +1,291 @@
+@import "variables";
+
+
+$width: 1224px;
+$height: 1732px;
+
+.printPDFComponent
+{
+
+  position: relative;
+  width: $width;
+
+  font-size: 12px;
+  font-family: $LatoMedium;
+
+  //background-color: #F15A24;
+
+  .page
+  {
+    //position: relative;\
+    width: $width;
+    height: $height;
+  }
+
+  .panel
+  {
+    position: absolute;
+    width: 1104px;
+    left: 60px;
+    background-color: #F1F2F2;
+    border: 1px #E6E7E8;
+    border-radius: 12px;
+  }
+
+  .latoLight20
+  {
+    font-size: 20px;
+    font-family: $LatoLight;
+  }
+
+  .date
+  {
+    @extend .latoLight20;
+    position: absolute;
+
+    left:45px;
+    top:36px;
+  }
+
+  .preparedFor
+  {
+    @extend .latoLight20;
+    position: absolute;
+
+    right:45px;
+    top:36px;
+  }
+
+  .orgName
+  {
+    @extend .latoLight20;
+    position: absolute;
+    //width: 100%;
+    right:45px;
+    top:60px;
+  }
+
+  .logoContainer
+  {
+    position: relative;
+    left: 300px;
+    top: 117px;
+
+    .logo
+    {
+      width: 625px;
+    }
+  }
+
+  .algorithmTxt
+  {
+    position: absolute;
+
+    left: 343px;
+    top: 230px;
+
+    color: #6D6E70;
+    font-size: 28px;
+    font-family: $LatoLight;
+  }
+
+  .profilesTitle
+  {
+    position: absolute;
+
+    left: 60px;
+    top: 322px;
+
+    color: #808184;
+    font-size: 36px;
+    font-family: $ComfortRegular;
+  }
+
+  .profiles
+  {
+    display: grid;
+    grid-column-gap: 100px;
+    top: 374px;
+
+    padding-top: 30px;
+    padding-bottom: 30px;
+
+    //padding-left: 100px;
+    //padding-right: 100px;
+
+    color: #6D6E70;
+    font-size: 24px;
+    font-family: $LatoLight;
+
+    .primaryContent
+    {
+      grid-column: 1;
+      margin-left: 100px;
+    }
+
+    .contentTitle
+    {
+      color: #6D6E70;
+      font-size: 26px;
+      font-family: $LatoMedium;
+    }
+
+    .title
+    {
+
+    }
+
+    .fileType
+    {
+
+    }
+
+    .url
+    {
+
+    }
+
+    .contentDate
+    {
+
+    }
+
+    .author
+    {
+
+    }
+
+    .count
+    {
+
+    }
+
+    .secondaryContent
+    {
+      grid-column: 2;
+    }
+
+  }
+
+  .subTitleContainer
+  {
+    margin-top: 40px;
+
+    font-size: 28px;
+    font-family: $LatoLight;
+    color: #999999;
+    text-align: center;
+  }
+
+  .textIndicator
+  {
+
+  }
+
+  .analysisTitle
+  {
+    position: absolute;
+
+    left: 60px;
+    top: 736px;
+
+    color: #808184;
+    font-size: 36px;
+    font-family: $ComfortRegular;
+  }
+
+  .analysis
+  {
+    top: 788px;
+    display: grid;
+    grid-template-columns: 100%;
+
+    justify-items: center;
+
+    .resultTitle
+    {
+      grid-column: 1;
+      grid-row: 2;
+
+      margin-top: 10px;
+
+      font-size: 36px;
+      font-family: $LatoMedium;
+      color: #231F20;
+      text-align: center;
+    }
+
+    .resultGage
+    {
+      margin-top: 30px;
+
+      grid-column: 1;
+      grid-row: 3;
+
+      width: 400px;
+      height: 250px;
+      overflow: hidden;
+
+      display: grid;
+    }
+
+    .resultGageImage
+    {
+      width: 400px;
+      height: 400px;
+
+      grid-column: 1;
+      grid-row: 1;
+
+      background: url(../assets/images/gauge.png);
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    .resultGageArrow
+    {
+      width: 400px;
+      height: 400px;
+      grid-column: 1;
+      grid-row: 1;
+
+      background: url(../assets/images/gaugeArrow.png);
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    .textIndicator
+    {
+      grid-column: 1;
+      grid-row: 4;
+
+      font-size: 36px;
+      font-family: $LatoMedium;
+      color: #231F20;
+      text-align: center;
+    }
+
+    .factorsContainer
+    {
+      grid-column: 1;
+      grid-row: 5;
+
+      font-size: 20px;
+      font-family: $LatoMedium;
+
+      margin-bottom: 30px;
+      margin-top: 20px;
+      text-align: center;
+
+      .factorsAgainst
+      {
+
+      }
+
+      .factorsTowards
+      {
+
+      }
+    }
+  }
+}
