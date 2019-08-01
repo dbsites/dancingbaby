@@ -67,6 +67,8 @@ const assessmentReducer = ( state = initialState, action ) =>
 
     let questions;
     let result;
+    let currentQuestionIndex;
+    let currentQuestions;
 
     switch( action.type )
     {
@@ -82,6 +84,20 @@ const assessmentReducer = ( state = initialState, action ) =>
                 currentQuestions:Object.values( questions )
             };
 
+        case types.ASSESSMENT_START_OVER:
+            questions = getQuestions( Object.values( JSON.parse( initQuestions )), false, null );
+            currentQuestionIndex = 0;
+            currentQuestions = getQuestionList( questions );
+
+            return {
+                ...state,
+                questions,
+                currentQuestions,
+                currentQuestionIndex,
+                questionsUpdated:Date.now(),
+                progress:0,
+            };
+
         case types.ASSESSMENT_DOWNLOAD_REPORT:
             return {
                 ...state
@@ -94,9 +110,6 @@ const assessmentReducer = ( state = initialState, action ) =>
             };
 
         case types.ASSESSMENT_INFO_SUBMIT:
-
-            console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ASSESSMENT INFO SUBMIT: ", action );
-
             return {
                 ...state,
                 assessmentInfo:setVideoInfo( action, state )
@@ -122,10 +135,10 @@ const assessmentReducer = ( state = initialState, action ) =>
         // update question count, update progress bar, get sub questions.
         case types.ASSESSMENT_UPDATE:
 
-            const currentQuestionIndex = action.payload.questionData.index+1;
+            currentQuestionIndex = action.payload.questionData.index+1;
             questions = updateCurrentQuestion( Object.assign( {}, state.questions ), action.payload );
 
-            const currentQuestions = getQuestionList( questions );
+            currentQuestions = getQuestionList( questions );
 
             return {
                 ...state,
@@ -193,12 +206,20 @@ const getSubquestions = ( subQuestions ) =>
  */
 const getQuestions = ( list, isSubQuestion, parentIndex ) =>
 {
+    console.log( "GET QUESTIONS: ", typeof list );
+
     const questions = {};
+    let getList = list;
     let newQuestion = null;
 
-    if( list )
+    if( list && !list.length )
     {
-        list.forEach(( item, index ) =>
+        getList = Object.values( list );
+    }
+
+    if( getList )
+    {
+        getList.forEach(( item, index ) =>
         {
             newQuestion = new Question( item, index, parentIndex, isSubQuestion );
             questions[newQuestion.questionNumber] = newQuestion;

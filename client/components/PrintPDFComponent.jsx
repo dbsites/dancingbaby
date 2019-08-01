@@ -39,7 +39,7 @@ export default class PrintPDFComponent extends Component
 
         if( !this.props.downloadPDF ) return null;
 
-        const pdf = new jsPDF( "p", "px", "a4");
+        const pdf = new jsPDF( "p", "px", "a4", true );
         const width = pdf.internal.pageSize.getWidth();
         const height = pdf.internal.pageSize.getHeight();
 
@@ -78,7 +78,7 @@ export default class PrintPDFComponent extends Component
             for( let i = imageData.length -1; i > -1; i-- )
             {
                 data = imageData[i];
-                pdf.addImage( data, 'PNG', 0, 0, width, height );
+                pdf.addImage( data, 'PNG', 0, 0, width, height, undefined, 'FAST' );
                 if( i === imageData.length -1 ) pdf.addPage();
             }
             // imageData.forEach(( data, index ) =>
