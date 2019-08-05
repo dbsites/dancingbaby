@@ -16,6 +16,8 @@ import * as strings from '../constants/strings';
 import dbLogo from '../assets/svg/db_logo_greenyellow.svg';
 import Utils from "../js/Utils";
 import PrintPDFComponent from './PrintPDFComponent';
+import arrow from "../assets/svg/arrow.svg";
+import backBtnArrow from '../assets/svg/backBtn.svg';
 
 
 export default class ResultsComponent extends React.Component
@@ -57,8 +59,10 @@ export default class ResultsComponent extends React.Component
 
     render()
     {
-        const { suspectContent, resultText, fairUse, infringement, resultInfringement, startOver } = this.props;
-        const resultTitle = `${suspectContent[strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE]} exhibits a:`;
+        const { assessmentInfo, resultText, fairUse, infringement, resultInfringement, startOver } = this.props;
+        const suspectedContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT] || {};
+
+        const resultTitle = `${suspectedContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER] || 'n/a'} - ${suspectedContent[strings.ASSESSMENT_INFO_IDS.TITLE] || 'n/a' } exhibits a:`;
         const resultTextIndicator = resultText ? <span><span className={resultText.color}>{resultText.txt}</span> indication of fair use.</span> : 'indication of fair use.';
 
         const factorsAgainst = `Number of factors AGAINST FAIR USE: ${infringement}`;
@@ -105,7 +109,17 @@ export default class ResultsComponent extends React.Component
                 </div>
 
                 <div className='downloadBtnContainer'>
-                    <button className='downloadBtn' onClick={this.downloadReport} type='submit'>DOWNLOAD REPORT</button>
+                    <button className='downloadBtn' onClick={this.downloadReport} type='submit'>
+                        <span>DOWNLOAD REPORT</span>
+                        <img src={arrow} className='arrow' alt='arrow' />
+                    </button>
+                </div>
+
+                <div className='restartBtnContainer'>
+                    <button className='restartBtn' onClick={this.props.startOver}>
+                        <span>START OVER</span>
+                        <img src={backBtnArrow} className='backBtnArrow' alt='backBtnArrow' />
+                    </button>
                 </div>
 
                 <PrintPDFComponent {...this.props} downloadPDF={this.state.downloadPDF} />
