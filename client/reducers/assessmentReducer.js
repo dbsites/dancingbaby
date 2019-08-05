@@ -17,12 +17,12 @@ import * as strings from '../constants/strings';
 const content = () =>
 {
     return {
-        [strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE]: '',
+        [strings.ASSESSMENT_INFO_IDS.TITLE]: '',
         [strings.ASSESSMENT_INFO_IDS.VIDEO_ID]: '',
-        [strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISHER]: '',
-        [strings.ASSESSMENT_INFO_IDS.VIDEO_VIEW_COUNT]: '',
-        [strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISH_DATE]: '',
-        [strings.ASSESSMENT_INFO_IDS.VIDEO_URL]: '',
+        [strings.ASSESSMENT_INFO_IDS.PUBLISHER]: '',
+        [strings.ASSESSMENT_INFO_IDS.VIEW_COUNT]: '',
+        [strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE]: '',
+        [strings.ASSESSMENT_INFO_IDS.URL]: '',
         [strings.ASSESSMENT_INFO_IDS.FILETYPE]: '',
     }
 };
@@ -47,6 +47,7 @@ const initialState = {
     infringement: 0,
     resultInfringement: .5,
     resultText:strings.ASSESSMENT_RESULTS_STRINGS[1],
+    resultMatrix:[],
 
     assessmentInfo: {
         // assessment info
@@ -55,7 +56,9 @@ const initialState = {
         [strings.ASSESSMENT_INFO_IDS.ORG_NAME]:'',
 
         [strings.ASSESSMENT_INFO_IDS.COPYRIGHTED_CONTENT]: new content(),
-        [strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT]: new content()
+        [strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT]: new content(),
+
+        [strings.ASSESSMENT_INFO_IDS.RESULTS_QUESTIONS]: {}
     }
 };
 
@@ -128,7 +131,7 @@ const assessmentReducer = ( state = initialState, action ) =>
         case types.ASSESSMENT_SUBMIT:
             return {
                 ...state,
-                ...getAssessmentData( state.questions )
+                ...getAssessmentData( state )
             };
 
 
@@ -146,7 +149,7 @@ const assessmentReducer = ( state = initialState, action ) =>
                 currentQuestions,
                 currentQuestionIndex,
                 questionsUpdated:Date.now(),
-                progress:currentQuestionIndex/(currentQuestions.length-1),
+                progress:currentQuestionIndex/(currentQuestions.length),
             };
 
         default:
@@ -281,8 +284,8 @@ const setVideoInfo = ( action, state ) =>
         [strings.ASSESSMENT_INFO_IDS.LAST_NAME]: info[strings.ASSESSMENT_INFO_IDS.LAST_NAME],
         [strings.ASSESSMENT_INFO_IDS.ORG_NAME]: info[strings.ASSESSMENT_INFO_IDS.ORG_NAME],
 
-        [strings.ASSESSMENT_INFO_IDS.COPYRIGHTED_CONTENT]: setVideoData( action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_COPYRIGHTED_VIDEO_ID], videoInfo, info ),
-        [strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT]: setVideoData( action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SUSPECTED_VIDEO_ID], videoInfo, info ),
+        [strings.ASSESSMENT_INFO_IDS.COPYRIGHTED_CONTENT]: setContentData( action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_COPYRIGHTED_VIDEO_ID], videoInfo, info ),
+        [strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT]: setContentData( action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SUSPECTED_VIDEO_ID], videoInfo, info ),
     };
 
     console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> GET VIDEO INFO INFO: ", info, videoInfo, result );
@@ -291,7 +294,7 @@ const setVideoInfo = ( action, state ) =>
 };
 
 
-const setVideoData = ( id, videoInfo, info ) =>
+const setContentData = ( id, videoInfo, info ) =>
 {
     console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SET VIDEO DATA: ", id, videoInfo, info );
 
@@ -313,8 +316,6 @@ const setVideoData = ( id, videoInfo, info ) =>
         {
             result = getVideoData( info, videoItem )
         }
-
-
     });
 
     return result;
@@ -325,11 +326,11 @@ const getYoutubeVideoData = ( id, item ) =>
 {
     return {
         [strings.ASSESSMENT_INFO_IDS.VIDEO_ID]: id,
-        [strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE]: item.snippet.title,
-        [strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISHER]: item.snippet.channelTitle,
-        [strings.ASSESSMENT_INFO_IDS.VIDEO_VIEW_COUNT]: item.statistics.viewCount,
-        [strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISH_DATE]: item.snippet.publishedAt,
-        [strings.ASSESSMENT_INFO_IDS.VIDEO_URL]: `https://www.youtube.com/watch?v=${id}`,
+        [strings.ASSESSMENT_INFO_IDS.TITLE]: item.snippet.title,
+        [strings.ASSESSMENT_INFO_IDS.PUBLISHER]: item.snippet.channelTitle,
+        [strings.ASSESSMENT_INFO_IDS.VIEW_COUNT]: item.statistics.viewCount,
+        [strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE]: item.snippet.publishedAt,
+        [strings.ASSESSMENT_INFO_IDS.URL]: `https://www.youtube.com/watch?v=${id}`,
     }
 };
 
@@ -339,19 +340,21 @@ const getVideoData = ( info, videoItem ) =>
 
     return null;
 
-    return {
-        [strings.ASSESSMENT_INFO_IDS.VIDEO_ID]: null,
-        [strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE]: info[strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE],
-        [strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISHER]: null,
-        [strings.ASSESSMENT_INFO_IDS.VIDEO_VIEW_COUNT]: null,
-        [strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISH_DATE]: null,
-        [strings.ASSESSMENT_INFO_IDS.VIDEO_URL]: info[strings.ASSESSMENT_INFO_IDS.VIDEO_URL],
-    }
+    // return {
+    //     [strings.ASSESSMENT_INFO_IDS.VIDEO_ID]: null,
+    //     [strings.ASSESSMENT_INFO_IDS.TITLE]: info[strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE],
+    //     [strings.ASSESSMENT_INFO_IDS.PUBLISHER]: null,
+    //     [strings.ASSESSMENT_INFO_IDS.VIEW_COUNT]: null,
+    //     [strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE]: null,
+    //     [strings.ASSESSMENT_INFO_IDS.URL]: info[strings.ASSESSMENT_INFO_IDS.VIDEO_URL],
+    // }
 };
 
 
-const getAssessmentData = ( questions ) =>
+const getAssessmentData = ( state ) =>
 {
+    const { questions, currentQuestions, assessmentInfo } = state;
+
     console.log( "GET ASSESSMENT DATA: ", questions );
 
     let resultData = {
@@ -374,10 +377,51 @@ const getAssessmentData = ( questions ) =>
         }
     });
 
+    const resultText = getResultText( state.resultInfringement );
+    const matrix = setMatrix( currentQuestions, resultText );
+
     resultData.resultInfringement = resultData.infringement / ( resultData.fairUse + resultData.infringement );
-    resultData.resultText = getResultText( resultData.resultInfringement );
+    resultData.resultText = resultText;
+    resultData.resultMatrix = matrix;
 
     return resultData;
+};
+
+
+const setMatrix = ( questions, resultsText ) =>
+{
+    console.log( "====================== SET MATRIX CALLED: ", questions, resultsText );
+
+    if( !questions || !resultsText ) return null;
+
+    const matrix = resultsText.matrix;
+    const resultMatrix = [];
+
+    let question;
+    let currentMatrix;
+    let questionNum;
+    let questionAnswer;
+
+    for( let m = 0; m < matrix.length; m++ )
+    {
+        currentMatrix = matrix[m];
+
+        for( let i = 0; i < questions.length; i++ )
+        {
+            question = questions[i];
+
+            if( !question.questionNumber || !question.isAnswered ) continue;
+
+            console.log( "====================== SET MATRIX CALLED :: CHECKING QUESTION: ", question, currentMatrix );
+            if( currentMatrix.num === question.questionNumber && question.isAnswered.toLowerCase().indexOf( currentMatrix.value.toLowerCase() ) === 0 )
+            {
+                resultMatrix.push( question );
+            }
+        }
+    }
+
+    console.log( "====================== SET MATRIX CALLED :: RESULTS: ", resultMatrix );
+    return resultMatrix;
 };
 
 
@@ -387,6 +431,8 @@ const getResultText = ( resultValue ) =>
 
     for( let i = 0; i < values.length; i++ )
     {
+        console.log( "====================== GET RESULT TEXT VALUE: ", values[i].value, resultValue );
+
         if( values[i].value > resultValue )
         {
             return values[i-1];
