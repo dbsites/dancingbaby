@@ -116,9 +116,6 @@ class ContentHubComponent extends Component
 
 const ContentPanelItem = ( props ) =>
 {
-
-    console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CONTENT PANEL ITEM: ", props );
-
     const info = props && props.info ? props.info : {};
 
     const title     = info[strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE] || 'n/a';

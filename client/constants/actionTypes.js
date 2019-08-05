@@ -31,4 +31,5 @@ export const ASSESSMENT_START   = 'ASSESSMENT_START';
 export const ASSESSMENT_UPDATE  = 'ASSESSMENT_UPDATE';
 export const OPEN_CLOSE_CONTENTHUB  = 'OPEN_CLOSE_CONTENTHUB';
 export const SHOW_MODAL             = 'SHOW_MODAL';
+export const SHOW_LOADING           = 'SHOW_LOADING';
 

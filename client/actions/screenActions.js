@@ -28,6 +28,13 @@ export const startOver = () =>
 });
 
 
+export const hideLoading = () =>
+({
+    type: types.SHOW_LOADING,
+    payload: false
+});
+
+
 export const showModal = ( modalData ) =>
 ({
     type: types.SHOW_MODAL,
