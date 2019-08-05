@@ -202,4 +202,9 @@ export default class Utils
 
         return parts[parts.length-1];
     }
+
+    static formatNumber( num )
+    {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
 }
