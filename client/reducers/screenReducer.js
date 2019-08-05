@@ -14,9 +14,10 @@ import * as strings from '../constants/strings';
 
 
 const initialState = {
-    currentScreen: strings.SCREEN_LOGIN,
+    currentScreen: strings.SCREEN_LOGIN.screen,
     currentScreenIndex: 0,
-    showModal: false
+    showModal: false,
+    showLoading: false
 };
 
 
@@ -36,21 +37,28 @@ const screenReducer = ( state=initialState, action ) =>
 
             return {
                 ...state,
-                currentScreenIndex:newIndex,
-                currentScreen: strings.SCREEN_LIST[newIndex]
+                showLoading: strings.SCREEN_LIST[newIndex].showLoading,
+                currentScreenIndex: newIndex,
+                currentScreen: strings.SCREEN_LIST[newIndex].screen
             };
 
         case types.ASSESSMENT_START_OVER:
             return {
                 ...state,
                 currentScreenIndex:2,
-                currentScreen: strings.SCREEN_LIST[2]
+                showLoading: strings.SCREEN_LIST[2].showLoading,
+                currentScreen: strings.SCREEN_LIST[2].screen
             };
 
         case types.SHOW_MODAL:
             return {
                 ...state,
                 showModal: action.payload
+            };
+
+        case types.SHOW_LOADING:
+            return {
+                showLoading:true
             };
 
         default:
