@@ -1,0 +1,39 @@
+@import "variables";
+
+
+.loadingComponent
+{
+  position: absolute;
+
+  left:0;
+  top:0;
+
+  display: grid;
+  grid-template-columns: 100%;
+
+  width: 100vw;
+  height: 100vh;
+
+  z-index: 1000;
+
+  justify-items: center;
+
+  background-color: white;
+
+  .logo
+  {
+    display: grid;
+    width: 30%;
+    margin-top: 8vh;
+  }
+
+  color: #fed22a;
+
+  .loadingTxt
+  {
+    font-size: 5vw;
+    font-family: $ComfortRegular;
+    color: #B3B3B3;
+    letter-spacing: 6px;
+  }
+}
