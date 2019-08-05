@@ -5,12 +5,12 @@ import * as strings from '../constants/strings.js';
 const content = () =>
 {
   return {
-    [strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE]: '',
+    [strings.ASSESSMENT_INFO_IDS.TITLE]: '',
     [strings.ASSESSMENT_INFO_IDS.VIDEO_ID]: '',
-    [strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISHER]: '',
-    [strings.ASSESSMENT_INFO_IDS.VIDEO_VIEW_COUNT]: '',
-    [strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISH_DATE]: '',
-    [strings.ASSESSMENT_INFO_IDS.VIDEO_URL]: '',
+    [strings.ASSESSMENT_INFO_IDS.PUBLISHER]: '',
+    [strings.ASSESSMENT_INFO_IDS.VIEW_COUNT]: '',
+    [strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE]: '',
+    [strings.ASSESSMENT_INFO_IDS.URL]: '',
     [strings.ASSESSMENT_INFO_IDS.FILETYPE]: '',
   }
 };
@@ -40,6 +40,7 @@ describe('assessmentReducer', () => {
       infringement: 0,
       resultInfringement: .5,
       resultText:strings.ASSESSMENT_RESULTS_STRINGS[1],
+      resultMatrix:[],
 
       assessmentInfo: {
         // assessment info
@@ -47,8 +48,10 @@ describe('assessmentReducer', () => {
         [strings.ASSESSMENT_INFO_IDS.LAST_NAME]:'',
         [strings.ASSESSMENT_INFO_IDS.ORG_NAME]:'',
 
-        [strings.ASSESSMENT_INFO_IDS.COPYRIGHTED_CONTENT]: content(),
-        [strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT]: content()
+        [strings.ASSESSMENT_INFO_IDS.COPYRIGHTED_CONTENT]: new content(),
+        [strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT]: new content(),
+
+        [strings.ASSESSMENT_INFO_IDS.RESULTS_QUESTIONS]: {}
       }
     };
 

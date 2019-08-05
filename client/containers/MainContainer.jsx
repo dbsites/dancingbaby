@@ -41,6 +41,7 @@ const mapStateToProps = store =>
     // results component
     resultInfringement: store.assessment.resultInfringement,
     resultText: store.assessment.resultText,
+    resultMatrix: store.assessment.resultMatrix,
 
 
     fairUse: store.assessment.fairUse,
@@ -144,9 +145,8 @@ class MainContainer extends Component
 
                     resultInfringement={ this.props.resultInfringement }
                     resultText={ this.props.resultText }
-
+                    resultMatrix={ this.props.resultMatrix }
                     assessmentInfo={ this.props.assessmentInfo }
-                    suspectContent={ this.props.assessmentInfo[strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT] }
 
                     fairUse={ this.props.fairUse }
                     infringement={ this.props.infringement }
