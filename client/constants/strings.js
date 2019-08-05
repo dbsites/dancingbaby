@@ -40,6 +40,9 @@ export const ASSESSMENT_INFO_IDS = {
     URL:'URL',
     TITLE:'TITLE',
     FILETYPE:'FILETYPE',
+    PUBLISHER:'PUBLISHER',
+    VIEW_COUNT:'VIEW_COUNT',
+    PUBLISH_DATE:'PUBLISH_DATE',
 
     VIDEO_TITLE:'VIDEO_TITLE',
     VIDEO_ID:'VIDEO_ID',
@@ -47,6 +50,8 @@ export const ASSESSMENT_INFO_IDS = {
     VIDEO_VIEW_COUNT:'VIDEO_VIEW_COUNT',
     VIDEO_PUBLISH_DATE:'VIDEO_PUBLISH_DATE',
     VIDEO_URL:'VIDEO_URL',
+
+    RESULTS_QUESTIONS:'RESULTS_QUESTIONS',
 
     URL_COPYRIGHT:'URL_COPYRIGHT',
     TITLE_COPYRIGHT:'TITLE_COPYRIGHT',
@@ -62,9 +67,99 @@ export const ASSESSMENT_INFO_IDS = {
 
 
 export const ASSESSMENT_RESULTS_STRINGS = {
-    VERY_STRONG:{ value:0, txt:'VERY STRONG', color:'veryStrongColor', legendClass:'veryStrong' },
-    STRONG:{ value:.2, txt:'STRONG', color:'strongColor', legendClass:'strong' },
-    MODERATE:{ value:.4, txt:'MODERATE', color:'moderateColor', legendClass:'moderate' },
-    WEAK:{ value:.6, txt:'WEAK', color:'weakColor', legendClass:'weak' },
-    NO_EVIDENCE:{ value:.8, txt:'No Evidence', color:'noEvidenceColor', legendClass:'noEvidence' },
+    VERY_STRONG:{
+        value:0,
+        txt:'VERY STRONG',
+        color:'veryStrongColor',
+        legendClass:'veryStrong',
+        matrix:[
+            { num:'8', value:'Y' },
+            { num:'9', value:'Y' },
+            { num:'7', value:'Y' },
+            { num:'3', value:'Y' },
+            { num:'16', value:'Y' },
+            { num:'18', value:'N' },
+            { num:'4', value:'Y' },
+            { num:'9a', value:'Y' },
+            { num:'9d', value:'Y' },
+            { num:'10', value:'N' },
+            { num:'13', value:'Y' }
+        ]
+    },
+    STRONG:{
+        value:.2,
+        txt:'STRONG',
+        color:'strongColor',
+        legendClass:'strong',
+        matrix:[
+            { num:'8', value:'Y' },
+            { num:'9', value:'Y' },
+            { num:'7', value:'Y' },
+            { num:'3', value:'Y' },
+            { num:'16', value:'Y' },
+            { num:'18', value:'N' },
+            { num:'4', value:'Y' },
+            { num:'9a', value:'Y' },
+            { num:'9d', value:'Y' },
+            { num:'10', value:'N' },
+            { num:'13', value:'Y' }
+        ]
+    },
+    MODERATE:{
+        value:.4,
+        txt:'MODERATE',
+        color:'moderateColor',
+        legendClass:'moderate',
+        matrix:[
+            { num:'8', value:'Y' },
+            { num:'9', value:'Y' },
+            { num:'7', value:'Y' },
+            { num:'3', value:'Y' },
+            { num:'16', value:'Y' },
+            { num:'18', value:'N' },
+            { num:'4', value:'Y' },
+            { num:'9a', value:'Y' },
+            { num:'9d', value:'Y' },
+            { num:'10', value:'N' },
+            { num:'13', value:'Y' }
+        ]
+    },
+    WEAK:{
+        value:.6,
+        txt:'WEAK',
+        color:'weakColor',
+        legendClass:'weak',
+        matrix:[
+            { num:'18', value:'Y' },
+            { num:'9b', value:'Y' },
+            { num:'9c', value:'N' },
+            { num:'5', value:'Y' },
+            { num:'17', value:'Y' },
+            { num:'15', value:'Y' },
+            { num:'11', value:'N' },
+            { num:'12', value:'Y' },
+            { num:'19', value:'Y' },
+            { num:'20', value:'Y' },
+            { num:'14', value:'N' }
+        ]
+    },
+    NO_EVIDENCE:{
+        value:.8,
+        txt:'No Evidence',
+        color:'noEvidenceColor',
+        legendClass:'noEvidence',
+        matrix:[
+            { num:'8', value:'Y' },
+            { num:'9', value:'Y' },
+            { num:'7', value:'Y' },
+            { num:'3', value:'Y' },
+            { num:'16', value:'Y' },
+            { num:'18', value:'N' },
+            { num:'4', value:'Y' },
+            { num:'9a', value:'Y' },
+            { num:'9d', value:'Y' },
+            { num:'10', value:'N' },
+            { num:'13', value:'Y' }
+        ]
+    },
 };
