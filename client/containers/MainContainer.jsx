@@ -16,6 +16,7 @@ import LoginComponent from '../components/LoginComponent';
 import ModalComponent from '../components/ModalComponent';
 import DisclaimerComponent from '../components/DisclaimerComponent';
 import AssessmentInfoComponent from '../components/AssessmentInfoComponent';
+import LoadingComponent from '../components/LoadingComponent';
 import AssessmentQuestionsComponent from '../components/AssessmentQuestionsComponent';
 import ResultsComponent from '../components/ResultsComponent';
 
@@ -29,6 +30,7 @@ const mapStateToProps = store =>
 ({
     currentScreen:store.screens.currentScreen,
     showModal:store.screens.showModal,
+    showLoading:store.screens.showLoading,
 
     // questions component
     isHubOpen: store.assessment.isHubOpen,
@@ -93,6 +95,11 @@ const mapDispatchToProps = dispatch =>
         dispatch(screenActions.startOver());
     },
 
+    hideLoading: () =>
+    {
+        dispatch(screenActions.hideLoading());
+    },
+
     nextScreen: () =>
     {
         dispatch(screenActions.nextScreen());
@@ -105,26 +112,27 @@ class MainContainer extends Component
 
     getCurrentScreen = () =>
     {
+
         switch( this.props.currentScreen )
         {
-            case strings.SCREEN_LOGIN:
+            case strings.SCREEN_LOGIN.screen:
                 return <LoginComponent
                     onSubmit={ this.props.submitLogin }
                 />;
 
-            case strings.SCREEN_DISCLAIMER:
+            case strings.SCREEN_DISCLAIMER.screen:
                 return <DisclaimerComponent
                     nextScreen={ this.props.nextScreen }
                     showHideModal={ this.props.showHideModal }
                 />;
 
-            case strings.SCREEN_ASSESSMENT_GETINFO:
+            case strings.SCREEN_ASSESSMENT_GETINFO.screen:
                 return <AssessmentInfoComponent
                     assessmentInfo={ this.props.assessmentInfo }
                     onSubmit={ this.props.submitAssessmentInfo }
                 />;
 
-            case strings.SCREEN_ASSESSMENT_QUESTIONS:
+            case strings.SCREEN_ASSESSMENT_QUESTIONS.screen:
                 return <AssessmentQuestionsComponent
 
                     questions={ this.props.currentQuestions }
@@ -140,7 +148,7 @@ class MainContainer extends Component
                     startOver={ this.props.startOver }
                 />;
 
-            case strings.SCREEN_ASSESSMENT_RESULTS:
+            case strings.SCREEN_ASSESSMENT_RESULTS.screen:
                 return <ResultsComponent
 
                     resultInfringement={ this.props.resultInfringement }
@@ -163,7 +171,8 @@ class MainContainer extends Component
         return(
           <div className="container">
             <div className="outerBox">
-                <ModalComponent showHideModal={ this.props.showHideModal } modalData={this.props.showModal} />
+                <ModalComponent showHideModal={ this.props.showHideModal } modalData={ this.props.showModal } />
+                <LoadingComponent showLoading={ this.props.showLoading } hideLoading={ this.props.hideLoading } />
                 { this.getCurrentScreen() }
             </div>
           </div>
