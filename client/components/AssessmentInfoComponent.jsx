@@ -145,8 +145,8 @@ let AssessmentInfoComponent = ( props ) =>
     {
         if( assessmentInfo[strings.ASSESSMENT_INFO_IDS.FIRST_NAME] )
         {
-            const suspectedContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT];
-            const copyrightedContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.COPYRIGHTED_CONTENT];
+            const suspectedContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT];
+            const copyrightedContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.PRIMARY_CONTENT];
 
             resetFields( 'assessmentForm', {
                 [strings.ASSESSMENT_INFO_IDS.FIRST_NAME]: assessmentInfo[strings.ASSESSMENT_INFO_IDS.FIRST_NAME],
