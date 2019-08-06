@@ -5,12 +5,12 @@
 
 .parentHubOpen
 {
-  grid-template-columns: 332px 1fr;
+  grid-template-columns: $HubOpen 1fr;
 }
 
 .parentHubClosed
 {
-  grid-template-columns: 60px 1fr;
+  grid-template-columns: $HubClosed 1fr;
 }
 
 .assessmentQuestionsComponent
@@ -36,12 +36,12 @@
 
   .hubOpen
   {
-    width: 332px;
+    width: $HubOpen;
   }
 
   .hubClosed
   {
-    width: 60px;
+    width: $HubClosed;
   }
 
   .backBtn
