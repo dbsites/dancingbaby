@@ -48,8 +48,8 @@ describe('assessmentReducer', () => {
         [strings.ASSESSMENT_INFO_IDS.LAST_NAME]:'',
         [strings.ASSESSMENT_INFO_IDS.ORG_NAME]:'',
 
-        [strings.ASSESSMENT_INFO_IDS.COPYRIGHTED_CONTENT]: new content(),
-        [strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT]: new content(),
+        [strings.ASSESSMENT_INFO_IDS.PRIMARY_CONTENT]: new content(),
+        [strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT]: new content(),
 
         [strings.ASSESSMENT_INFO_IDS.RESULTS_QUESTIONS]: {}
       }
