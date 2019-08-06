@@ -117,12 +117,12 @@ export default class PrintPDFComponent extends Component
 
         const { resultText, fairUse, infringement, assessmentInfo } = this.props;
 
-        const primaryContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT];
-        const secondaryContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT];
+        const primaryContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.PRIMARY_CONTENT];
+        const secondaryContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT];
 
         const date = moment().format('ll');
 
-        const resultTitle = `${assessmentInfo[strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT][strings.ASSESSMENT_INFO_IDS.PUBLISHER]} - ${assessmentInfo[strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT][strings.ASSESSMENT_INFO_IDS.TITLE]} exhibits a:`;
+        const resultTitle = `${assessmentInfo[strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT][strings.ASSESSMENT_INFO_IDS.PUBLISHER]} - ${assessmentInfo[strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT][strings.ASSESSMENT_INFO_IDS.TITLE]} exhibits a:`;
         const resultTextIndicator = resultText ? <span><span className={resultText.color}>{resultText.txt}</span> indication of fair use.</span> : 'indication of fair use.';
 
         const preparedFor = `Prepared for ${assessmentInfo[strings.ASSESSMENT_INFO_IDS.FIRST_NAME]} ${assessmentInfo[strings.ASSESSMENT_INFO_IDS.LAST_NAME]}`;
