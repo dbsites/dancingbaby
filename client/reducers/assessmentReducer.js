@@ -55,8 +55,8 @@ const initialState = {
         [strings.ASSESSMENT_INFO_IDS.LAST_NAME]:'',
         [strings.ASSESSMENT_INFO_IDS.ORG_NAME]:'',
 
-        [strings.ASSESSMENT_INFO_IDS.COPYRIGHTED_CONTENT]: new content(),
-        [strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT]: new content(),
+        [strings.ASSESSMENT_INFO_IDS.PRIMARY_CONTENT]: new content(),
+        [strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT]: new content(),
 
         [strings.ASSESSMENT_INFO_IDS.RESULTS_QUESTIONS]: {}
     }
@@ -284,8 +284,8 @@ const setVideoInfo = ( action, state ) =>
         [strings.ASSESSMENT_INFO_IDS.LAST_NAME]: info[strings.ASSESSMENT_INFO_IDS.LAST_NAME],
         [strings.ASSESSMENT_INFO_IDS.ORG_NAME]: info[strings.ASSESSMENT_INFO_IDS.ORG_NAME],
 
-        [strings.ASSESSMENT_INFO_IDS.COPYRIGHTED_CONTENT]: setContentData( action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_COPYRIGHTED_VIDEO_ID], videoInfo, info ),
-        [strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT]: setContentData( action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SUSPECTED_VIDEO_ID], videoInfo, info ),
+        [strings.ASSESSMENT_INFO_IDS.PRIMARY_CONTENT]: setContentData( action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_COPYRIGHTED_VIDEO_ID], videoInfo, info ),
+        [strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT]: setContentData( action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SUSPECTED_VIDEO_ID], videoInfo, info ),
     };
 
     console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> GET VIDEO INFO INFO: ", info, videoInfo, result );
