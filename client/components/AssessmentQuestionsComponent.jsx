@@ -37,8 +37,8 @@ export default class AssessmentQuestionsComponent extends React.Component
         if( this.hubState === this.props.isHubOpen ) return null;
         this.hubState = this.props.isHubOpen;
 
-        const startWidth = this.props.isHubOpen ? 60 : 332;
-        const endWidth = this.props.isHubOpen ? 332 : 60;
+        const startWidth = this.props.isHubOpen ? 4 : 30;
+        const endWidth = this.props.isHubOpen ? 30 : 4;
         const target = document.getElementById('assessmentQuestionsComponent');
 
         const targetObj = {};
@@ -47,7 +47,7 @@ export default class AssessmentQuestionsComponent extends React.Component
 
         const updateFired = () =>
         {
-            target.style.gridTemplateColumns = `${targetObj.count}px 1fr`
+            target.style.gridTemplateColumns = `${targetObj.count}vw 1fr`
         };
 
         TweenLite.to( targetObj, .5, { count:endWidth, onUpdate:updateFired } );
