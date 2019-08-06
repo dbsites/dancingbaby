@@ -209,8 +209,6 @@ const getSubquestions = ( subQuestions ) =>
  */
 const getQuestions = ( list, isSubQuestion, parentIndex ) =>
 {
-    console.log( "GET QUESTIONS: ", typeof list );
-
     const questions = {};
     let getList = list;
     let newQuestion = null;
@@ -288,15 +286,12 @@ const setVideoInfo = ( action, state ) =>
         [strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT]: setContentData( action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SUSPECTED_VIDEO_ID], videoInfo, info ),
     };
 
-    console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> GET VIDEO INFO INFO: ", info, videoInfo, result );
-
     return result;
 };
 
 
 const setContentData = ( id, videoInfo, info ) =>
 {
-    console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SET VIDEO DATA: ", id, videoInfo, info );
 
     let result = null;
     let item = null;
@@ -304,7 +299,6 @@ const setContentData = ( id, videoInfo, info ) =>
     videoInfo.forEach(( videoItem ) =>
     {
         item = videoItem.items ? videoItem.items[0] : null;
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SET VIDEO INFO: ", item, videoItem );
 
         if( item && item.id === id )
         {
@@ -355,8 +349,6 @@ const getAssessmentData = ( state ) =>
 {
     const { questions, currentQuestions, assessmentInfo } = state;
 
-    console.log( "GET ASSESSMENT DATA: ", questions );
-
     let resultData = {
         fairUse: 0,
         infringement: 0,
@@ -366,14 +358,22 @@ const getAssessmentData = ( state ) =>
 
     let response;
 
-    Object.values( questions ).forEach(( question ) =>
+    let fairUse;
+    let infringement;
+
+    currentQuestions.forEach(( question ) =>
     {
         response = question.isAnswered;
 
         if( response !== 'unsure' )
         {
-            resultData.fairUse += parseFloat( question[`${response}FairUse`] );
-            resultData.infringement += parseFloat( question[`${response}Infringement`] );
+            fairUse = parseFloat( question[`${response}FairUse`] );
+            infringement = parseFloat( question[`${response}Infringement`] );
+
+            resultData.fairUse += fairUse;
+            resultData.infringement += infringement;
+
+            // console.log( `QUESTION_${question.questionNumber}: FAIR USE: BEFORE: ${fairUseBefore} AFTER: ${fairUse}    INFRINGEMENT: BEFORE: ${infringementBefore} AFTER: ${infringement}`);
         }
     });
 
@@ -390,7 +390,6 @@ const getAssessmentData = ( state ) =>
 
 const setMatrix = ( questions, resultsText ) =>
 {
-    console.log( "====================== SET MATRIX CALLED: ", questions, resultsText );
 
     if( !questions || !resultsText ) return null;
 
@@ -412,7 +411,6 @@ const setMatrix = ( questions, resultsText ) =>
 
             if( !question.questionNumber || !question.isAnswered ) continue;
 
-            console.log( "====================== SET MATRIX CALLED :: CHECKING QUESTION: ", question, currentMatrix );
             if( currentMatrix.num === question.questionNumber && question.isAnswered.toLowerCase().indexOf( currentMatrix.value.toLowerCase() ) === 0 )
             {
                 resultMatrix.push( question );
@@ -420,7 +418,6 @@ const setMatrix = ( questions, resultsText ) =>
         }
     }
 
-    console.log( "====================== SET MATRIX CALLED :: RESULTS: ", resultMatrix );
     return resultMatrix;
 };
 
@@ -431,8 +428,6 @@ const getResultText = ( resultValue ) =>
 
     for( let i = 0; i < values.length; i++ )
     {
-        console.log( "====================== GET RESULT TEXT VALUE: ", values[i].value, resultValue );
-
         if( values[i].value > resultValue )
         {
             return values[i-1];
