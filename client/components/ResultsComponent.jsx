@@ -60,7 +60,7 @@ export default class ResultsComponent extends React.Component
     render()
     {
         const { assessmentInfo, resultText, fairUse, infringement, resultInfringement, startOver } = this.props;
-        const suspectedContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT] || {};
+        const suspectedContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT] || {};
 
         const resultTitle = `${suspectedContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER] || 'n/a'} - ${suspectedContent[strings.ASSESSMENT_INFO_IDS.TITLE] || 'n/a' } exhibits a:`;
         const resultTextIndicator = resultText ? <span><span className={resultText.color}>{resultText.txt}</span> indication of fair use.</span> : 'indication of fair use.';
