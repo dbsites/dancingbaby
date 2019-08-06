@@ -19,8 +19,8 @@ import * as strings from '../constants/strings';
 
 
 const videoOptions = {
-    height: '157',
-    width: '265',
+    width: '100%',
+    height: '60%',
     playerVars: {
         autoplay: 0,
         modestbranding: 1
@@ -59,9 +59,6 @@ class ContentHubComponent extends Component
     openCloseHub()
     {
         const rotateTo = this.props.isHubOpen ? -180 : 0;
-        const rotateStart = this.props.isHubOpen ? 0 : -180;
-
-        const opacityStart = this.props.isHubOpen ? 0 : 1;
         const opacityEnd = this.props.isHubOpen ? 1 : 0;
 
         TweenLite.to( '#arrowBtn', .5, { rotation:rotateTo } );
@@ -77,8 +74,8 @@ class ContentHubComponent extends Component
     {
         const classNames = `arrowBtn ${ this.props.isHubOpen ? 'arrowBtnOpen' : '' }`;
 
-        const suspectContent = this.props.assessmentInfo[strings.ASSESSMENT_INFO_IDS.SUSPECTED_CONTENT];
-        const copyrightContent = this.props.assessmentInfo[strings.ASSESSMENT_INFO_IDS.COPYRIGHTED_CONTENT];
+        const suspectContent = this.props.assessmentInfo[strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT];
+        const copyrightContent = this.props.assessmentInfo[strings.ASSESSMENT_INFO_IDS.PRIMARY_CONTENT];
 
         const copyrightId = copyrightContent ? copyrightContent[strings.ASSESSMENT_INFO_IDS.VIDEO_ID] : null;
         const suspectId = suspectContent ? suspectContent[strings.ASSESSMENT_INFO_IDS.VIDEO_ID] : null;
@@ -118,11 +115,11 @@ const ContentPanelItem = ( props ) =>
 {
     const info = props && props.info ? props.info : {};
 
-    const title     = info[strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE] || 'n/a';
-    const publisher = info[strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISHER] || 'n/a';
-    const viewCount = info[strings.ASSESSMENT_INFO_IDS.VIDEO_VIEW_COUNT] || 'n/a';
-    const date      = info[strings.ASSESSMENT_INFO_IDS.VIDEO_PUBLISH_DATE] || 'n/a';
-    const url       = info[strings.ASSESSMENT_INFO_IDS.VIDEO_URL] || 'n/a';
+    const title     = info[strings.ASSESSMENT_INFO_IDS.TITLE] || 'n/a';
+    const publisher = info[strings.ASSESSMENT_INFO_IDS.PUBLISHER] || 'n/a';
+    const viewCount = info[strings.ASSESSMENT_INFO_IDS.VIEW_COUNT] || 'n/a';
+    const date      = info[strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE] || 'n/a';
+    const url       = info[strings.ASSESSMENT_INFO_IDS.URL] || 'n/a';
 
     const getContent = () =>
     {
@@ -157,7 +154,7 @@ const ContentPanelItem = ( props ) =>
 
             <div className='panelItemInfo'>
                 <div className='itemTitle'>Title: {title}</div>
-                <div className='itemURL'><a className='urlLink' href={url} target='blank'>URL</a></div>
+                <div className='itemURL'><a className='urlLink' href={url} target='blank'>{url}</a></div>
                 <div className='itemDate'>Publish Date: {moment( date ).format('ll')}</div>
                 <div className='itemPublisher'>Author: {publisher}</div>
                 <div className='itemCount'>View Count: {viewCount}</div>
