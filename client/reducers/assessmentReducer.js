@@ -115,7 +115,7 @@ const assessmentReducer = ( state = initialState, action ) =>
         case types.ASSESSMENT_INFO_SUBMIT:
             return {
                 ...state,
-                assessmentInfo:setVideoInfo( action, state )
+                assessmentInfo:setContentInfo( action, state )
             };
 
         case types.ASSESSMENT_START:
@@ -273,8 +273,10 @@ const Question = ( value, index, parentIndex, isSubQuestion = false ) =>
 };
 
 
-const setVideoInfo = ( action, state ) =>
+const setContentInfo = ( action, state ) =>
 {
+    console.log( "SET CONTENT INFO: ", action );
+
     const { info, videoInfo } = action.payload;
     const result = {
 
@@ -282,18 +284,18 @@ const setVideoInfo = ( action, state ) =>
         [strings.ASSESSMENT_INFO_IDS.LAST_NAME]: info[strings.ASSESSMENT_INFO_IDS.LAST_NAME],
         [strings.ASSESSMENT_INFO_IDS.ORG_NAME]: info[strings.ASSESSMENT_INFO_IDS.ORG_NAME],
 
-        [strings.ASSESSMENT_INFO_IDS.PRIMARY_CONTENT]: setContentData( action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_COPYRIGHTED_VIDEO_ID], videoInfo, info ),
-        [strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT]: setContentData( action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SUSPECTED_VIDEO_ID], videoInfo, info ),
+        [strings.ASSESSMENT_INFO_IDS.PRIMARY_CONTENT]: setContentData( action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_PRIMARY_VIDEO_ID], videoInfo, info, strings.ASSESSMENT_INFO_IDS.PRIMARY ),
+        [strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT]: setContentData( action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SECONDARY_VIDEO_ID], videoInfo, info, strings.ASSESSMENT_INFO_IDS.SECONDARY ),
     };
 
     return result;
 };
 
 
-const setContentData = ( id, videoInfo, info ) =>
+const setContentData = ( id, videoInfo, info, contentType ) =>
 {
 
-    let result = null;
+    let result = getNonVideoData( info, contentType );
     let item = null;
 
     videoInfo.forEach(( videoItem ) =>
@@ -302,24 +304,30 @@ const setContentData = ( id, videoInfo, info ) =>
 
         if( item && item.id === id )
         {
-
             result = getYoutubeVideoData( id, item );
         }
 
         if( !item && !id )
         {
-            result = getVideoData( info, videoItem )
+            result = getVideoData( info, videoItem );
         }
     });
 
     return result;
 };
 
+/*
+typeVideo
+typeAudio
+typeImage
+typeText
+ */
 
 const getYoutubeVideoData = ( id, item ) =>
 {
     return {
         [strings.ASSESSMENT_INFO_IDS.VIDEO_ID]: id,
+        [strings.ASSESSMENT_INFO_IDS.FILETYPE]: 'typeVideo',
         [strings.ASSESSMENT_INFO_IDS.TITLE]: item.snippet.title,
         [strings.ASSESSMENT_INFO_IDS.PUBLISHER]: item.snippet.channelTitle,
         [strings.ASSESSMENT_INFO_IDS.VIEW_COUNT]: item.statistics.viewCount,
@@ -328,20 +336,33 @@ const getYoutubeVideoData = ( id, item ) =>
     }
 };
 
-const getVideoData = ( info, videoItem ) =>
+const getVideoData = ( info, contentType ) =>
 {
-    console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> GET VIDEO DATA: ", info, videoItem );
+    console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> GET VIDEO DATA: ", info, contentType );
 
-    return null;
+    const title = info[strings.ASSESSMENT_INFO_IDS[`URL_${contentType}`]];
 
-    // return {
-    //     [strings.ASSESSMENT_INFO_IDS.VIDEO_ID]: null,
-    //     [strings.ASSESSMENT_INFO_IDS.TITLE]: info[strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE],
-    //     [strings.ASSESSMENT_INFO_IDS.PUBLISHER]: null,
-    //     [strings.ASSESSMENT_INFO_IDS.VIEW_COUNT]: null,
-    //     [strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE]: null,
-    //     [strings.ASSESSMENT_INFO_IDS.URL]: info[strings.ASSESSMENT_INFO_IDS.VIDEO_URL],
-    // }
+    return {
+        [strings.ASSESSMENT_INFO_IDS.FILETYPE]: 'typeVideo',
+        [strings.ASSESSMENT_INFO_IDS.TITLE]: info[strings.ASSESSMENT_INFO_IDS[`TITLE_${contentType}`]],
+        [strings.ASSESSMENT_INFO_IDS.PUBLISHER]: 'n/a',
+        [strings.ASSESSMENT_INFO_IDS.VIEW_COUNT]: 'n/a',
+        [strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE]: 'n/a',
+        [strings.ASSESSMENT_INFO_IDS.URL]: info[strings.ASSESSMENT_INFO_IDS[`URL_${contentType}`]],
+    }
+};
+
+const getNonVideoData = ( info, contentType ) =>
+{
+    console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> GET CONTENT DATA: ", info, contentType );
+
+    return {
+        [strings.ASSESSMENT_INFO_IDS.FILETYPE]: info[strings.ASSESSMENT_INFO_IDS[`FILETYPE_${contentType}`]],
+        [strings.ASSESSMENT_INFO_IDS.TITLE]: info[strings.ASSESSMENT_INFO_IDS[`TITLE_${contentType}`]],
+        [strings.ASSESSMENT_INFO_IDS.PUBLISHER]: 'n/a',
+        [strings.ASSESSMENT_INFO_IDS.VIEW_COUNT]: 'n/a',
+        [strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE]: 'n/a',
+    }
 };
 
 
@@ -372,8 +393,6 @@ const getAssessmentData = ( state ) =>
 
             resultData.fairUse += fairUse;
             resultData.infringement += infringement;
-
-            // console.log( `QUESTION_${question.questionNumber}: FAIR USE: BEFORE: ${fairUseBefore} AFTER: ${fairUse}    INFRINGEMENT: BEFORE: ${infringementBefore} AFTER: ${infringement}`);
         }
     });
 
