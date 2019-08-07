@@ -123,20 +123,20 @@ const setVideoInfo = ( info, results, dispatch ) =>
 
     // Youtube video data
     const videoIds = [];
-    const suspectId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED] );
-    const copyrightId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHT] );
+    const suspectId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_SECONDARY] );
+    const copyrightId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_PRIMARY] );
 
     let videoInfo = {};
 
     if( suspectId )
     {
-        results[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SUSPECTED_VIDEO_ID] = suspectId;
+        results[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SECONDARY_VIDEO_ID] = suspectId;
         videoIds.push( suspectId );
     }
 
     if( copyrightId )
     {
-        results[strings.ASSESSMENT_INFO_IDS.YOUTUBE_COPYRIGHTED_VIDEO_ID] = copyrightId;
+        results[strings.ASSESSMENT_INFO_IDS.YOUTUBE_PRIMARY_VIDEO_ID] = copyrightId;
         videoIds.push( copyrightId );
     }
 
