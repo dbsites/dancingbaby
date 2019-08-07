@@ -17,7 +17,8 @@ const initialState = {
     currentScreen: strings.SCREEN_LOGIN.screen,
     currentScreenIndex: 0,
     showModal: false,
-    showLoading: false
+    showLoading: false,
+    loadingMessage: ''
 };
 
 
@@ -38,6 +39,7 @@ const screenReducer = ( state=initialState, action ) =>
             return {
                 ...state,
                 showLoading: strings.SCREEN_LIST[newIndex].showLoading,
+                loadingMessage: strings.SCREEN_LIST[newIndex].loadingMessage,
                 currentScreenIndex: newIndex,
                 currentScreen: strings.SCREEN_LIST[newIndex].screen
             };
@@ -47,6 +49,7 @@ const screenReducer = ( state=initialState, action ) =>
                 ...state,
                 currentScreenIndex:2,
                 showLoading: strings.SCREEN_LIST[2].showLoading,
+                loadingMessage: strings.SCREEN_LIST[2].loadingMessage,
                 currentScreen: strings.SCREEN_LIST[2].screen
             };
 
