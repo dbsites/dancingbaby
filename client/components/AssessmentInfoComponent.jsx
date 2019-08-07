@@ -21,8 +21,8 @@ import Utils from '../js/Utils';
 const youTube = 'youtube';
 const nonYouTube = 'nonYoutube';
 
-const copyrightedContent = 'copyright';
-const suspectedContent = 'suspected';
+const copyrightedContent = 'primary';
+const suspectedContent = 'secondary';
 
 
 class ContentBox extends React.Component
@@ -152,12 +152,14 @@ let AssessmentInfoComponent = ( props ) =>
                 [strings.ASSESSMENT_INFO_IDS.FIRST_NAME]: assessmentInfo[strings.ASSESSMENT_INFO_IDS.FIRST_NAME],
                 [strings.ASSESSMENT_INFO_IDS.LAST_NAME]: assessmentInfo[strings.ASSESSMENT_INFO_IDS.LAST_NAME],
                 [strings.ASSESSMENT_INFO_IDS.ORG_NAME]: assessmentInfo[strings.ASSESSMENT_INFO_IDS.ORG_NAME],
-                [strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHT]: copyrightedContent[strings.ASSESSMENT_INFO_IDS.VIDEO_URL],
-                [strings.ASSESSMENT_INFO_IDS.TITLE_COPYRIGHT]: copyrightedContent[strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE],
-                [strings.ASSESSMENT_INFO_IDS.FILETYPE_COPYRIGHT]: copyrightedContent[strings.ASSESSMENT_INFO_IDS.FILETYPE],
-                [strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED]: suspectedContent[strings.ASSESSMENT_INFO_IDS.VIDEO_URL],
-                [strings.ASSESSMENT_INFO_IDS.TITLE_SUSPECTED]: suspectedContent[strings.ASSESSMENT_INFO_IDS.VIDEO_TITLE],
-                [strings.ASSESSMENT_INFO_IDS.FILETYPE_SUSPECTED]: suspectedContent[strings.ASSESSMENT_INFO_IDS.FILETYPE],
+
+                [strings.ASSESSMENT_INFO_IDS.URL_PRIMARY]: copyrightedContent[strings.ASSESSMENT_INFO_IDS.URL],
+                [strings.ASSESSMENT_INFO_IDS.TITLE_PRIMARY]: copyrightedContent[strings.ASSESSMENT_INFO_IDS.TITLE],
+                [strings.ASSESSMENT_INFO_IDS.FILETYPE_PRIMARY]: copyrightedContent[strings.ASSESSMENT_INFO_IDS.FILETYPE],
+
+                [strings.ASSESSMENT_INFO_IDS.URL_SECONDARY]: suspectedContent[strings.ASSESSMENT_INFO_IDS.URL],
+                [strings.ASSESSMENT_INFO_IDS.TITLE_SECONDARY]: suspectedContent[strings.ASSESSMENT_INFO_IDS.TITLE],
+                [strings.ASSESSMENT_INFO_IDS.FILETYPE_SECONDARY]: suspectedContent[strings.ASSESSMENT_INFO_IDS.FILETYPE],
             });
         }
     };
@@ -212,17 +214,17 @@ let AssessmentInfoComponent = ( props ) =>
                     <ContentBox
                         resetFields={resetFields}
                         contentType={copyrightedContent}
-                        url_id={strings.ASSESSMENT_INFO_IDS.URL_COPYRIGHT}
-                        title_id={strings.ASSESSMENT_INFO_IDS.TITLE_COPYRIGHT}
-                        fileType_id={strings.ASSESSMENT_INFO_IDS.FILETYPE_COPYRIGHT}
+                        url_id={strings.ASSESSMENT_INFO_IDS.URL_PRIMARY}
+                        title_id={strings.ASSESSMENT_INFO_IDS.TITLE_PRIMARY}
+                        fileType_id={strings.ASSESSMENT_INFO_IDS.FILETYPE_PRIMARY}
                         title='PRIMARY CONTENT'
                     />
                     <ContentBox
                         resetFields={resetFields}
                         contentType={suspectedContent}
-                        url_id={strings.ASSESSMENT_INFO_IDS.URL_SUSPECTED}
-                        title_id={strings.ASSESSMENT_INFO_IDS.TITLE_SUSPECTED}
-                        fileType_id={strings.ASSESSMENT_INFO_IDS.FILETYPE_SUSPECTED}
+                        url_id={strings.ASSESSMENT_INFO_IDS.URL_SECONDARY}
+                        title_id={strings.ASSESSMENT_INFO_IDS.TITLE_SECONDARY}
+                        fileType_id={strings.ASSESSMENT_INFO_IDS.FILETYPE_SECONDARY}
                         title='SECONDARY CONTENT' />
                 </div>
 
