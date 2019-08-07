@@ -57,7 +57,7 @@ class LoadingComponent extends Component
         return (
             <div className="loadingComponent">
                 <img src={DBLogo} className='logo' alt='logo' />
-                <div className='loadingTxt' >CALCULATING...</div>
+                <div className='loadingTxt' >{this.props.loadingMessage}...</div>
             </div>
         );
     }
