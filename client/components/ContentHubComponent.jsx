@@ -118,8 +118,24 @@ const ContentPanelItem = ( props ) =>
     const title     = info[strings.ASSESSMENT_INFO_IDS.TITLE] || 'n/a';
     const publisher = info[strings.ASSESSMENT_INFO_IDS.PUBLISHER] || 'n/a';
     const viewCount = info[strings.ASSESSMENT_INFO_IDS.VIEW_COUNT] || 'n/a';
-    const date      = info[strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE] || 'n/a';
-    const url       = info[strings.ASSESSMENT_INFO_IDS.URL] || 'n/a';
+    const fileType  = info[strings.ASSESSMENT_INFO_IDS.FILETYPE] || 'n/a';
+
+    let  url        = info[strings.ASSESSMENT_INFO_IDS.URL] || 'n/a';
+    let date        = info[strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE] || 'n/a';
+
+    if( date !== 'n/a' )
+    {
+        date = moment( date ).format('ll');
+    }
+
+    if( url !== 'n/a' )
+    {
+        url = <a className='urlLink' href={url} target='blank'>URL:{url}</a>;
+    }
+    else
+    {
+        url = `URL:${url}`;
+    }
 
     const getContent = () =>
     {
@@ -130,7 +146,11 @@ const ContentPanelItem = ( props ) =>
 
         if( !props.id && !info[strings.ASSESSMENT_INFO_IDS.VIDEO_URL] )
         {
-            return <div>NO VIDEO CONTENT</div>
+            return (
+                <div className='imageContainer' >
+                    <div className={fileType} />
+                </div>
+            )
         }
 
         return (
@@ -154,8 +174,8 @@ const ContentPanelItem = ( props ) =>
 
             <div className='panelItemInfo'>
                 <div className='itemTitle'>Title: {title}</div>
-                <div className='itemURL'><a className='urlLink' href={url} target='blank'>{url}</a></div>
-                <div className='itemDate'>Publish Date: {moment( date ).format('ll')}</div>
+                <div className='itemURL'>{url}</div>
+                <div className='itemDate'>Publish Date: {date}</div>
                 <div className='itemPublisher'>Author: {publisher}</div>
                 <div className='itemCount'>View Count: {viewCount}</div>
             </div>
