@@ -3,6 +3,7 @@
 
 $width: 1224px;
 $height: 1732px;
+$panelWidth: 1104px;
 
 .printPDFComponent
 {
@@ -25,13 +26,13 @@ $height: 1732px;
     justify-items: center;
     align-content: start;
 
-    width: $width;
+    //width: $width;
     height: $height;
   }
 
   .panel
   {
-    width: 1104px;
+    width: $panelWidth;
     padding: 20px;
     background-color: #F1F2F2;
     border: 1px #E6E7E8;
@@ -322,7 +323,8 @@ $height: 1732px;
 
       .analysisPage2
       {
-        @extend .latoLight30;
+        font-family: $LatoLight;
+        font-size: 26px;
       }
 
       .codes
@@ -361,7 +363,7 @@ $height: 1732px;
       .babyFaceContainer
       {
         position: absolute;
-        width: 1104px;
+        width: $panelWidth;
         height: 1400px;
 
         background: url(../assets/images/dbForPDF.png);
@@ -379,7 +381,7 @@ $height: 1732px;
 
     .topThreeQuestionsContainer
     {
-      margin: 40px;
+      margin: 20px;
       position: relative;
       z-index: 1000;
 
@@ -426,7 +428,7 @@ $height: 1732px;
       margin: 20px;
 
       place-content: space-evenly;
-      width: inherit;
+      width: 100%;
 
       font-family: $ComfortBold;
       font-size: 24px;
