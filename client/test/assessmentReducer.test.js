@@ -38,8 +38,8 @@ describe('assessmentReducer', () => {
       // fair use
       fairUse: 0,
       infringement: 0,
-      resultInfringement: .5,
-      resultText:strings.ASSESSMENT_RESULTS_STRINGS[1],
+      resultInfringement: .25,
+      resultText:null,
       resultMatrix:[],
 
       assessmentInfo: {

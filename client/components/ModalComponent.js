@@ -31,7 +31,7 @@ export default class ModalComponent extends React.Component
         const body = modalData ? modalTypes[modalData].body : "";
         const show = !!modalData;
 
-        console.log( "SHOW MODAL: ", show, modalData );
+        if( !show ) return null;
 
         return (
             <Modal

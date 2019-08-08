@@ -31,7 +31,6 @@ export default class ResultsComponent extends React.Component
         }
     }
 
-
     componentDidMount()
     {
         this.animateGauge();

@@ -21,8 +21,6 @@ const initialState = {
 const userReducer = ( state=initialState, action ) =>
 {
 
-    console.log( "USER REDUCER: ", action );
-
     switch( action.type )
     {
         case types.USER_LOGIN_UNAUTHORIZED:

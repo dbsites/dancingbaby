@@ -45,8 +45,8 @@ const initialState = {
     // fair use
     fairUse: 0,
     infringement: 0,
-    resultInfringement: .5,
-    resultText:strings.ASSESSMENT_RESULTS_STRINGS[1],
+    resultInfringement: .25,
+    resultText:null,
     resultMatrix:[],
 
     assessmentInfo: {
@@ -138,7 +138,7 @@ const assessmentReducer = ( state = initialState, action ) =>
         // update question count, update progress bar, get sub questions.
         case types.ASSESSMENT_UPDATE:
 
-            currentQuestionIndex = action.payload.questionData.index+1;
+            currentQuestionIndex = state.currentQuestionIndex > action.payload.questionData.index+1 ? state.currentQuestionIndex : action.payload.questionData.index+1;
             questions = updateCurrentQuestion( Object.assign( {}, state.questions ), action.payload );
 
             currentQuestions = getQuestionList( questions );
@@ -185,6 +185,7 @@ const updateCurrentQuestion = ( questions, payload ) =>
 
     return questions;
 };
+
 
 const getSubquestions = ( subQuestions ) =>
 {
@@ -275,8 +276,6 @@ const Question = ( value, index, parentIndex, isSubQuestion = false ) =>
 
 const setContentInfo = ( action, state ) =>
 {
-    console.log( "SET CONTENT INFO: ", action );
-
     const { info, videoInfo } = action.payload;
     const result = {
 
@@ -316,12 +315,6 @@ const setContentData = ( id, videoInfo, info, contentType ) =>
     return result;
 };
 
-/*
-typeVideo
-typeAudio
-typeImage
-typeText
- */
 
 const getYoutubeVideoData = ( id, item ) =>
 {
@@ -335,6 +328,7 @@ const getYoutubeVideoData = ( id, item ) =>
         [strings.ASSESSMENT_INFO_IDS.URL]: `https://www.youtube.com/watch?v=${id}`,
     }
 };
+
 
 const getVideoData = ( info, contentType ) =>
 {
@@ -352,6 +346,7 @@ const getVideoData = ( info, contentType ) =>
     }
 };
 
+
 const getNonVideoData = ( info, contentType ) =>
 {
     console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> GET CONTENT DATA: ", info, contentType );
@@ -368,7 +363,7 @@ const getNonVideoData = ( info, contentType ) =>
 
 const getAssessmentData = ( state ) =>
 {
-    const { questions, currentQuestions, assessmentInfo } = state;
+    const { currentQuestions } = state;
 
     let resultData = {
         fairUse: 0,
@@ -396,10 +391,11 @@ const getAssessmentData = ( state ) =>
         }
     });
 
-    const resultText = getResultText( state.resultInfringement );
+    const resultInfringement = resultData.infringement / ( resultData.fairUse + resultData.infringement );
+    const resultText = getResultText( resultInfringement );
     const matrix = setMatrix( currentQuestions, resultText );
 
-    resultData.resultInfringement = resultData.infringement / ( resultData.fairUse + resultData.infringement );
+    resultData.resultInfringement = resultInfringement;
     resultData.resultText = resultText;
     resultData.resultMatrix = matrix;
 
@@ -417,8 +413,6 @@ const setMatrix = ( questions, resultsText ) =>
 
     let question;
     let currentMatrix;
-    let questionNum;
-    let questionAnswer;
 
     for( let m = 0; m < matrix.length; m++ )
     {
@@ -452,4 +446,6 @@ const getResultText = ( resultValue ) =>
             return values[i-1];
         }
     }
+
+    return values[values.length-1];
 };
