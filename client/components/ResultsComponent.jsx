@@ -56,12 +56,20 @@ export default class ResultsComponent extends React.Component
         this.setState({ downloadPDF:true });
     };
 
+    getTitle( secondaryContent )
+    {
+        const publisher = secondaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER] && secondaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER] !== 'n/a' ? `${secondaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER]} - ` : '';
+        const title = secondaryContent[strings.ASSESSMENT_INFO_IDS.TITLE] && secondaryContent[strings.ASSESSMENT_INFO_IDS.TITLE] !== 'n/a' ? secondaryContent[strings.ASSESSMENT_INFO_IDS.TITLE] : '';
+        return `${publisher} ${title} exhibits a:`;
+    }
+
     render()
     {
         const { assessmentInfo, resultText, fairUse, infringement, resultInfringement, startOver } = this.props;
-        const suspectedContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT] || {};
 
-        const resultTitle = `${suspectedContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER] || 'n/a'} - ${suspectedContent[strings.ASSESSMENT_INFO_IDS.TITLE] || 'n/a' } exhibits a:`;
+        const secondaryContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT] || {};
+
+        const resultTitle = this.getTitle( secondaryContent );
         const resultTextIndicator = resultText ? <span><span className={resultText.color}>{resultText.txt}</span> indication of fair use.</span> : 'indication of fair use.';
 
         const factorsAgainst = `Number of factors AGAINST FAIR USE: ${infringement}`;
