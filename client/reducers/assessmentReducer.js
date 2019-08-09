@@ -422,10 +422,13 @@ const setMatrix = ( questions, resultsText ) =>
         {
             question = questions[i];
 
+            console.log( "SET MATRIX: ", currentMatrix.num, question.questionNumber, question.isAnswered );
+
             if( !question.questionNumber || !question.isAnswered ) continue;
 
             if( currentMatrix.num === question.questionNumber && question.isAnswered.toLowerCase().indexOf( currentMatrix.value.toLowerCase() ) === 0 )
             {
+                console.log( "SET MATRIX ADDING QUESTION: ", question );
                 resultMatrix.push( question );
             }
         }
@@ -441,8 +444,11 @@ const getResultText = ( resultValue ) =>
 
     for( let i = 0; i < values.length; i++ )
     {
+        console.log( "GET RESULT TEXT: ", values[i].value, resultValue );
+
         if( values[i].value > resultValue )
         {
+            console.log( "RESULT TEXT COMPLETE: ", values[i-1]);
             return values[i-1];
         }
     }

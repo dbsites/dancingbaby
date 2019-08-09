@@ -55,6 +55,7 @@ export default class AssessmentQuestionsComponent extends React.Component
 
     getQuestions()
     {
+        // const buttonCls = 'enterBtn';
         const buttonCls = this.props.progress < 1 ? 'enterBtn disabled' : 'enterBtn';
         const questionsList = [];
 

@@ -111,6 +111,18 @@ export default class PrintPDFComponent extends Component
         )
     }
 
+    getDate( date )
+    {
+        return !date || date === 'n/a' ? 'n/a' : moment(date).format('ll');
+    }
+
+    getTitle( secondaryContent )
+    {
+        const publisher = secondaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER] && secondaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER] !== 'n/a' ? `${secondaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER]} - ` : '';
+        const title = secondaryContent[strings.ASSESSMENT_INFO_IDS.TITLE] && secondaryContent[strings.ASSESSMENT_INFO_IDS.TITLE] !== 'n/a' ? secondaryContent[strings.ASSESSMENT_INFO_IDS.TITLE] : '';
+        return `${publisher} ${title} exhibits a:`;
+    }
+
     render()
     {
         if( !this.props.downloadPDF ) return null;
@@ -121,12 +133,13 @@ export default class PrintPDFComponent extends Component
         const secondaryContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT];
 
         const date = moment().format('ll');
-
-        const resultTitle = `${assessmentInfo[strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT][strings.ASSESSMENT_INFO_IDS.PUBLISHER]} - ${assessmentInfo[strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT][strings.ASSESSMENT_INFO_IDS.TITLE]} exhibits a:`;
         const resultTextIndicator = resultText ? <span><span className={resultText.color}>{resultText.txt}</span> indication of fair use.</span> : 'indication of fair use.';
 
         const preparedFor = `Prepared for ${assessmentInfo[strings.ASSESSMENT_INFO_IDS.FIRST_NAME]} ${assessmentInfo[strings.ASSESSMENT_INFO_IDS.LAST_NAME]}`;
         const orgName = `ORGANIZATION NAME: ${assessmentInfo[strings.ASSESSMENT_INFO_IDS.ORG_NAME]}`;
+
+        const primaryDate = this.getDate( primaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE] );
+        const secondaryDate = this.getDate( secondaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE] );
 
         const determinedTxt = `Dancing Baby’s copyright fair use algorithm has determined that the secondary content, “${secondaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER]} - ${secondaryContent[strings.ASSESSMENT_INFO_IDS.TITLE]}” shows a ${resultText.txt} indication of fair use. There were several factors that led us to this conclusion. Among them were your answers to the questions`;
 
@@ -153,7 +166,7 @@ export default class PrintPDFComponent extends Component
                                 <div className='title'><span>Title:</span> {primaryContent[strings.ASSESSMENT_INFO_IDS.TITLE] || 'n/a' }</div>
                                 <div className='fileType'><span>File Type:</span> {primaryContent[strings.ASSESSMENT_INFO_IDS.FILETYPE] || 'n/a' }</div>
                                 <div className='url'><span>URL:</span> {primaryContent[strings.ASSESSMENT_INFO_IDS.URL] || 'n/a' }</div>
-                                <div className='contentDate'><span>Publish Date:</span> {moment(primaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE]).format('ll') || 'n/a' }</div>
+                                <div className='contentDate'><span>Publish Date:</span> {primaryDate}</div>
                                 <div className='author'><span>Author:</span> {primaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER] || 'n/a' }</div>
                                 <div className='count'><span>View Count:</span> {Utils.formatNumber( primaryContent[strings.ASSESSMENT_INFO_IDS.VIEW_COUNT] ) || 'n/a' }</div>
                             </div>
@@ -162,7 +175,7 @@ export default class PrintPDFComponent extends Component
                                 <div className='title'><span>Title:</span> {secondaryContent[strings.ASSESSMENT_INFO_IDS.TITLE] || 'n/a' }</div>
                                 <div className='fileType'><span>File Type:</span> {secondaryContent[strings.ASSESSMENT_INFO_IDS.FILETYPE] || 'n/a' }</div>
                                 <div className='url'><span>URL:</span> {secondaryContent[strings.ASSESSMENT_INFO_IDS.URL] || 'n/a' }</div>
-                                <div className='contentDate'><span>Publish Date:</span> {moment(secondaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE]).format('ll') || 'n/a' }</div>
+                                <div className='contentDate'><span>Publish Date:</span> {secondaryDate}</div>
                                 <div className='author'><span>Author:</span> {secondaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER] || 'n/a' }</div>
                                 <div className='count'><span>View Count:</span> {Utils.formatNumber( secondaryContent[strings.ASSESSMENT_INFO_IDS.VIEW_COUNT] ) || 'n/a' }</div>
                             </div>
@@ -173,7 +186,7 @@ export default class PrintPDFComponent extends Component
                         <div className='analysisTitle' >ANALYSIS:</div>
                         <div className='analysis panel'>
                             <div className='subTitleContainer'>Your input has been analyzed using the Dancing Baby™ Algorithm.</div>
-                            <div className='resultTitle' >{ resultTitle }</div>
+                            <div className='resultTitle' >{ this.getTitle(secondaryContent) }</div>
                             <div className='resultGage' >
                                 <div className='resultGageImage' />
                                 <div className='resultGageArrow' />
