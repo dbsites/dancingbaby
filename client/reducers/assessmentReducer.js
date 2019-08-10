@@ -11,6 +11,7 @@
 
 import * as types from '../constants/actionTypes';
 import * as strings from '../constants/strings';
+import testQuestions from '../services/testData';
 
 
 
@@ -223,7 +224,7 @@ const getQuestions = ( list, isSubQuestion, parentIndex ) =>
     {
         getList.forEach(( item, index ) =>
         {
-            newQuestion = new Question( item, index, parentIndex, isSubQuestion );
+            newQuestion = Question( item, index, parentIndex, isSubQuestion );
             questions[newQuestion.questionNumber] = newQuestion;
         })
     }
@@ -363,9 +364,14 @@ const getNonVideoData = ( info, contentType ) =>
 
 const getAssessmentData = ( state ) =>
 {
-    const { currentQuestions } = state;
+    let { currentQuestions } = state;
 
-    let resultData = {
+    if( testQuestions.TEST_FOR )
+    {
+        currentQuestions = getTestQuestions( state, testQuestions.TEST_FOR );
+    }
+
+    const resultData = {
         fairUse: 0,
         infringement: 0,
         resultInfringement: 0,
@@ -376,18 +382,43 @@ const getAssessmentData = ( state ) =>
 
     let fairUse;
     let infringement;
+    let maxPoints;
+    let pointCounts = {};
+    let questionID;
 
     currentQuestions.forEach(( question ) =>
     {
         response = question.isAnswered;
+        questionID = parseInt(question.questionNumber);
+        maxPoints = strings.QUESTION_MAX_POINTS[questionID];
 
         if( response !== 'unsure' )
         {
             fairUse = parseFloat( question[`${response}FairUse`] );
             infringement = parseFloat( question[`${response}Infringement`] );
 
-            resultData.fairUse += fairUse;
-            resultData.infringement += infringement;
+            if( maxPoints )
+            {
+                if( !pointCounts[questionID] ) pointCounts[questionID] = { fairUse:0, infringement:0 };
+
+                pointCounts[questionID].infringement += infringement;
+                pointCounts[questionID].fairUse += fairUse;
+
+                if( pointCounts[questionID].fairUse <= maxPoints )
+                {
+                    resultData.fairUse += fairUse;
+                }
+
+                if( pointCounts[questionID].infringement <= maxPoints )
+                {
+                    resultData.infringement += infringement;
+                }
+            }
+            else
+            {
+                resultData.fairUse += fairUse;
+                resultData.infringement += infringement;
+            }
         }
     });
 
@@ -400,6 +431,39 @@ const getAssessmentData = ( state ) =>
     resultData.resultMatrix = matrix;
 
     return resultData;
+};
+
+
+const getTestQuestions = ( state, resultType ) =>
+{
+    // console.log( "TEST QUESTION DATA: ", testQuestions.MODERATE, testQuestions.MODERATE[question.questionNumber] );
+
+    const { questions } = state;
+
+    const resultQuestions = [];
+
+    let question;
+    let regKey;
+
+    // console.log( "ADDING TEST QUESTIONS: ", testQuestions[resultType] );
+
+    Object.keys( testQuestions[resultType] ).forEach(( key ) =>
+    {
+        regKey = key.match(/[a-z]+|[^a-z]+/gi);
+        question = questions[regKey[0]];
+
+        if( regKey.length > 1 )
+        {
+            question = question.subQuestions[`${regKey[0]}${regKey[1]}`];
+        }
+
+        question.isAnswered = testQuestions[resultType][key];
+        // console.log( "ADDING TEST QUESTION: ", key, regKey, question );
+
+        resultQuestions.push(question)
+    });
+
+    return resultQuestions;
 };
 
 
@@ -422,13 +486,13 @@ const setMatrix = ( questions, resultsText ) =>
         {
             question = questions[i];
 
-            console.log( "SET MATRIX: ", currentMatrix.num, question.questionNumber, question.isAnswered );
+            // console.log( "SET MATRIX: ", currentMatrix.num, question.questionNumber, question.isAnswered );
 
             if( !question.questionNumber || !question.isAnswered ) continue;
 
             if( currentMatrix.num === question.questionNumber && question.isAnswered.toLowerCase().indexOf( currentMatrix.value.toLowerCase() ) === 0 )
             {
-                console.log( "SET MATRIX ADDING QUESTION: ", question );
+                // console.log( "SET MATRIX ADDING QUESTION: ", question );
                 resultMatrix.push( question );
             }
         }
@@ -444,11 +508,11 @@ const getResultText = ( resultValue ) =>
 
     for( let i = 0; i < values.length; i++ )
     {
-        console.log( "GET RESULT TEXT: ", values[i].value, resultValue );
+        // console.log( "GET RESULT TEXT: ", values[i].value, resultValue );
 
         if( values[i].value > resultValue )
         {
-            console.log( "RESULT TEXT COMPLETE: ", values[i-1]);
+            // console.log( "RESULT TEXT COMPLETE: ", values[i-1]);
             return values[i-1];
         }
     }
