@@ -67,6 +67,13 @@ export const ASSESSMENT_INFO_IDS = {
 };
 
 
+// we have one question that has two subquestions but only allows a max of 2 points rather then 3.
+// the key is the question number, value is the max points, it's applied to fairuse or infringement.
+export const QUESTION_MAX_POINTS = {
+    '10':2
+};
+
+
 export const ASSESSMENT_RESULTS_STRINGS = {
     VERY_STRONG:{
         value:0,
