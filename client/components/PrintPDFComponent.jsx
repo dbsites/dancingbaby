@@ -91,7 +91,7 @@ export default class PrintPDFComponent extends Component
         const Question = ( data, index ) =>
         {
             return (
-                <div className={`question question_${index}`}>
+                <div key={index} className={`question question_${index}`}>
                     <div className='questionTxt'><span>&bull;</span> {data.questionText}</div>
                     <div className='answered'>(You answered "{data.isAnswered.toUpperCase()}")</div>
                 </div>
