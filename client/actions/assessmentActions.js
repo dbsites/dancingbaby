@@ -72,12 +72,12 @@ export const setAssessmentInfo = ( info ) => ( dispatch ) =>
 {
     const results = {
         info,
+        secondary:{},
+        primary:{},
         videoInfo:[]
     };
 
-    console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SET ASSESSMENT INFO: ", results );
-
-    setVideoInfo( info, results, dispatch )
+    setContenInfo( info, results, dispatch )
 };
 
 
@@ -116,41 +116,39 @@ const getYTVideoId = ( path ) =>
 };
 
 
-const setVideoInfo = ( info, results, dispatch ) =>
+const setContenInfo = ( info, results, dispatch ) =>
 {
-
-    console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SET VIDEO INFO :: ", info, results );
-
     // Youtube video data
     const videoIds = [];
-    const suspectId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_SECONDARY] );
-    const copyrightId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_PRIMARY] );
+    const secondaryId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_SECONDARY] );
+    const primaryId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_PRIMARY] );
+
+    const secondary = results.secondary;
+    const primary = results.primary;
 
     let videoInfo = {};
 
-    if( suspectId )
+    if( secondaryId )
     {
-        results[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SECONDARY_VIDEO_ID] = suspectId;
-        videoIds.push( suspectId );
+        secondary[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SECONDARY_VIDEO_ID] = secondaryId;
+        videoIds.push( secondaryId );
     }
 
-    if( copyrightId )
+    if( primaryId )
     {
-        results[strings.ASSESSMENT_INFO_IDS.YOUTUBE_PRIMARY_VIDEO_ID] = copyrightId;
-        videoIds.push( copyrightId );
+        primary[strings.ASSESSMENT_INFO_IDS.YOUTUBE_PRIMARY_VIDEO_ID] = primaryId;
+        videoIds.push( primaryId );
     }
 
     if( !videoIds.length )
     {
-        console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SET ASSESSMENT INFO :: NON YOUTUBE CONTENT ", results );
-
         dispatch( submitAssessmentInfo( results ));
     }
     else
     {
         if( videoIds.length === 1 )
         {
-            videoInfo = { videoType:'html' };
+            // videoInfo = { videoType:'html' };
             results.videoInfo.push( videoInfo );
         }
 
@@ -166,8 +164,6 @@ const setVideoInfo = ( info, results, dispatch ) =>
 
                         results.videoInfo.push( videoInfo );
                     });
-
-                    console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SET ASSESSMENT INFO :: YOUTUBE CONTENT ", results );
 
                     dispatch( submitAssessmentInfo( results ));
                 }
