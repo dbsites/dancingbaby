@@ -24,7 +24,7 @@
     margin-top: 2vh;
     grid-template-columns: 100%;
     grid-template-rows: 36% 10%;
-    font-family: "LatoMedium", sans-serif, sans-serif, sans-serif;
+    font-family: $LatoMedium, sans-serif, sans-serif, sans-serif;
     display: grid;
     justify-items: center;
     padding: 0;
@@ -120,7 +120,7 @@
 
         grid-gap: 0;
         font-size: 1.5vh;
-        font-family: "LatoLight", sans-serif, sans-serif;
+        font-family: $LatoLight, sans-serif, sans-serif;
         color: #4D4D4D;
         display: grid;
         padding-left: 2vw;
