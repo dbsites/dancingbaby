@@ -26,6 +26,13 @@ export const SCREEN_LIST = [
 ];
 
 
+export const FILETYPE_OPTIONS = {
+    'typeVideo':'Video File',
+    'typeAudio':'Audio File',
+    'typeImage':'Image File',
+    'typeText':'Text File'
+};
+
 export const ASSESSMENT_INFO_IDS = {
 
     FIRST_NAME:'FIRST_NAME',
