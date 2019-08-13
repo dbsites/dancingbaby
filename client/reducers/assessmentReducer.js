@@ -33,6 +33,7 @@ const initialState = {
 
     progress: 0,
     isHubOpen: true,
+    startTimestamp: 0,
 
     // questions
     questions: {},
@@ -115,6 +116,7 @@ const assessmentReducer = ( state = initialState, action ) =>
         case types.ASSESSMENT_INFO_SUBMIT:
             return {
                 ...state,
+                startTimestamp:Date.now(),
                 assessmentInfo:setContentInfo( action, state )
             };
 
@@ -414,6 +416,7 @@ const getAssessmentData = ( state ) =>
     resultData.resultInfringement = resultInfringement;
     resultData.resultText = resultText;
     resultData.resultMatrix = matrix;
+    resultData.currentQuestions = currentQuestions;
 
     return resultData;
 };
