@@ -78,6 +78,7 @@ export default class PrintPDFComponent extends Component
             }
 
             pdf.save('ResultsPDF');
+            this.props.downloadReportComplete();
         };
     };
 
