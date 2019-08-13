@@ -27,27 +27,30 @@ class LoadingComponent extends Component
 
     componentDidMount()
     {
-        // if( !this.props.showLoading ) return null;
-
-        this.fadingOut = true;
-        TweenLite.delayedCall( 4, this.hideLoading )
+        this.show();
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot)
+    componentDidUpdate()
     {
-        this.fadingOut = true;
-        TweenLite.delayedCall( 4, this.hideLoading )
+        this.show();
     }
 
-    hideLoading()
+    show = () =>
     {
-        // if( !this.props.showLoading ) return null;
+        if( !this.props.showLoading ) return null;
+
+        this.fadingOut = true;
+        TweenLite.delayedCall( 4, this.hide );
+    };
+
+    hide = () =>
+    {
         TweenLite.to( '.loadingComponent', .5, { autoAlpha:0, onComplete:this.clearLoading });
-    }
+    };
 
     clearLoading = () =>
     {
-        this.props.hideLoading();
+        this.fadingOut = false;
     };
 
     render()
