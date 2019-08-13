@@ -120,8 +120,9 @@ const ContentPanelItem = ( props ) =>
     const viewCount = info[strings.ASSESSMENT_INFO_IDS.VIEW_COUNT] || 'n/a';
     const fileType  = info[strings.ASSESSMENT_INFO_IDS.FILETYPE] || 'n/a';
 
-    let  url        = info[strings.ASSESSMENT_INFO_IDS.URL] || 'n/a';
+    let url         = info[strings.ASSESSMENT_INFO_IDS.URL] || 'n/a';
     let date        = info[strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE] || 'n/a';
+    let videoURL    = url;
 
     if( date !== 'n/a' )
     {
@@ -139,9 +140,13 @@ const ContentPanelItem = ( props ) =>
 
     const getContent = () =>
     {
-        if( !props.id && info[strings.ASSESSMENT_INFO_IDS.VIDEO_URL] )
+        if( !props.id && videoURL !== 'n/a' )
         {
-            return <div>REGULAR VIDEO</div>
+            return  <div className='videoContainer'>
+                        <video controls={true} autoPlay={false} src={videoURL}>
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
         }
 
         if( !props.id && !info[strings.ASSESSMENT_INFO_IDS.VIDEO_URL] )
@@ -154,7 +159,7 @@ const ContentPanelItem = ( props ) =>
         }
 
         return (
-            <div className='videoContainer'>
+            <div className='YoutubeVideoContainer'>
                 <YouTube
                     videoId={ props.id }
                     opts={videoOptions}

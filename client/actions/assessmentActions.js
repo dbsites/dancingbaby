@@ -72,18 +72,58 @@ export const setAssessmentInfo = ( info ) => ( dispatch ) =>
 {
     const results = {
         info,
+        secondary:{},
+        primary:{},
         videoInfo:[]
     };
 
-    console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SET ASSESSMENT INFO: ", results );
-
-    setVideoInfo( info, results, dispatch )
+    setContenInfo( info, results, dispatch )
 };
 
 
-export const submitCompletedAssessment = ( data ) => dispatch =>
+export const submitCompletedAssessment = () => ( dispatch, getState ) =>
 {
-    Services.assessmentSubmitRoute( data,
+    const { assessment, user } = getState();
+    const { assessmentInfo, currentQuestions } = assessment;
+
+    const primaryContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.PRIMARY_CONTENT];
+    const secondaryContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT];
+
+    console.log( "SUBMIT COMPLETED ASSESSMENT: ", getState(), assessment, user );
+
+    const submitData = {
+        session: {
+            firstName: assessmentInfo[strings.ASSESSMENT_INFO_IDS.FIRST_NAME],
+            lastName: assessmentInfo[strings.ASSESSMENT_INFO_IDS.LAST_NAME],
+            accountId: user.accountId,
+            organization: assessmentInfo[strings.ASSESSMENT_INFO_IDS.ORG_NAME],
+            primary: {
+                fileType: primaryContent[strings.ASSESSMENT_INFO_IDS.FILETYPE],
+                url: primaryContent[strings.ASSESSMENT_INFO_IDS.URL],
+                author: primaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER],
+                publishedDate: primaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE],
+                viewCount: primaryContent[strings.ASSESSMENT_INFO_IDS.VIEW_COUNT],
+            },
+            secondary: {
+                fileType: secondaryContent[strings.ASSESSMENT_INFO_IDS.FILETYPE],
+                url: secondaryContent[strings.ASSESSMENT_INFO_IDS.URL],
+                author: secondaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER],
+                publishedDate: secondaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE],
+                viewCount: secondaryContent[strings.ASSESSMENT_INFO_IDS.VIEW_COUNT],
+            },
+            factorsAgainst: assessment.infringement,
+            factorsToward: assessment.fairUse,
+            startTimestamp: Date.now(),
+            completedTimestamp: Date.now(),
+            assessment: currentQuestions.map((question) => {
+                return {question_number: question.questionNumber, answer: question.isAnswered}
+            })
+        }
+    };
+
+    console.log( "SUBMIT COMPLETED ASSESSMENT: ", submitData );
+
+    Services.assessmentSubmitRoute( submitData,
         ( res ) => // on success
         {
             console.log( "ON SUCCESS IN ACTION: ", res );
@@ -116,41 +156,39 @@ const getYTVideoId = ( path ) =>
 };
 
 
-const setVideoInfo = ( info, results, dispatch ) =>
+const setContenInfo = ( info, results, dispatch ) =>
 {
-
-    console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SET VIDEO INFO :: ", info, results );
-
     // Youtube video data
     const videoIds = [];
-    const suspectId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_SECONDARY] );
-    const copyrightId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_PRIMARY] );
+    const secondaryId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_SECONDARY] );
+    const primaryId = getYTVideoId( info[strings.ASSESSMENT_INFO_IDS.URL_PRIMARY] );
+
+    const secondary = results.secondary;
+    const primary = results.primary;
 
     let videoInfo = {};
 
-    if( suspectId )
+    if( secondaryId )
     {
-        results[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SECONDARY_VIDEO_ID] = suspectId;
-        videoIds.push( suspectId );
+        secondary[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SECONDARY_VIDEO_ID] = secondaryId;
+        videoIds.push( secondaryId );
     }
 
-    if( copyrightId )
+    if( primaryId )
     {
-        results[strings.ASSESSMENT_INFO_IDS.YOUTUBE_PRIMARY_VIDEO_ID] = copyrightId;
-        videoIds.push( copyrightId );
+        primary[strings.ASSESSMENT_INFO_IDS.YOUTUBE_PRIMARY_VIDEO_ID] = primaryId;
+        videoIds.push( primaryId );
     }
 
     if( !videoIds.length )
     {
-        console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SET ASSESSMENT INFO :: NON YOUTUBE CONTENT ", results );
-
         dispatch( submitAssessmentInfo( results ));
     }
     else
     {
         if( videoIds.length === 1 )
         {
-            videoInfo = { videoType:'html' };
+            // videoInfo = { videoType:'html' };
             results.videoInfo.push( videoInfo );
         }
 
@@ -166,8 +204,6 @@ const setVideoInfo = ( info, results, dispatch ) =>
 
                         results.videoInfo.push( videoInfo );
                     });
-
-                    console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SET ASSESSMENT INFO :: YOUTUBE CONTENT ", results );
 
                     dispatch( submitAssessmentInfo( results ));
                 }

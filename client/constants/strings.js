@@ -26,6 +26,13 @@ export const SCREEN_LIST = [
 ];
 
 
+export const FILETYPE_OPTIONS = {
+    'typeVideo':'Video File',
+    'typeAudio':'Audio File',
+    'typeImage':'Image File',
+    'typeText':'Text File'
+};
+
 export const ASSESSMENT_INFO_IDS = {
 
     FIRST_NAME:'FIRST_NAME',
@@ -157,17 +164,17 @@ export const ASSESSMENT_RESULTS_STRINGS = {
         color:'noEvidenceColor',
         legendClass:'noEvidence',
         matrix:[
-            { num:'8',  value:'Y' },
-            { num:'9',  value:'Y' },
-            { num:'7',  value:'Y' },
-            { num:'3',  value:'Y' },
-            { num:'16', value:'Y' },
-            { num:'18', value:'N' },
-            { num:'4',  value:'Y' },
-            { num:'9a', value:'Y' },
-            { num:'9d', value:'Y' },
-            { num:'10', value:'N' },
-            { num:'13', value:'Y' }
+            { num:'18', value:'Y' },
+            { num:'9b', value:'Y' },
+            { num:'9c', value:'N' },
+            { num:'5',  value:'Y' },
+            { num:'17', value:'Y' },
+            { num:'15', value:'Y' },
+            { num:'11', value:'N' },
+            { num:'12', value:'Y' },
+            { num:'19', value:'Y' },
+            { num:'20', value:'Y' },
+            { num:'14', value:'N' }
         ]
     },
 };

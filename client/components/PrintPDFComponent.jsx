@@ -52,7 +52,7 @@ export default class PrintPDFComponent extends Component
 
         pdf.scaleFactor = 2;
 
-            pages.forEach((page, index ) =>
+            pages.forEach(( page ) =>
             {
                 html2canvas( page, { scaleFactor:2 })
                     .then( canvas =>
@@ -78,6 +78,7 @@ export default class PrintPDFComponent extends Component
             }
 
             pdf.save('ResultsPDF');
+            this.props.downloadReportComplete();
         };
     };
 
@@ -164,7 +165,7 @@ export default class PrintPDFComponent extends Component
                             <div className='primaryContent'>
                                 <div className='contentTitle'>Primary Content:</div>
                                 <div className='title'><span>Title:</span> {primaryContent[strings.ASSESSMENT_INFO_IDS.TITLE] || 'n/a' }</div>
-                                <div className='fileType'><span>File Type:</span> {primaryContent[strings.ASSESSMENT_INFO_IDS.FILETYPE] || 'n/a' }</div>
+                                <div className='fileType'><span>File Type:</span> {strings.FILETYPE_OPTIONS[primaryContent[strings.ASSESSMENT_INFO_IDS.FILETYPE]] || 'n/a' }</div>
                                 <div className='url'><span>URL:</span> {primaryContent[strings.ASSESSMENT_INFO_IDS.URL] || 'n/a' }</div>
                                 <div className='contentDate'><span>Publish Date:</span> {primaryDate}</div>
                                 <div className='author'><span>Author:</span> {primaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER] || 'n/a' }</div>
@@ -173,7 +174,7 @@ export default class PrintPDFComponent extends Component
                             <div className='secondaryContent'>
                                 <div className='contentTitle'>Secondary Content:</div>
                                 <div className='title'><span>Title:</span> {secondaryContent[strings.ASSESSMENT_INFO_IDS.TITLE] || 'n/a' }</div>
-                                <div className='fileType'><span>File Type:</span> {secondaryContent[strings.ASSESSMENT_INFO_IDS.FILETYPE] || 'n/a' }</div>
+                                <div className='fileType'><span>File Type:</span> {strings.FILETYPE_OPTIONS[secondaryContent[strings.ASSESSMENT_INFO_IDS.FILETYPE]] || 'n/a' }</div>
                                 <div className='url'><span>URL:</span> {secondaryContent[strings.ASSESSMENT_INFO_IDS.URL] || 'n/a' }</div>
                                 <div className='contentDate'><span>Publish Date:</span> {secondaryDate}</div>
                                 <div className='author'><span>Author:</span> {secondaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER] || 'n/a' }</div>

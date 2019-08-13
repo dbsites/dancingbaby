@@ -11,7 +11,7 @@
 
 
 import React from 'react';
-import { change, untouch, Field, reduxForm } from 'redux-form';
+import { change, Field, reduxForm } from 'redux-form';
 import * as strings from '../constants/strings';
 import dbLogo from '../assets/svg/db_logo_text.svg';
 import arrow from '../assets/svg/arrow.svg';
@@ -19,10 +19,9 @@ import Utils from '../js/Utils';
 
 
 const youTube = 'youtube';
-const nonYouTube = 'nonYoutube';
 
-const copyrightedContent = 'primary';
-const suspectedContent = 'secondary';
+const primaryContent = 'primary';
+const secondaryContent = 'secondary';
 
 
 class ContentBox extends React.Component
@@ -39,10 +38,10 @@ class ContentBox extends React.Component
     inputOnFocus = ( e ) =>
     {
 
-        const { url_id, title_id, fileType_id, title } = this.props;
+        const { url_id, title_id, fileType_id } = this.props;
 
         const name = e.currentTarget.name.toLowerCase();
-        const contentType = name.indexOf(copyrightedContent) > -1 ? copyrightedContent : suspectedContent;
+        const contentType = name.indexOf(primaryContent) > -1 ? primaryContent : secondaryContent;
 
         const containerElement = document.querySelector( `.${contentType}` );
         const urlElement = containerElement.querySelector( '.urlInputField' );
@@ -115,10 +114,10 @@ class ContentBox extends React.Component
                             name={fileType_id}
                             component="select">
                             <option value=''>Select File Type</option>
-                            <option value="typeVideo">Video File</option>
-                            <option value="typeAudio">Audio File</option>
-                            <option value="typeImage">Image File</option>
-                            <option value="typeText">Text File</option>
+                            <option value="typeVideo">{strings.FILETYPE_OPTIONS.typeVideo}</option>
+                            <option value="typeAudio">{strings.FILETYPE_OPTIONS.typeAudio}</option>
+                            <option value="typeImage">{strings.FILETYPE_OPTIONS.typeImage}</option>
+                            <option value="typeText">{strings.FILETYPE_OPTIONS.typeText}</option>
                         </Field>
                     </div>
                 </div>
@@ -213,7 +212,7 @@ let AssessmentInfoComponent = ( props ) =>
                 <div className='contentBoxes'>
                     <ContentBox
                         resetFields={resetFields}
-                        contentType={copyrightedContent}
+                        contentType={primaryContent}
                         url_id={strings.ASSESSMENT_INFO_IDS.URL_PRIMARY}
                         title_id={strings.ASSESSMENT_INFO_IDS.TITLE_PRIMARY}
                         fileType_id={strings.ASSESSMENT_INFO_IDS.FILETYPE_PRIMARY}
@@ -221,7 +220,7 @@ let AssessmentInfoComponent = ( props ) =>
                     />
                     <ContentBox
                         resetFields={resetFields}
-                        contentType={suspectedContent}
+                        contentType={secondaryContent}
                         url_id={strings.ASSESSMENT_INFO_IDS.URL_SECONDARY}
                         title_id={strings.ASSESSMENT_INFO_IDS.TITLE_SECONDARY}
                         fileType_id={strings.ASSESSMENT_INFO_IDS.FILETYPE_SECONDARY}

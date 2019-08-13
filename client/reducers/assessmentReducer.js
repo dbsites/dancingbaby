@@ -33,6 +33,7 @@ const initialState = {
 
     progress: 0,
     isHubOpen: true,
+    startTimestamp: 0,
 
     // questions
     questions: {},
@@ -70,7 +71,6 @@ const assessmentReducer = ( state = initialState, action ) =>
 {
 
     let questions;
-    let result;
     let currentQuestionIndex;
     let currentQuestions;
 
@@ -116,6 +116,7 @@ const assessmentReducer = ( state = initialState, action ) =>
         case types.ASSESSMENT_INFO_SUBMIT:
             return {
                 ...state,
+                startTimestamp:Date.now(),
                 assessmentInfo:setContentInfo( action, state )
             };
 
@@ -275,90 +276,76 @@ const Question = ( value, index, parentIndex, isSubQuestion = false ) =>
 };
 
 
-const setContentInfo = ( action, state ) =>
+const setContentInfo = ( action ) =>
 {
     const { info, videoInfo } = action.payload;
-    const result = {
+
+    return {
 
         [strings.ASSESSMENT_INFO_IDS.FIRST_NAME]: info[strings.ASSESSMENT_INFO_IDS.FIRST_NAME],
         [strings.ASSESSMENT_INFO_IDS.LAST_NAME]: info[strings.ASSESSMENT_INFO_IDS.LAST_NAME],
         [strings.ASSESSMENT_INFO_IDS.ORG_NAME]: info[strings.ASSESSMENT_INFO_IDS.ORG_NAME],
 
-        [strings.ASSESSMENT_INFO_IDS.PRIMARY_CONTENT]: setContentData( action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_PRIMARY_VIDEO_ID], videoInfo, info, strings.ASSESSMENT_INFO_IDS.PRIMARY ),
-        [strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT]: setContentData( action.payload[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SECONDARY_VIDEO_ID], videoInfo, info, strings.ASSESSMENT_INFO_IDS.SECONDARY ),
+        [strings.ASSESSMENT_INFO_IDS.PRIMARY_CONTENT]: setContentData( action.payload.primary[strings.ASSESSMENT_INFO_IDS.YOUTUBE_PRIMARY_VIDEO_ID], videoInfo, info, strings.ASSESSMENT_INFO_IDS.PRIMARY ),
+        [strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT]: setContentData( action.payload.secondary[strings.ASSESSMENT_INFO_IDS.YOUTUBE_SECONDARY_VIDEO_ID], videoInfo, info, strings.ASSESSMENT_INFO_IDS.SECONDARY ),
     };
-
-    return result;
 };
 
 
 const setContentData = ( id, videoInfo, info, contentType ) =>
 {
 
-    let result = getNonVideoData( info, contentType );
+    let url;
+    let title;
     let item = null;
+    let videoItem;
 
-    videoInfo.forEach(( videoItem ) =>
+    const getFileNameFromURL = ( url ) =>
     {
+        url = url.split('/').pop().replace(/\#(.*?)$/, '').replace(/\?(.*?)$/, '');
+        url = url.split('.');
+
+        return url[0] || 'n/a';
+    };
+
+    if( !id ) // non youtube content
+    {
+        url = info[strings.ASSESSMENT_INFO_IDS[`URL_${contentType}`]] || null;
+
+        // if it had url try to pull title from file name.
+        title = url ? getFileNameFromURL( url ) : info[strings.ASSESSMENT_INFO_IDS[`TITLE_${contentType}`]];
+
+        return {
+            [strings.ASSESSMENT_INFO_IDS.VIDEO_ID]: null,
+            [strings.ASSESSMENT_INFO_IDS.FILETYPE]: info[strings.ASSESSMENT_INFO_IDS[`FILETYPE_${contentType}`]],
+            [strings.ASSESSMENT_INFO_IDS.TITLE]: title,
+            [strings.ASSESSMENT_INFO_IDS.PUBLISHER]: 'n/a',
+            [strings.ASSESSMENT_INFO_IDS.VIEW_COUNT]: 'n/a',
+            [strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE]: 'n/a',
+            [strings.ASSESSMENT_INFO_IDS.URL]: url || 'n/a',
+        }
+    }
+
+    for( let i = 0; i < videoInfo.length; i++ )
+    {
+        videoItem = videoInfo[i];
         item = videoItem.items ? videoItem.items[0] : null;
 
         if( item && item.id === id )
         {
-            result = getYoutubeVideoData( id, item );
+            return {
+                [strings.ASSESSMENT_INFO_IDS.VIDEO_ID]: id,
+                [strings.ASSESSMENT_INFO_IDS.FILETYPE]: 'typeVideo',
+                [strings.ASSESSMENT_INFO_IDS.TITLE]: item.snippet.title,
+                [strings.ASSESSMENT_INFO_IDS.PUBLISHER]: item.snippet.channelTitle,
+                [strings.ASSESSMENT_INFO_IDS.VIEW_COUNT]: item.statistics.viewCount,
+                [strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE]: item.snippet.publishedAt,
+                [strings.ASSESSMENT_INFO_IDS.URL]: `https://www.youtube.com/watch?v=${id}`,
+            }
         }
-
-        if( !item && !id )
-        {
-            result = getVideoData( info, videoItem );
-        }
-    });
-
-    return result;
-};
-
-
-const getYoutubeVideoData = ( id, item ) =>
-{
-    return {
-        [strings.ASSESSMENT_INFO_IDS.VIDEO_ID]: id,
-        [strings.ASSESSMENT_INFO_IDS.FILETYPE]: 'typeVideo',
-        [strings.ASSESSMENT_INFO_IDS.TITLE]: item.snippet.title,
-        [strings.ASSESSMENT_INFO_IDS.PUBLISHER]: item.snippet.channelTitle,
-        [strings.ASSESSMENT_INFO_IDS.VIEW_COUNT]: item.statistics.viewCount,
-        [strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE]: item.snippet.publishedAt,
-        [strings.ASSESSMENT_INFO_IDS.URL]: `https://www.youtube.com/watch?v=${id}`,
     }
-};
 
-
-const getVideoData = ( info, contentType ) =>
-{
-    console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> GET VIDEO DATA: ", info, contentType );
-
-    const title = info[strings.ASSESSMENT_INFO_IDS[`URL_${contentType}`]];
-
-    return {
-        [strings.ASSESSMENT_INFO_IDS.FILETYPE]: 'typeVideo',
-        [strings.ASSESSMENT_INFO_IDS.TITLE]: info[strings.ASSESSMENT_INFO_IDS[`TITLE_${contentType}`]],
-        [strings.ASSESSMENT_INFO_IDS.PUBLISHER]: 'n/a',
-        [strings.ASSESSMENT_INFO_IDS.VIEW_COUNT]: 'n/a',
-        [strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE]: 'n/a',
-        [strings.ASSESSMENT_INFO_IDS.URL]: info[strings.ASSESSMENT_INFO_IDS[`URL_${contentType}`]],
-    }
-};
-
-
-const getNonVideoData = ( info, contentType ) =>
-{
-    console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> GET CONTENT DATA: ", info, contentType );
-
-    return {
-        [strings.ASSESSMENT_INFO_IDS.FILETYPE]: info[strings.ASSESSMENT_INFO_IDS[`FILETYPE_${contentType}`]],
-        [strings.ASSESSMENT_INFO_IDS.TITLE]: info[strings.ASSESSMENT_INFO_IDS[`TITLE_${contentType}`]],
-        [strings.ASSESSMENT_INFO_IDS.PUBLISHER]: 'n/a',
-        [strings.ASSESSMENT_INFO_IDS.VIEW_COUNT]: 'n/a',
-        [strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE]: 'n/a',
-    }
+    return null;
 };
 
 
@@ -429,6 +416,7 @@ const getAssessmentData = ( state ) =>
     resultData.resultInfringement = resultInfringement;
     resultData.resultText = resultText;
     resultData.resultMatrix = matrix;
+    resultData.currentQuestions = currentQuestions;
 
     return resultData;
 };
@@ -436,7 +424,6 @@ const getAssessmentData = ( state ) =>
 
 const getTestQuestions = ( state, resultType ) =>
 {
-    // console.log( "TEST QUESTION DATA: ", testQuestions.MODERATE, testQuestions.MODERATE[question.questionNumber] );
 
     const { questions } = state;
 
@@ -444,8 +431,6 @@ const getTestQuestions = ( state, resultType ) =>
 
     let question;
     let regKey;
-
-    // console.log( "ADDING TEST QUESTIONS: ", testQuestions[resultType] );
 
     Object.keys( testQuestions[resultType] ).forEach(( key ) =>
     {
@@ -458,7 +443,6 @@ const getTestQuestions = ( state, resultType ) =>
         }
 
         question.isAnswered = testQuestions[resultType][key];
-        // console.log( "ADDING TEST QUESTION: ", key, regKey, question );
 
         resultQuestions.push(question)
     });
@@ -486,13 +470,10 @@ const setMatrix = ( questions, resultsText ) =>
         {
             question = questions[i];
 
-            // console.log( "SET MATRIX: ", currentMatrix.num, question.questionNumber, question.isAnswered );
-
             if( !question.questionNumber || !question.isAnswered ) continue;
 
             if( currentMatrix.num === question.questionNumber && question.isAnswered.toLowerCase().indexOf( currentMatrix.value.toLowerCase() ) === 0 )
             {
-                // console.log( "SET MATRIX ADDING QUESTION: ", question );
                 resultMatrix.push( question );
             }
         }
@@ -508,11 +489,9 @@ const getResultText = ( resultValue ) =>
 
     for( let i = 0; i < values.length; i++ )
     {
-        // console.log( "GET RESULT TEXT: ", values[i].value, resultValue );
 
         if( values[i].value > resultValue )
         {
-            // console.log( "RESULT TEXT COMPLETE: ", values[i-1]);
             return values[i-1];
         }
     }

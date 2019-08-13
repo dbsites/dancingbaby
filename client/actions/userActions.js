@@ -23,6 +23,13 @@ const userLoginSuccess = ( result ) =>
 });
 
 
+const userLoginStart = () =>
+({
+    type: types.USER_LOGIN_START,
+    payload: null
+});
+
+
 const userLoginError = ( result ) =>
 ({
     type: types.USER_LOGIN_ERROR,
@@ -30,15 +37,10 @@ const userLoginError = ( result ) =>
 });
 
 
-const userLoginUnauthorized = ( result ) =>
-({
-    type: types.USER_LOGIN_UNAUTHORIZED,
-    payload: result
-});
-
-
 actions.userLoginRoute = ( loginData ) => dispatch =>
 {
+    dispatch( userLoginStart() );
+
     Services.userLoginRoute( loginData,
         ( res ) => // on success
         {

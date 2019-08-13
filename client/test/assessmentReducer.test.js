@@ -25,6 +25,7 @@ describe('assessmentReducer', () => {
 
       progress: 0,
       isHubOpen: true,
+      startTimestamp: 0,
 
       // questions
       questions: {},

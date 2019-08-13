@@ -35,6 +35,13 @@ export const hideLoading = () =>
 });
 
 
+export const hideBar = () =>
+({
+    type: types.SHOW_BAR,
+    payload: false
+});
+
+
 export const showModal = ( modalData ) =>
 ({
     type: types.SHOW_MODAL,
