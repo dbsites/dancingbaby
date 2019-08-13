@@ -17,6 +17,7 @@ import ModalComponent from '../components/ModalComponent';
 import DisclaimerComponent from '../components/DisclaimerComponent';
 import AssessmentInfoComponent from '../components/AssessmentInfoComponent';
 import LoadingComponent from '../components/LoadingComponent';
+import MessageBarComponent from '../components/MessageBarComponent';
 import AssessmentQuestionsComponent from '../components/AssessmentQuestionsComponent';
 import ResultsComponent from '../components/ResultsComponent';
 
@@ -81,6 +82,11 @@ const mapDispatchToProps = dispatch =>
         dispatch(assessmentActions.submitAssessmentQuestions( data ));
     },
 
+    submitCompletedAssessment: ( data ) =>
+    {
+        dispatch(assessmentActions.submitCompletedAssessment( data ));
+    },
+
     showHideModal: ( modal ) =>
     {
         dispatch(screenActions.showModal( modal ));
@@ -99,6 +105,11 @@ const mapDispatchToProps = dispatch =>
     hideLoading: () =>
     {
         dispatch(screenActions.hideLoading());
+    },
+
+    hideBar: () =>
+    {
+        dispatch(screenActions.hideBar());
     },
 
     nextScreen: () =>
@@ -160,6 +171,7 @@ class MainContainer extends Component
                     fairUse={ this.props.fairUse }
                     infringement={ this.props.infringement }
 
+                    submitCompletedAssessment={ this.props.submitCompletedAssessment }
                     downloadReport={ this.props.downloadReport }
                     startOver={ this.props.startOver }
                 />;
@@ -173,7 +185,8 @@ class MainContainer extends Component
           <div className="container">
             <div className="outerBox">
                 <ModalComponent showHideModal={ this.props.showHideModal } modalData={ this.props.showModal } />
-                <LoadingComponent showLoading={ this.props.showLoading } hideLoading={ this.props.hideLoading } loadingMessage={ this.props.loadingMessage } />
+                <LoadingComponent showLoading={ this.props.showLoading } loadingMessage={ this.props.loadingMessage } />
+                {/*<MessageBarComponent showProp={ this.props.showBar } hideAction={ this.props.hideBar } message={ this.props.barMessage } />*/}
                 { this.getCurrentScreen() }
             </div>
           </div>
