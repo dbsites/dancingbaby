@@ -81,9 +81,49 @@ export const setAssessmentInfo = ( info ) => ( dispatch ) =>
 };
 
 
-export const submitCompletedAssessment = ( data ) => dispatch =>
+export const submitCompletedAssessment = () => ( dispatch, getState ) =>
 {
-    Services.assessmentSubmitRoute( data,
+    const { assessment, user } = getState();
+    const { assessmentInfo, currentQuestions } = assessment;
+
+    const primaryContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.PRIMARY_CONTENT];
+    const secondaryContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT];
+
+    console.log( "SUBMIT COMPLETED ASSESSMENT: ", getState(), assessment, user );
+
+    const submitData = {
+        session: {
+            firstName: assessmentInfo[strings.ASSESSMENT_INFO_IDS.FIRST_NAME],
+            lastName: assessmentInfo[strings.ASSESSMENT_INFO_IDS.LAST_NAME],
+            accountId: user.accountId,
+            organization: assessmentInfo[strings.ASSESSMENT_INFO_IDS.ORG_NAME],
+            primary: {
+                fileType: primaryContent[strings.ASSESSMENT_INFO_IDS.FILETYPE],
+                url: primaryContent[strings.ASSESSMENT_INFO_IDS.URL],
+                author: primaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER],
+                publishedDate: primaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE],
+                viewCount: primaryContent[strings.ASSESSMENT_INFO_IDS.VIEW_COUNT],
+            },
+            secondary: {
+                fileType: secondaryContent[strings.ASSESSMENT_INFO_IDS.FILETYPE],
+                url: secondaryContent[strings.ASSESSMENT_INFO_IDS.URL],
+                author: secondaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER],
+                publishedDate: secondaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE],
+                viewCount: secondaryContent[strings.ASSESSMENT_INFO_IDS.VIEW_COUNT],
+            },
+            factorsAgainst: assessment.infringement,
+            factorsToward: assessment.fairUse,
+            startTimestamp: Date.now(),
+            completedTimestamp: Date.now(),
+            assessment: currentQuestions.map((question) => {
+                return {question_number: question.questionNumber, answer: question.isAnswered}
+            })
+        }
+    };
+
+    console.log( "SUBMIT COMPLETED ASSESSMENT: ", submitData );
+
+    Services.assessmentSubmitRoute( submitData,
         ( res ) => // on success
         {
             console.log( "ON SUCCESS IN ACTION: ", res );
