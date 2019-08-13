@@ -33,6 +33,7 @@ export default class ResultsComponent extends React.Component
 
     componentDidMount()
     {
+        this.props.submitCompletedAssessment();
         this.animateGauge();
         this.setLegendElementBold();
     }
@@ -40,7 +41,7 @@ export default class ResultsComponent extends React.Component
     animateGauge()
     {
         const rotateTo = 180 * ( 1 - this.props.resultInfringement );
-        TweenLite.to( '.resultGageArrowSVG', 3, {rotation:rotateTo, transformOrigin:"50% 50%", ease:Sine.easeInOut});
+        TweenLite.to( '.resultGageArrowSVG', 5, {rotation:rotateTo, delay:3, transformOrigin:"50% 50%", ease:Sine.easeInOut});
     }
 
     setLegendElementBold()
@@ -56,6 +57,11 @@ export default class ResultsComponent extends React.Component
         this.setState({ downloadPDF:true });
     };
 
+    downloadReportComplete = () =>
+    {
+        this.setState({ downloadPDF:false });
+    };
+
     getTitle( secondaryContent )
     {
         const publisher = secondaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER] && secondaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER] !== 'n/a' ? `${secondaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER]} - ` : '';
@@ -65,7 +71,7 @@ export default class ResultsComponent extends React.Component
 
     render()
     {
-        const { assessmentInfo, resultText, fairUse, infringement, resultInfringement, startOver } = this.props;
+        const { assessmentInfo, resultText, fairUse, infringement } = this.props;
 
         const secondaryContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT] || {};
 
@@ -74,6 +80,8 @@ export default class ResultsComponent extends React.Component
 
         const factorsAgainst = `Number of factors AGAINST FAIR USE: ${infringement}`;
         const factorsTowards = `Number of factors pointing towards FAIR USE: ${fairUse}`;
+
+        const reportText = this.state.downloadPDF ? 'CREATING REPORT' : 'DOWNLOAD REPORT';
 
         return (
 
@@ -117,7 +125,7 @@ export default class ResultsComponent extends React.Component
 
                 <div className='downloadBtnContainer'>
                     <button className='downloadBtn' onClick={this.downloadReport} type='submit'>
-                        <span>DOWNLOAD REPORT</span>
+                        <span>{reportText}</span>
                         <img src={arrow} className='arrow' alt='arrow' />
                     </button>
                 </div>
@@ -129,7 +137,7 @@ export default class ResultsComponent extends React.Component
                     </button>
                 </div>
 
-                <PrintPDFComponent {...this.props} downloadPDF={this.state.downloadPDF} />
+                <PrintPDFComponent {...this.props} downloadPDF={this.state.downloadPDF} downloadReportComplete={ this.downloadReportComplete } />
             </div>
         );
     }
