@@ -11,14 +11,14 @@ const assessmentController = {};
 // 4. load assessments table - needs analysis session id
 
 assessmentController.storeResults = (req, res, next) => {
-  //console.log("Storing Assessment Session results: ", req.body);
+  console.log("Storing Assessment Session results: ", req.body.session );
 
   if (!req.body.session) {
     const error = new Error(`No session results passed`);
     error.status = 400;
     return next(error)
   }
-  const session = JSON.parse(req.body.session);
+  const session = req.body.session;
 
   async function storeUserAndContent() {
     // create the user record for this session
