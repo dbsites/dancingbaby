@@ -16,6 +16,7 @@ import * as strings from '../constants/strings';
 const initialState = {
     currentScreen: strings.SCREEN_LOGIN.screen,
     currentScreenIndex: 0,
+
     showModal: false,
     showLoading: false,
     loadingMessage: ''
@@ -59,10 +60,21 @@ const screenReducer = ( state=initialState, action ) =>
                 showModal: action.payload
             };
 
-        case types.SHOW_LOADING:
-            return {
-                showLoading:true
-            };
+        // case types.USER_LOGIN_START:
+        //     return {
+        //         loadingOpen: true,
+        //         loadingMessage: 'LOGGING IN',
+        //         useTimer:false
+        //     };
+        //
+        // case types.USER_LOGIN_SUCCESS:
+        //     return {
+        //         loadingClose:true,
+        //
+        //         currentScreenIndex: 1,
+        //         currentScreen: strings.SCREEN_LIST[1].screen
+        //     };
+
 
         default:
             return state;
