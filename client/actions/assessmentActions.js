@@ -89,6 +89,9 @@ export const submitCompletedAssessment = () => ( dispatch, getState ) =>
     const primaryContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.PRIMARY_CONTENT];
     const secondaryContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT];
 
+    const primaryPublishDate = primaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE] === 'n/a' ? null : primaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE];
+    const secondaryPublishDate = secondaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE] === 'n/a' ? null : secondaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE];
+
     console.log( "SUBMIT COMPLETED ASSESSMENT: ", getState(), assessment, user );
 
     const submitData = {
@@ -101,19 +104,19 @@ export const submitCompletedAssessment = () => ( dispatch, getState ) =>
                 fileType: primaryContent[strings.ASSESSMENT_INFO_IDS.FILETYPE],
                 url: primaryContent[strings.ASSESSMENT_INFO_IDS.URL],
                 author: primaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER],
-                publishedDate: primaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE],
+                publishedDate: primaryPublishDate,
                 viewCount: primaryContent[strings.ASSESSMENT_INFO_IDS.VIEW_COUNT],
             },
             secondary: {
                 fileType: secondaryContent[strings.ASSESSMENT_INFO_IDS.FILETYPE],
                 url: secondaryContent[strings.ASSESSMENT_INFO_IDS.URL],
                 author: secondaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISHER],
-                publishedDate: secondaryContent[strings.ASSESSMENT_INFO_IDS.PUBLISH_DATE],
+                publishedDate: secondaryPublishDate,
                 viewCount: secondaryContent[strings.ASSESSMENT_INFO_IDS.VIEW_COUNT],
             },
             factorsAgainst: assessment.infringement,
             factorsToward: assessment.fairUse,
-            startTimestamp: Date.now(),
+            startTimestamp: assessment.startTimestamp,
             completedTimestamp: Date.now(),
             assessment: currentQuestions.map((question) => {
                 return {question_number: question.questionNumber, answer: question.isAnswered}
