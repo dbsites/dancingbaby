@@ -88,6 +88,7 @@ const assessmentReducer = ( state = initialState, action ) =>
                 currentQuestions:Object.values( questions )
             };
 
+        // resets questions.
         case types.ASSESSMENT_START_OVER:
             questions = getQuestions( Object.values( JSON.parse( initQuestions )), false, null );
             currentQuestionIndex = 0;
@@ -102,17 +103,13 @@ const assessmentReducer = ( state = initialState, action ) =>
                 progress:0,
             };
 
-        case types.ASSESSMENT_DOWNLOAD_REPORT:
-            return {
-                ...state
-            };
-
         case types.OPEN_CLOSE_CONTENTHUB:
             return {
                 ...state,
                 isHubOpen:!state.isHubOpen
             };
 
+        // assessment start, hitting submit after user enters info.
         case types.ASSESSMENT_INFO_SUBMIT:
             return {
                 ...state,
@@ -120,16 +117,7 @@ const assessmentReducer = ( state = initialState, action ) =>
                 assessmentInfo:setContentInfo( action, state )
             };
 
-        case types.ASSESSMENT_START:
-            return {
-                ...state
-            };
-
-        case types.ASSESSMENT_RESULTS:
-            return {
-                ...state
-            };
-
+        // assessment complete, hit submit button at bottom of questions.
         case types.ASSESSMENT_SUBMIT:
             return {
                 ...state,
@@ -349,6 +337,7 @@ const setContentData = ( id, videoInfo, info, contentType ) =>
 };
 
 
+// upon user submit of assessment, parses infringement value and result text.
 const getAssessmentData = ( state ) =>
 {
     let { currentQuestions } = state;
@@ -424,9 +413,7 @@ const getAssessmentData = ( state ) =>
 
 const getTestQuestions = ( state, resultType ) =>
 {
-
     const { questions } = state;
-
     const resultQuestions = [];
 
     let question;
@@ -451,6 +438,8 @@ const getTestQuestions = ( state, resultType ) =>
 };
 
 
+// goes through results question matrix, finds answered questions with same question number and answered
+// value as matrix, then adds to list.
 const setMatrix = ( questions, resultsText ) =>
 {
 
@@ -483,6 +472,7 @@ const setMatrix = ( questions, resultsText ) =>
 };
 
 
+// gets the results text based on infringment value.
 const getResultText = ( resultValue ) =>
 {
     const values = Object.values( strings.ASSESSMENT_RESULTS_STRINGS );
