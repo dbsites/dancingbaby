@@ -18,8 +18,12 @@ const initialState = {
     currentScreenIndex: 0,
 
     showModal: false,
+
     showLoading: false,
-    loadingMessage: ''
+    loadingMessage: '',
+
+    barMessage:'',
+    barUpdateStamp:Date.now()
 };
 
 
@@ -29,7 +33,6 @@ const screenReducer = ( state=initialState, action ) =>
     switch( action.type )
     {
         case types.USER_LOGIN_SUCCESS:
-        case types.USER_LOGIN_ERROR:
         case types.ASSESSMENT_SUBMIT:
         case types.ASSESSMENT_INFO_SUBMIT:
         case types.ASSESSMENT_UPDATE_SUCCESS:
@@ -60,21 +63,12 @@ const screenReducer = ( state=initialState, action ) =>
                 showModal: action.payload
             };
 
-        // case types.USER_LOGIN_START:
-        //     return {
-        //         loadingOpen: true,
-        //         loadingMessage: 'LOGGING IN',
-        //         useTimer:false
-        //     };
-        //
-        // case types.USER_LOGIN_SUCCESS:
-        //     return {
-        //         loadingClose:true,
-        //
-        //         currentScreenIndex: 1,
-        //         currentScreen: strings.SCREEN_LIST[1].screen
-        //     };
-
+        case types.USER_LOGIN_ERROR:
+            return {
+                ...state,
+                barMessage:'LOGIN FAILED PLEASE TRY AGAIN',
+                barUpdateStamp:Date.now()
+            };
 
         default:
             return state;
