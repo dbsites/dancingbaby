@@ -33,6 +33,8 @@ const mapStateToProps = store =>
     showModal:store.screens.showModal,
     showLoading:store.screens.showLoading,
     loadingMessage:store.screens.loadingMessage,
+    barMessage:store.screens.barMessage,
+    barUpdateStamp:store.screens.barUpdateStamp,
 
     // questions component
     isHubOpen: store.assessment.isHubOpen,
@@ -186,7 +188,7 @@ class MainContainer extends Component
             <div className="outerBox">
                 <ModalComponent showHideModal={ this.props.showHideModal } modalData={ this.props.showModal } />
                 <LoadingComponent showLoading={ this.props.showLoading } loadingMessage={ this.props.loadingMessage } />
-                {/*<MessageBarComponent showProp={ this.props.showBar } hideAction={ this.props.hideBar } message={ this.props.barMessage } />*/}
+                <MessageBarComponent barMessage={ this.props.barMessage } barUpdateStamp={ this.props.barUpdateStamp } />
                 { this.getCurrentScreen() }
             </div>
           </div>

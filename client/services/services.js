@@ -22,47 +22,24 @@ const Services = {};
 
 Services.userLoginRoute = ( loginData, onSuccess, onError ) =>
 {
-    const data = JSON.stringify( loginData );
-
-    fetch(routes.userLoginRoute,
-    {
-        method: 'POST',
-        body: data,
-        headers: {'Content-Type': 'application/json'},
-    })
-    .then( res =>
-    {
-        if( res.ok )
-        {
-            return res.json();
-        }
-
-        if( onError ) onError( res );
-    })
-    .then( res =>
-        {
-            console.log( "RES: ", res );
-
-            if( onSuccess ) onSuccess( res );
-        }
-    )
-    .catch( err =>
-        {
-            if( onError ) onError( err )
-        }
-    );
+    Services.fetchData( routes.userLoginRoute, 'POST', JSON.stringify( loginData ), onSuccess, onError );
 };
-
 
 Services.assessmentSubmitRoute = ( assessmentData, onSuccess, onError ) =>
 {
-    const data = JSON.stringify( assessmentData );
+    Services.fetchData( routes.assessmentRoute, 'POST', JSON.stringify( assessmentData ), onSuccess, onError );
+};
 
-    console.log( "ASSESSMENT COMPLETE CALLED: ", data );
+Services.getYoutubeVideoInfo = ( videoIds, onSuccess, onError ) =>
+{
+    Services.fetchData( routes.youtubeRoute, 'POST', JSON.stringify({ videoIds }), onSuccess, onError );
+};
 
-    fetch(routes.assessmentRoute,
+Services.fetchData = ( endpoint, type, data, onSuccess, onError ) =>
+{
+    fetch(endpoint,
         {
-            method: 'POST',
+            method: type,
             body: data,
             headers: {'Content-Type': 'application/json'},
         })
@@ -77,8 +54,6 @@ Services.assessmentSubmitRoute = ( assessmentData, onSuccess, onError ) =>
         })
         .then( res =>
             {
-                console.log( "RES: ", res );
-
                 if( onSuccess ) onSuccess( res );
             }
         )
@@ -89,36 +64,5 @@ Services.assessmentSubmitRoute = ( assessmentData, onSuccess, onError ) =>
         );
 };
 
-Services.getYoutubeVideoInfo = ( videoIds, onSuccess, onError ) =>
-{
-
-    fetch(routes.youtubeRoute,
-        {
-            method: 'POST',
-            body: JSON.stringify({ videoIds }),
-            headers: {'Content-Type': 'application/json'},
-        })
-        .then( res =>
-        {
-            if( res.ok )
-            {
-                return res.json();
-            }
-
-            if( onError ) onError( res );
-        })
-        .then( res =>
-            {
-                console.log( "YOU TUBE RES: ", res );
-
-                if( onSuccess ) onSuccess( res );
-            }
-        )
-        .catch( err =>
-            {
-                if( onError ) onError( err )
-            }
-        );
-};
 
 export default Services

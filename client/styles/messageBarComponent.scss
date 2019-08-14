@@ -1,0 +1,29 @@
+@import "variables";
+
+
+.messageBarComponent
+{
+  display: grid;
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  width: 100vw;
+  height: 7vh;
+
+  z-index: 1000;
+
+  justify-items: center;
+  align-content: center;
+
+  background-color: #ff5959;
+
+  .messageTxt
+  {
+    font-size: 2vw;
+    font-family: $ComfortRegular;
+    color: black;
+    letter-spacing: 6px;
+  }
+}

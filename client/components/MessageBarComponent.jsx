@@ -17,43 +17,34 @@ import { TweenLite } from 'gsap';
 class MessageBarComponent extends Component
 {
 
-    constructor( props )
-    {
-        super( props );
-
-        this.fadingOut = false;
-    }
-
     componentDidMount()
     {
-        this.fadingOut = true;
-        TweenLite.delayedCall( 5, this.hideBar )
+        this.showBar();
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot)
+    componentDidUpdate()
     {
-        this.fadingOut = true;
+        this.showBar();
+    }
+
+    showBar()
+    {
+        TweenLite.set( '.messageBarComponent', { autoAlpha:1 });
         TweenLite.delayedCall( 5, this.hideBar )
     }
 
     hideBar()
     {
-        // if( !this.props.loadingOpen ) return null;
-        TweenLite.to( '.messageBarComponent', .5, { autoAlpha:0, onComplete:this.clearBar });
+        TweenLite.to( '.messageBarComponent', .5, { autoAlpha:0 });
     }
-
-    clearBar = () =>
-    {
-        this.props.hideBar();
-    };
 
     render()
     {
-        if( !this.props.showMessage ) return null;
+        if( !this.props.barMessage ) return null;
 
         return (
             <div className="messageBarComponent">
-                <div className='messageTxt' >{this.props.message}...</div>
+                <div className='messageTxt' >{this.props.barMessage}</div>
             </div>
         );
     }
