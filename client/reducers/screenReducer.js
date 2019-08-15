@@ -42,6 +42,7 @@ const screenReducer = ( state=initialState, action ) =>
 
             return {
                 ...state,
+                barMessage:'',
                 showLoading: strings.SCREEN_LIST[newIndex].showLoading,
                 loadingMessage: strings.SCREEN_LIST[newIndex].loadingMessage,
                 currentScreenIndex: newIndex,

@@ -37,7 +37,6 @@ class ContentBox extends React.Component
 
     inputOnFocus = ( e ) =>
     {
-
         const { url_id, title_id, fileType_id } = this.props;
 
         const name = e.currentTarget.name.toLowerCase();
@@ -83,6 +82,7 @@ class ContentBox extends React.Component
                     <div className='urlField'>
                         <label htmlFor={url_id}>URL:</label>
                         <Field
+                            id={url_id}
                             className={`urlInputField`}
                             onFocus={this.inputOnFocus}
                             name={url_id}
@@ -97,6 +97,7 @@ class ContentBox extends React.Component
                     <div className='contentTitleField'>
                         <label htmlFor={title_id}>Content Title:</label>
                         <Field
+                            id={title_id}
                             className={`titleInputField inputDisabled`}
                             onFocus={this.inputOnFocus}
                             name={title_id}
@@ -109,6 +110,7 @@ class ContentBox extends React.Component
                     <div className='fileTypeField'>
                         <label htmlFor={fileType_id}>File Type:</label>
                         <Field
+                            id={fileType_id}
                             className={`fileTypeSelectField inputDisabled`}
                             onFocus={this.inputOnFocus}
                             name={fileType_id}
@@ -127,117 +129,159 @@ class ContentBox extends React.Component
 }
 
 
-let AssessmentInfoComponent = ( props ) =>
-{
-    const { handleSubmit, onSubmit, assessmentInfo } = props;
+const inputIds = [
+    strings.ASSESSMENT_INFO_IDS.FIRST_NAME,
+    strings.ASSESSMENT_INFO_IDS.LAST_NAME,
+    strings.ASSESSMENT_INFO_IDS.ORG_NAME,
 
-    const resetFields = ( formName, fieldsObj ) =>
+    strings.ASSESSMENT_INFO_IDS.URL_PRIMARY,
+    strings.ASSESSMENT_INFO_IDS.TITLE_PRIMARY,
+    strings.ASSESSMENT_INFO_IDS.FILETYPE_PRIMARY,
+
+    strings.ASSESSMENT_INFO_IDS.URL_SECONDARY,
+    strings.ASSESSMENT_INFO_IDS.TITLE_SECONDARY,
+    strings.ASSESSMENT_INFO_IDS.FILETYPE_SECONDARY,
+];
+
+
+class AssessmentInfoComponent extends React.Component
+{
+    componentDidUpdate()
+    {
+        this.inputUpdated();
+    }
+
+    resetFields = ( formName, fieldsObj ) =>
     {
         Object.keys(fieldsObj).forEach(fieldKey =>
         {
-            //reset the field's value
-            props.dispatch( change( formName, fieldKey, fieldsObj[fieldKey] ));
+            this.props.dispatch( change( formName, fieldKey, fieldsObj[fieldKey] ));
         });
     };
 
-    const showCurrentInfo = () =>
+    inputUpdated = () =>
     {
-        if( assessmentInfo[strings.ASSESSMENT_INFO_IDS.FIRST_NAME] )
+        const btn = document.getElementById('startBtn');
+
+        let inputValue = null;
+        let inputCount = 0;
+
+        const getValue = ( id ) =>
         {
-            const suspectedContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.SECONDARY_CONTENT];
-            const copyrightedContent = assessmentInfo[strings.ASSESSMENT_INFO_IDS.PRIMARY_CONTENT];
+            if( !this.props.assessmentForm.values ) return false;
+            return this.props.assessmentForm.values[id];
+        };
 
-            resetFields( 'assessmentForm', {
-                [strings.ASSESSMENT_INFO_IDS.FIRST_NAME]: assessmentInfo[strings.ASSESSMENT_INFO_IDS.FIRST_NAME],
-                [strings.ASSESSMENT_INFO_IDS.LAST_NAME]: assessmentInfo[strings.ASSESSMENT_INFO_IDS.LAST_NAME],
-                [strings.ASSESSMENT_INFO_IDS.ORG_NAME]: assessmentInfo[strings.ASSESSMENT_INFO_IDS.ORG_NAME],
+        inputIds.forEach(( id ) =>
+        {
 
-                [strings.ASSESSMENT_INFO_IDS.URL_PRIMARY]: copyrightedContent[strings.ASSESSMENT_INFO_IDS.URL],
-                [strings.ASSESSMENT_INFO_IDS.TITLE_PRIMARY]: copyrightedContent[strings.ASSESSMENT_INFO_IDS.TITLE],
-                [strings.ASSESSMENT_INFO_IDS.FILETYPE_PRIMARY]: copyrightedContent[strings.ASSESSMENT_INFO_IDS.FILETYPE],
+            inputValue = getValue( id );
 
-                [strings.ASSESSMENT_INFO_IDS.URL_SECONDARY]: suspectedContent[strings.ASSESSMENT_INFO_IDS.URL],
-                [strings.ASSESSMENT_INFO_IDS.TITLE_SECONDARY]: suspectedContent[strings.ASSESSMENT_INFO_IDS.TITLE],
-                [strings.ASSESSMENT_INFO_IDS.FILETYPE_SECONDARY]: suspectedContent[strings.ASSESSMENT_INFO_IDS.FILETYPE],
-            });
+            if( inputValue )
+            {
+                if( id === strings.ASSESSMENT_INFO_IDS.URL_PRIMARY || id === strings.ASSESSMENT_INFO_IDS.URL_SECONDARY )
+                {
+                    inputCount+=2;
+                }
+                else
+                {
+                    inputCount++;
+                }
+            }
+        });
+
+        if( inputCount >= 7 )
+        {
+            Utils.removeClass( btn, 'disabled');
+        }
+        else
+        {
+            Utils.addClass( btn, 'disabled');
         }
     };
 
-    showCurrentInfo();
+    render()
+    {
+        const { handleSubmit, onSubmit } = this.props;
 
-    return (
-        <div className='assessmentInfoComponent'>
+        return (
+            <div className='assessmentInfoComponent'>
 
-            <div className='logoContainer'>
-                <img src={dbLogo} className='logo' alt='logo' />
+                <div className='logoContainer'>
+                    <img src={dbLogo} className='logo' alt='logo' />
+                </div>
+
+                <div className='subHead'>Copyright Fair Use Algorithm</div>
+
+                <form className='assessmentForm' onSubmit={handleSubmit( onSubmit )}>
+
+                    <div className='firstName'>
+                        <label htmlFor={strings.ASSESSMENT_INFO_IDS.FIRST_NAME}>FIRST NAME</label>
+                        <Field
+                            id={strings.ASSESSMENT_INFO_IDS.FIRST_NAME}
+                            className='inputField'
+                            name={strings.ASSESSMENT_INFO_IDS.FIRST_NAME}
+                            component='input'
+                            type='text'
+                            placeholder=""
+                        />
+                    </div>
+
+                    <div className='lastName'>
+                        <label htmlFor={strings.ASSESSMENT_INFO_IDS.LAST_NAME}>LAST NAME</label>
+                        <Field
+                            id={strings.ASSESSMENT_INFO_IDS.LAST_NAME}
+                            className='inputField'
+                            name={strings.ASSESSMENT_INFO_IDS.LAST_NAME}
+                            component='input'
+                            type='text'
+                            placeholder=""
+                        />
+                    </div>
+
+                    <div className='orgName'>
+                        <label htmlFor={strings.ASSESSMENT_INFO_IDS.ORG_NAME}>ORGANIZATION NAME</label>
+                        <Field
+                            id={strings.ASSESSMENT_INFO_IDS.ORG_NAME}
+                            className='inputField'
+                            name={strings.ASSESSMENT_INFO_IDS.ORG_NAME}
+                            component='input'
+                            type='text'
+                            placeholder=""
+                        />
+                    </div>
+
+                    <div className='contentBoxes'>
+                        <ContentBox
+                            resetFields={this.resetFields}
+                            contentType={primaryContent}
+                            url_id={strings.ASSESSMENT_INFO_IDS.URL_PRIMARY}
+                            title_id={strings.ASSESSMENT_INFO_IDS.TITLE_PRIMARY}
+                            fileType_id={strings.ASSESSMENT_INFO_IDS.FILETYPE_PRIMARY}
+                            title='PRIMARY CONTENT'
+                        />
+                        <ContentBox
+                            resetFields={this.resetFields}
+                            contentType={secondaryContent}
+                            url_id={strings.ASSESSMENT_INFO_IDS.URL_SECONDARY}
+                            title_id={strings.ASSESSMENT_INFO_IDS.TITLE_SECONDARY}
+                            fileType_id={strings.ASSESSMENT_INFO_IDS.FILETYPE_SECONDARY}
+                            title='SECONDARY CONTENT'
+                        />
+                    </div>
+
+                    <button className='disabled' id='startBtn' type='submit'>
+                        <span>START ANALYSIS</span>
+                        <img src={arrow} className='arrow' alt='arrow' />
+                    </button>
+
+                </form>
             </div>
-
-            <div className='subHead'>Copyright Fair Use Algorithm</div>
-
-            <form className='assessmentForm' onSubmit={handleSubmit( onSubmit )}>
-
-                <div className='firstName'>
-                    <label htmlFor={strings.ASSESSMENT_INFO_IDS.FIRST_NAME}>FIRST NAME</label>
-                    <Field
-                        className='inputField'
-                        name={strings.ASSESSMENT_INFO_IDS.FIRST_NAME}
-                        component='input'
-                        type='text'
-                        placeholder=""
-                    />
-                </div>
-
-                <div className='lastName'>
-                    <label htmlFor={strings.ASSESSMENT_INFO_IDS.LAST_NAME}>LAST NAME</label>
-                    <Field
-                        className='inputField'
-                        name={strings.ASSESSMENT_INFO_IDS.LAST_NAME}
-                        component='input'
-                        type='text'
-                        placeholder=""
-                    />
-                </div>
-
-                <div className='orgName'>
-                    <label htmlFor={strings.ASSESSMENT_INFO_IDS.ORG_NAME}>ORGANIZATION NAME</label>
-                    <Field
-                        className='inputField'
-                        name={strings.ASSESSMENT_INFO_IDS.ORG_NAME}
-                        component='input'
-                        type='text'
-                        placeholder=""
-                    />
-                </div>
-
-                <div className='contentBoxes'>
-                    <ContentBox
-                        resetFields={resetFields}
-                        contentType={primaryContent}
-                        url_id={strings.ASSESSMENT_INFO_IDS.URL_PRIMARY}
-                        title_id={strings.ASSESSMENT_INFO_IDS.TITLE_PRIMARY}
-                        fileType_id={strings.ASSESSMENT_INFO_IDS.FILETYPE_PRIMARY}
-                        title='PRIMARY CONTENT'
-                    />
-                    <ContentBox
-                        resetFields={resetFields}
-                        contentType={secondaryContent}
-                        url_id={strings.ASSESSMENT_INFO_IDS.URL_SECONDARY}
-                        title_id={strings.ASSESSMENT_INFO_IDS.TITLE_SECONDARY}
-                        fileType_id={strings.ASSESSMENT_INFO_IDS.FILETYPE_SECONDARY}
-                        title='SECONDARY CONTENT' />
-                </div>
-
-                <button type='submit'>
-                    <span>START ANALYSIS</span>
-                    <img src={arrow} className='arrow' alt='arrow' />
-                </button>
-
-            </form>
-        </div>
-    );
-};
+        );
+    }
+}
 
 
-AssessmentInfoComponent = reduxForm({ form: 'assessmentForm' })( AssessmentInfoComponent );
+AssessmentInfoComponent = reduxForm({ form: 'assessmentForm', keepDirtyOnReinitialize:true, enableReinitialize:true, destroyOnUnmount:false })( AssessmentInfoComponent );
 
 export default AssessmentInfoComponent;
