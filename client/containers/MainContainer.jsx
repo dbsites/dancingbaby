@@ -49,11 +49,12 @@ const mapStateToProps = store =>
     resultText: store.assessment.resultText,
     resultMatrix: store.assessment.resultMatrix,
 
-
     fairUse: store.assessment.fairUse,
     infringement: store.assessment.infringement,
 
-    assessmentInfo: store.assessment.assessmentInfo
+    assessmentInfo: store.assessment.assessmentInfo,
+
+    assessmentForm: store.form.assessmentForm
 });
 
 
@@ -143,6 +144,7 @@ class MainContainer extends Component
             case strings.SCREEN_ASSESSMENT_GETINFO.screen:
                 return <AssessmentInfoComponent
                     assessmentInfo={ this.props.assessmentInfo }
+                    assessmentForm={ this.props.assessmentForm }
                     onSubmit={ this.props.submitAssessmentInfo }
                 />;
 
