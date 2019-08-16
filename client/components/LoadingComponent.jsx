@@ -18,13 +18,6 @@ import { TweenLite } from 'gsap';
 class LoadingComponent extends Component
 {
 
-    constructor( props )
-    {
-        super( props );
-
-        this.fadingOut = false;
-    }
-
     componentDidMount()
     {
         this.show();
@@ -39,18 +32,13 @@ class LoadingComponent extends Component
     {
         if( !this.props.showLoading ) return null;
 
-        this.fadingOut = true;
+        TweenLite.killTweensOf('.messageBarComponent');
         TweenLite.delayedCall( 4, this.hide );
     };
 
     hide = () =>
     {
-        TweenLite.to( '.loadingComponent', .5, { autoAlpha:0, onComplete:this.clearLoading });
-    };
-
-    clearLoading = () =>
-    {
-        this.fadingOut = false;
+        TweenLite.to( '.loadingComponent', .5, { autoAlpha:0 });
     };
 
     render()
