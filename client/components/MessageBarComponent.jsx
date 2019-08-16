@@ -29,6 +29,7 @@ class MessageBarComponent extends Component
 
     showBar()
     {
+        TweenLite.killTweensOf('.messageBarComponent');
         TweenLite.set( '.messageBarComponent', { autoAlpha:1 });
         TweenLite.delayedCall( 5, this.hideBar )
     }
