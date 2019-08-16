@@ -163,6 +163,9 @@ class AssessmentInfoComponent extends React.Component
     {
         const btn = document.getElementById('startBtn');
 
+        const expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+        const regex = new RegExp(expression);
+
         let inputValue = null;
         let inputCount = 0;
 
@@ -181,7 +184,7 @@ class AssessmentInfoComponent extends React.Component
             {
                 if( id === strings.ASSESSMENT_INFO_IDS.URL_PRIMARY || id === strings.ASSESSMENT_INFO_IDS.URL_SECONDARY )
                 {
-                    inputCount+=2;
+                    if( inputValue.match(regex) ) inputCount+=2;
                 }
                 else
                 {
