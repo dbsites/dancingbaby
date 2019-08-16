@@ -81,7 +81,7 @@ export default class ResultsComponent extends React.Component
         const factorsAgainst = `Number of factors AGAINST FAIR USE: ${infringement}`;
         const factorsTowards = `Number of factors pointing towards FAIR USE: ${fairUse}`;
 
-        const reportText = this.state.downloadPDF ? 'CREATING REPORT' : 'DOWNLOAD REPORT';
+        const reportText = this.state.downloadPDF ? 'CREATING REPORT...' : 'DOWNLOAD REPORT';
 
         return (
 
