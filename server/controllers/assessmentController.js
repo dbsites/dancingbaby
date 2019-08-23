@@ -20,7 +20,7 @@ assessmentController.storeResults = (req, res, next) => {
     error.status = 400;
     return next(error)
   }
-  const session = JSON.parse(req.body.session);
+  const session = req.body.session;
 
   async function storeUserAndContent() {
     // create the user record for this session
