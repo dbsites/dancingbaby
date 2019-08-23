@@ -58,6 +58,7 @@ assessmentController.storeResults = (req, res, next) => {
       let content = contentTypes[i];
 
       const publishedDate = session[content].publishedDate === "null" ? null : session[content].publishedDate;
+      const viewCount = session[content].viewCount === "n/a" ? 0 : session[content].viewCount;
 
       const contentInsert = `
         INSERT INTO content (
@@ -68,7 +69,7 @@ assessmentController.storeResults = (req, res, next) => {
 
       const values = [content, session[content].fileType, 
       session[content].url, publishedDate, 
-      session[content].author, session[content].viewCount];
+      session[content].author, viewCount];
 
       logger.verbose(`contentInsert: ${contentInsert}`);
       logger.verbose(`values: ${values}`);

@@ -93,7 +93,7 @@ CREATE TABLE "content" (
 
 CREATE TABLE "assessments" (
 	"_id" serial NOT NULL,
-	"question_number" bigint NOT NULL,
+	"question_number" varchar NOT NULL,
 	"answer" TEXT NOT NULL,
 	"analysis_session_id" bigint NOT NULL,
 	CONSTRAINT "assessments_pk" PRIMARY KEY ("_id")
