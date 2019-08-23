@@ -35,6 +35,14 @@ SET default_tablespace = '';
 
 SET default_with_oids = false;
 
+DROP table if exists "accounts" cascade;
+DROP table if exists "analysis_session" cascade;
+DROP table if exists "users" cascade;
+DROP table if exists "content" cascade;
+DROP table if exists "assessments" cascade;
+DROP table if exists "questions" cascade;
+DROP table if exists "session";
+
 CREATE TABLE "accounts" (
 	"_id" serial NOT NULL,
 	"username" varchar NOT NULL,
