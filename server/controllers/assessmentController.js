@@ -1,6 +1,7 @@
 const dbdb = require('../models/dbModel');
 const cfg = require('config');
 const { logger } = require('../util/loggingUtil');
+const moment = require('moment');
 
 const assessmentController = {};
 
@@ -12,13 +13,14 @@ const assessmentController = {};
 
 assessmentController.storeResults = (req, res, next) => {
   console.log("Storing Assessment Session results: ", req.body.session );
+ 
 
   if (!req.body.session) {
     const error = new Error(`No session results passed`);
     error.status = 400;
     return next(error)
   }
-  const session = req.body.session;
+  const session = JSON.parse(req.body.session);
 
   async function storeUserAndContent() {
     // create the user record for this session
@@ -32,8 +34,8 @@ assessmentController.storeResults = (req, res, next) => {
       returning _id as id`;
 
     const values = [session.firstName, session.lastName, session.organization];
-    logger.info(`usersInsert: ${usersInsert}` );
-    logger.info(`values: ${values}`);
+    logger.verbose(`usersInsert: ${usersInsert}` );
+    logger.verbose(`values: ${values}`);
 
     try {
       const usersResult = await dbdb.query({
@@ -43,7 +45,7 @@ assessmentController.storeResults = (req, res, next) => {
 
       if (usersResult && usersResult.rows) {
         session.userId = usersResult.rows[0].id;
-        logger.info(`Stored user ${session.userId}`);
+        logger.verbose(`Stored user ${session.userId}`);
       }
     } catch (err) {
       throw new Error(err);
@@ -55,6 +57,8 @@ assessmentController.storeResults = (req, res, next) => {
     for(let i = 0; i < contentTypes.length; i++) {
       let content = contentTypes[i];
 
+      const publishedDate = session[content].publishedDate === "null" ? null : session[content].publishedDate;
+
       const contentInsert = `
         INSERT INTO content (
           content_type, file_type, url, 
@@ -63,11 +67,11 @@ assessmentController.storeResults = (req, res, next) => {
         returning _id as id`;
 
       const values = [content, session[content].fileType, 
-      session[content].url, session[content].publishedDate, 
+      session[content].url, publishedDate, 
       session[content].author, session[content].viewCount];
 
-      logger.info(`contentInsert: ${contentInsert}`);
-      logger.info(`values: ${values}`);
+      logger.verbose(`contentInsert: ${contentInsert}`);
+      logger.verbose(`values: ${values}`);
 
       try {
         const contentResult = await dbdb.query({
@@ -77,7 +81,7 @@ assessmentController.storeResults = (req, res, next) => {
 
         if (contentResult && contentResult.rows) {
           session[content].id = contentResult.rows[0].id;
-          logger.info(`Stored content ${session[content].id}`);
+          logger.verbose(`Stored content ${session[content].id}`);
         }
       } catch (err) {
         throw new Error(err);
@@ -87,6 +91,9 @@ assessmentController.storeResults = (req, res, next) => {
   }
 
   async function storeAnalysisSession() {
+    const startTimestamp = moment(Number(session.startTimestamp)).format('YYYYMMDD HH:mm:ss.SS');
+    const completedTimestamp = moment(Number(session.completedTimestamp)).format('YYYYMMDD HH:mm:ss.SS');
+
     const text = `
       INSERT INTO analysis_session (
         account_id, user_id, primary_content_id, 
@@ -97,17 +104,17 @@ assessmentController.storeResults = (req, res, next) => {
 
       const values = [session.accountId, session.userId, session.primary.id,
         session.secondary.id, session.factorsToward, session.factorsAgainst,
-        session.startTimestamp, session.completedTimestamp];
+        startTimestamp, completedTimestamp];
 
-      logger.info(`analysisSessionInsert: ${text}`);
-      logger.info(`values: ${values}`);
+      logger.verbose(`analysisSessionInsert: ${text}`);
+      logger.verbose(`values: ${values}`);
 
     try {
       const result = await dbdb.query({ text, values })
 
       if (result && result.rows) {
         session.analysisId = result.rows[0].id;
-        logger.info(`Stored analysis_session ${session.analysisId}`);
+        logger.verbose(`Stored analysis_session ${session.analysisId}`);
       }
 
     } catch (err) {
@@ -125,23 +132,21 @@ assessmentController.storeResults = (req, res, next) => {
 
       const values = [q.question_number, q.answer, session.analysisId];
 
-      logger.info(`storeAssessment: ${text}`);
-      logger.info(`values: ${values}`);
+      logger.verbose(`storeAssessment: ${text}`);
+      logger.verbose(`values: ${values}`);
 
       try {
         const result = await dbdb.query({ text, values })
 
         if (result && result.rows) {
-          logger.info(`Stored question ${q.question_number}: ${q.answer}`);
+          logger.verbose(`Stored question ${q.question_number}: ${q.answer}`);
         }
       } catch (err) {
         throw new Error(err);
       }
-
     }
-
+    // we're done, move on to the next middleware
     return next();
-
   }
 
   storeUserAndContent()
@@ -151,6 +156,7 @@ assessmentController.storeResults = (req, res, next) => {
       err.status = 500;
       return next(err);
     });
+
 }
 
 module.exports = assessmentController;
