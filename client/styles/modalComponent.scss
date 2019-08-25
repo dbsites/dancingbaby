@@ -1,0 +1,129 @@
+@import "variables";
+
+
+.modalComponent
+{
+  position: absolute;
+  display: grid;
+
+  grid-template-columns: 1fr 1fr 1fr;
+
+  .modal-background
+  {
+    position: fixed;
+    opacity: 0;
+
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+
+    background-color: rgba(0,0,0,.2);
+  }
+
+  .modal
+  {
+
+    display: grid;
+    grid-column: 2;
+
+    position: relative;
+
+    opacity: 0;
+    top:20vh;
+    width: 50vw;
+    min-width: 400px;
+    z-index: 1050;
+
+    outline: 0;
+    border-radius: 15px;
+    font-family: $ComfortRegular;
+
+    background-color: white;
+
+    .modal-header
+    {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-align: start;
+      align-items: flex-start;
+      -ms-flex-pack: justify;
+      justify-content: space-between;
+      padding: 1rem 1rem;
+      border-bottom: 1px solid #dee2e6;
+      border-top-left-radius: .3rem;
+      border-top-right-radius: .3rem;
+    }
+
+    .modal-title
+    {
+      font-size: 2vh;
+      text-align: center;
+      margin-bottom: 0;
+      line-height: 1.5;
+    }
+
+    .modal-body
+    {
+      position: relative;
+      -ms-flex: 1 1 auto;
+      flex: 1 1 auto;
+      padding: 1rem;
+    }
+
+    .modal-footer
+    {
+      display: -ms-flexbox;
+      display: flex;
+
+      align-items: center;
+      -ms-flex-align: center;
+      -ms-flex-pack: end;
+
+      justify-content: flex-end;
+
+      padding: 1rem;
+
+      border-top: 1px solid #dee2e6;
+      border-bottom-right-radius: .3rem;
+      border-bottom-left-radius: .3rem;
+    }
+  }
+
+  .enterBtnContainer
+  {
+    display: grid;
+
+    margin-top: 60px;
+    justify-content: center;
+  }
+
+  .enterBtn
+  {
+    @extend .divTransition;
+
+    font-size: 60px;
+    background-color: #666666;
+    color: white;
+
+    padding-bottom: 0;
+    padding-top: 2px;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    border-radius: 12px;
+
+    align-content: center;
+    justify-content: center;
+
+    border: none;
+  }
+
+  .enterBtn:hover
+  {
+    color: #666666;
+    background-color: white;
+    border: 1px solid #666666;
+  }
+}
+
