@@ -13,6 +13,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import LoginComponent from '../components/LoginComponent';
+import MobileComponent from '../components/MobileComponent';
 import ModalComponent from '../components/ModalComponent';
 import DisclaimerComponent from '../components/DisclaimerComponent';
 import AssessmentInfoComponent from '../components/AssessmentInfoComponent';
@@ -26,6 +27,8 @@ import * as assessmentActions from '../actions/assessmentActions';
 import * as screenActions from '../actions/screenActions';
 import * as strings from '../constants/strings';
 
+
+const contactPath = 'http://www.google.com';
 
 const mapStateToProps = store =>
 ({
@@ -125,6 +128,40 @@ const mapDispatchToProps = dispatch =>
 class MainContainer extends Component
 {
 
+    constructor( props )
+    {
+        super( props );
+
+        this.state = {
+            isMobile:false
+        }
+    }
+
+    componentDidMount()
+    {
+        this.handleWindowSizeChange();
+    }
+
+    componentWillMount()
+    {
+        window.addEventListener('resize', this.handleWindowSizeChange);
+    }
+
+    componentWillUnmount()
+    {
+        window.removeEventListener('resize', this.handleWindowSizeChange);
+    }
+
+    handleWindowSizeChange = () =>
+    {
+        const isMobile = window.innerWidth < 800;
+
+        if( isMobile !== this.state.isMobile )
+        {
+            this.setState({ isMobile });
+        }
+    };
+
     getCurrentScreen = () =>
     {
 
@@ -132,6 +169,7 @@ class MainContainer extends Component
         {
             case strings.SCREEN_LOGIN.screen:
                 return <LoginComponent
+                    contactPath={ contactPath }
                     onSubmit={ this.props.submitLogin }
                 />;
 
@@ -185,6 +223,11 @@ class MainContainer extends Component
 
     render()
     {
+        if( this.state.isMobile )
+        {
+            return <MobileComponent contactPath={ contactPath } />;
+        }
+
         return(
           <div className="container">
             <div className="outerBox">

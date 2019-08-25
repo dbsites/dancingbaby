@@ -17,7 +17,7 @@ import dbLogo from '../assets/svg/db_logo_greenyellow.svg';
 
 let LoginComponent = ( props ) =>
 {
-    const { openContact, handleSubmit, onSubmit } = props;
+    const { contactPath, handleSubmit, onSubmit } = props;
 
     return (
         <div className='loginComponent'>
@@ -26,7 +26,7 @@ let LoginComponent = ( props ) =>
                 <img src={dbLogo} className='logo' alt='logo' />
             </div>
 
-            <div className='contactLink' onClick={openContact} id='contact'><a className='urlLink' href='http://www.google.com' target='blank'>contact</a></div>
+            <div className='contactLink' id='contact'><a className='urlLink' href={contactPath} target='blank'>contact</a></div>
 
             <form className='loginForm' onSubmit={handleSubmit( onSubmit )}>
 
