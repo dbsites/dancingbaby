@@ -1,9 +1,6 @@
-/**
- * Created by neilkatz on 3/22/17.
- */
 
 import React from 'react';
-import { Modal } from 'react-bootstrap';
+import { TweenLite } from 'gsap';
 
 
 
@@ -22,9 +19,24 @@ const modalTypes = {
 export default class ModalComponent extends React.Component
 {
 
+    componentDidUpdate()
+    {
+        this.showModal();
+    }
+
+    showModal = () =>
+    {
+        const { modalData } = this.props;
+        const show = !!modalData;
+
+        if( !show ) return null;
+
+        TweenLite.fromTo( '.modal', .5, { opacity:0, y:-40 }, { opacity:1, y:0 } );
+        TweenLite.fromTo( '.modal-background', .5, { opacity:0 }, { opacity:1 } );
+    };
+
     render()
     {
-
         const { showHideModal, modalData } = this.props;
 
         const title = modalData ? modalTypes[modalData].title : "";
@@ -34,26 +46,24 @@ export default class ModalComponent extends React.Component
         if( !show ) return null;
 
         return (
-            <Modal
-                animation={false}
-                show={show}
-                onHide={ showHideModal.bind( null, false )}
-                size="lg"
-                centered
-            >
-                <Modal.Header closeButton >
-                    <Modal.Title>{title}</Modal.Title>
-                </Modal.Header>
+            <div className='modalComponent'>
+                <div className='modal-background'/>
+                <div className='modal'>
 
-                <Modal.Body>
-                    {body}
-                </Modal.Body>
+                    <div className='modal-header' >
+                        <div className='modal-title'>{title}</div>
+                    </div>
 
-                <Modal.Footer>
-                    <button onClick={ showHideModal.bind( null, false )} >CLOSE</button>
-                </Modal.Footer>
+                    <div className='modal-body'>
+                        {body}
+                    </div>
 
-            </Modal>
+                    <div className='modal-footer'>
+                        <button onClick={ showHideModal.bind( null, false )} >CLOSE</button>
+                    </div>
+
+                </div>
+            </div>
         )
     }
 };
