@@ -35,6 +35,14 @@ SET default_tablespace = '';
 
 SET default_with_oids = false;
 
+DROP table if exists "accounts" cascade;
+DROP table if exists "analysis_session" cascade;
+DROP table if exists "users" cascade;
+DROP table if exists "content" cascade;
+DROP table if exists "assessments" cascade;
+DROP table if exists "questions" cascade;
+DROP table if exists "session";
+
 CREATE TABLE "accounts" (
 	"_id" serial NOT NULL,
 	"username" varchar NOT NULL,
@@ -53,7 +61,6 @@ CREATE TABLE "analysis_session" (
 	"user_id" bigint NOT NULL,
 	"primary_content_id" bigint NOT NULL,
 	"secondary_content_id" bigint NOT NULL,
-	"assessment_id" bigint NOT NULL,
 	"factors_against" integer NOT NULL,
 	"factors_toward" integer NOT NULL,
 	"start_timestamp" timestamp with time zone NOT NULL,
@@ -94,7 +101,7 @@ CREATE TABLE "content" (
 
 CREATE TABLE "assessments" (
 	"_id" serial NOT NULL,
-	"question_number" bigint NOT NULL,
+	"question_number" varchar NOT NULL,
 	"answer" TEXT NOT NULL,
 	"analysis_session_id" bigint NOT NULL,
 	CONSTRAINT "assessments_pk" PRIMARY KEY ("_id")
@@ -108,7 +115,7 @@ CREATE TABLE "questions" (
 	"_id" serial NOT NULL,
 	"question_number" varchar NOT NULL,
 	"question_text" varchar NOT NULL,
-	"create_date" DATE NOT NULL DEFUALT CURRENT_DATE,
+	"create_date" DATE NOT NULL DEFAULT CURRENT_DATE,
 	"no_fair_use" numeric(2,1) NOT NULL,
 	"no_infringement" numeric(2,1) NOT NULL,
 	"yes_fair_use" numeric(2,1) NOT NULL,
