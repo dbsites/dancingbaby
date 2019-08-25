@@ -1,0 +1,78 @@
+@import "variables";
+
+
+
+.mobileComponent
+{
+  display: grid;
+  grid-row-gap: 10px;
+
+  align-content: center;
+  justify-content: center;
+  margin-top: 20vh;
+
+  font-family: $ComfortRegular;
+
+  .logoContainer
+  {
+    display: grid;
+
+    grid-column: 1 / 3;
+    grid-row: 1;
+    align-content: center;
+    justify-content: center;
+
+    .logo
+    {
+      width: 60vw;
+    }
+  }
+
+  .text
+  {
+    display: grid;
+    width: 80vw;
+    text-align: center;
+    grid-column: 1 / 3;
+    margin-top: 4vh;
+  }
+
+  .text1
+  {
+    font-size: 2.0vh;
+    grid-row: 3;
+  }
+
+  .text2
+  {
+    grid-row: 4;
+    font-family: $ComfortBold;
+    padding: 10px;
+    display: grid;
+    font-size: 2.0vh;
+    background-color: #E6E6E6;
+    border-radius: 10px;
+  }
+
+  .contactLink
+  {
+    grid-column: 1 / 3;
+    grid-row: 2;
+
+    padding-top: 10px;
+    color: #b3b3b3;
+
+    text-align: center;
+    font-size: 20px;
+    text-decoration: underline;
+
+    cursor: pointer;
+
+    .urlLink
+    {
+      font-size: 20px;
+      font-family: $ComfortRegular;
+      color: #b3b3b3;
+    }
+  }
+}
