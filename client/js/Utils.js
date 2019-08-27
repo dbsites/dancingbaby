@@ -35,12 +35,6 @@ export default class Utils
     }
 
 
-    static objectCompare( _obj1, _obj2 )
-    {
-        return JSON.stringify(_obj1) === JSON.stringify(_obj2);
-    }
-
-
     static getIndexByObjectProp( _array, _prop )
     {
         if( !_array || _array.length === 0 ) return -1;
@@ -49,12 +43,6 @@ export default class Utils
         {
             return JSON.stringify(item).indexOf(_prop) > -1;
         });
-    }
-
-
-    static clearInput( input )
-    {
-
     }
 
 
@@ -157,7 +145,7 @@ export default class Utils
         let outerCount = 0;
         let innerCount = 0;
         
-        _array.forEach(( item, index ) =>
+        _array.forEach(( item ) =>
         {
 			if( !resultArray[outerCount] ) resultArray[outerCount] = [];
 			resultArray[outerCount][innerCount] = item;
@@ -175,6 +163,7 @@ export default class Utils
         
         return resultArray;
     }
+
     
     static getObjValueByPartialKey( _obj, _key )
     {
@@ -194,6 +183,7 @@ export default class Utils
         }
     }
 
+
     static getLastStringPart( _string, _separator )
     {
         if (!_string) return null;
@@ -203,8 +193,17 @@ export default class Utils
         return parts[parts.length-1];
     }
 
+
     static formatNumber( num )
     {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     }
+
+
+    static isMobile()
+    {
+        const checkValue = navigator.userAgent || navigator.vendor || window.opera;
+
+        return !!( checkValue.match(/Android/i ) || checkValue.match(/webOS/i ) || checkValue.match(/iPhone/i ) || checkValue.match(/iPad/i ) || checkValue.match(/iPod/i ) || checkValue.match(/BlackBerry/i ) || checkValue.match(/Windows Phone/i || false ));
+    };
 }
