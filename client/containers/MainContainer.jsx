@@ -26,6 +26,7 @@ import userActions from '../actions/userActions';
 import * as assessmentActions from '../actions/assessmentActions';
 import * as screenActions from '../actions/screenActions';
 import * as strings from '../constants/strings';
+import Utils from "../js/Utils";
 
 
 const contactPath = 'http://www.google.com';
@@ -154,7 +155,7 @@ class MainContainer extends Component
 
     handleWindowSizeChange = () =>
     {
-        const isMobile = window.innerWidth < 800;
+        const isMobile = Utils.isMobile();
 
         if( isMobile !== this.state.isMobile )
         {
