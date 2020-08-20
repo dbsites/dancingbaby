@@ -17,7 +17,7 @@
     "author": "Schno Mozingo and Neil Katz",
     "license": "MIT",
     "dependencies": {
-        "bcrypt": "^3.0.6",
+        "bcrypt": "^5.0.0",
         "buffer-shims": "^1.0.0",
         "config": "^3.1.0",
         "connect-pg-simple": "^5.0.0",
